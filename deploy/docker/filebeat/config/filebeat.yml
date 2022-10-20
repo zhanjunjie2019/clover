@@ -1,0 +1,22 @@
+filebeat.inputs:
+  - type: filestream
+    paths:
+      - /var/logs/*.log
+
+setup.ilm.enabled: false
+setup.template.name: "clover"
+setup.template.pattern: "clover-*"
+
+processors:
+  - decode_json_fields:
+      fields: [ "message" ]
+      target: "clover"
+      expand_keys: true
+      add_error_key: true
+  - drop_fields:
+      fields: [ "ecs", "host", "agent", "log", "input", "message" ]
+      ignore_missing: true
+
+output.elasticsearch:
+  hosts: [ "http://elasticsearch:9200" ]
+  index: "clover-%{+yyyy-MM-dd}"

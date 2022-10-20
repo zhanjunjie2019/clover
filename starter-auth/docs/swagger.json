@@ -1,0 +1,104 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "clover-auth接口文档",
+        "title": "clover-auth-api",
+        "contact": {},
+        "version": "v1.0.0"
+    },
+    "basePath": "/auth",
+    "paths": {
+        "/tenant-create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "初始化租户",
+                "parameters": [
+                    {
+                        "description": "初始化租户",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.TenantCreateReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.TenantCreateRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "错误码：成功[0],底层的错误[1000-1999],平台层级的错误[2000-2999]",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据"
+                },
+                "msg": {
+                    "description": "详细信息",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.TenantCreateReqVO": {
+            "type": "object",
+            "required": [
+                "tenantName"
+            ],
+            "properties": {
+                "tenantID": {
+                    "description": "租户ID，不传默认则随机生成",
+                    "type": "string"
+                },
+                "tenantName": {
+                    "description": "租户名",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.TenantCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "secretKey": {
+                    "description": "租户密钥",
+                    "type": "string"
+                },
+                "tenantID": {
+                    "description": "租户ID",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

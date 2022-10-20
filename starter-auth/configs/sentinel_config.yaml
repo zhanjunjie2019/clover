@@ -1,0 +1,29 @@
+# 是否开启熔断限流，1是2否
+enabled: 1
+
+# 服务全局熔断限流策略
+svcRuleStrategy:
+  # 限流配置
+  currentLimitRules:
+    # 计算策略，0阈值控制1预热计算
+    - tokenCalculateStrategy: 0
+      # 控制策略，0拒绝1排队
+      controlBehavior: 1
+      # 阈值
+      threshold: 1000
+      # 排队最大等待时间
+      maxQueueingTimeMs: 1000
+      # 统计周期
+      statIntervalInMs: 1000
+  # 热点限流配置
+  hotspotRules:
+    # 流控指标类型，0并发数，1请求数
+    - metricType: 0
+      # 控制策略，0拒绝1排队
+      controlBehavior: 1
+      # 参数键
+      paramKey: TenantId
+      # 阈值
+      threshold: 10
+      # 排队最大等待时间
+      maxQueueingTimeMs: 1000

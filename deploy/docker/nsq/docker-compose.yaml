@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  nsqlookupd:
+    image: "nsqio/nsq"
+    container_name: 'nsqlookupd'
+    command: "/nsqlookupd"
+    ports:
+      - "4160:4160"
+      - "4161:4161"
+    networks:
+      - custom_net
+
+  nsqd:
+    image: "nsqio/nsq"
+    container_name: 'nsqd'
+    command: "/nsqd --lookupd-tcp-address=nsqlookupd:4160 --broadcast-address=nsqd"
+    depends_on:
+      - nsqlookupd
+    ports:
+      - "4150:4150"
+      - "4151:4151"
+    networks:
+      - custom_net
+
+  nsqadmin:
+    image: "nsqio/nsq"
+    container_name: 'nsqadmin'
+    command: "/nsqadmin --lookupd-http-address=nsqlookupd:4161"
+    depends_on:
+      - nsqlookupd
+    ports:
+      - "4171:4171"
+    networks:
+      - custom_net
+
+networks:
+  custom_net:
+    external:
+      name: app_net

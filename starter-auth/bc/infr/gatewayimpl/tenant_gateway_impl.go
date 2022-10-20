@@ -1,0 +1,43 @@
+package gatewayimpl
+
+import (
+	"context"
+	"encoding/json"
+	"github.com/zhanjunjie2019/clover/global/nsqd"
+	"github.com/zhanjunjie2019/clover/share/auth/dto"
+	"github.com/zhanjunjie2019/clover/share/auth/topic"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl/convs"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo"
+)
+
+// +ioc:autowire=true
+// +ioc:autowire:type=singleton
+
+type TenantGateway struct {
+	Repo        repo.TenantRepoIOCInterface  `singleton:""`
+	NsqProducer nsqd.NsqProducerIOCInterface `singleton:""`
+}
+
+func (t *TenantGateway) FindByTenantID(ctx context.Context, tenantID string) (tenant model.Tenant, exist bool, err error) {
+	tenantPO, exist, err := t.Repo.FindByTenantID(ctx, tenantID)
+	if err != nil {
+		return nil, false, err
+	}
+	if exist {
+		tenant = convs.TenantPOToDO(tenantPO)
+	}
+	return
+}
+
+func (t *TenantGateway) Save(ctx context.Context, tenant model.Tenant) error {
+	return t.Repo.Save(ctx, convs.TenantDOToPO(tenant))
+}
+
+func (t *TenantGateway) PublishInitEvent(ctx context.Context, dto dto.TenantInitEventDTO) error {
+	bs, err := json.Marshal(dto)
+	if err != nil {
+		return err
+	}
+	return t.NsqProducer.Publish(ctx, topic.TenantInitTopic, bs)
+}

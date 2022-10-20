@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  consul:
+    image: "bitnami/consul"
+    restart: always
+    container_name: consul
+    volumes:
+      - './data:/bitnami/consul'
+    networks:
+      - custom_net
+    environment:
+      - "CONSUL_DISABLE_KEYRING_FILE=true"
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+
+networks:
+  custom_net:
+    external:
+      name: app_net

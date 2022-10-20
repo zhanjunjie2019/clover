@@ -1,0 +1,20 @@
+version: '3.2'
+
+services:
+
+  filebeat:
+    container_name: 'filebeat'
+    restart: always
+    image: 'docker.elastic.co/beats/filebeat:7.17.6'
+    privileged: true
+    user: root
+    volumes:
+      - './config/filebeat.yml:/usr/share/filebeat/filebeat.yml'
+      - './logs:/var/logs'
+    networks:
+      - custom_net
+      
+networks:
+  custom_net:
+   external:
+      name: app_net

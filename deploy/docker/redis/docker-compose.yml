@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  redis:
+    image: 'redis'
+    restart: always
+    container_name: 'redis'
+    environment:
+      - 'TZ=Asia/Shanghai'
+    command: 'redis-server --requirepass clover'
+    volumes:
+      - './data:/data'
+    ports:
+      - '6379:6379'
+    networks:
+      - custom_net
+
+networks:
+  custom_net:
+   external:
+      name: app_net
