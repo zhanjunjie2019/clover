@@ -2,7 +2,7 @@ package redisc
 
 import (
 	"context"
-	"github.com/go-redis/redis/v9"
+	redis "github.com/go-redis/redis/v9"
 )
 
 // +ioc:autowire=true

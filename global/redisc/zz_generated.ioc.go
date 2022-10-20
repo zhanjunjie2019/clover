@@ -10,7 +10,7 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
-	"github.com/go-redis/redis/v9"
+	v9 "github.com/go-redis/redis/v9"
 )
 
 func init() {
@@ -34,7 +34,7 @@ func init() {
 type redisClient_ struct {
 	Create_    func(addr, password string, db uint8) error
 	create_    func() error
-	GetClient_ func() (*redis.Client, error)
+	GetClient_ func() (*v9.Client, error)
 }
 
 func (r *redisClient_) Create(addr, password string, db uint8) error {
@@ -45,14 +45,14 @@ func (r *redisClient_) create() error {
 	return r.create_()
 }
 
-func (r *redisClient_) GetClient() (*redis.Client, error) {
+func (r *redisClient_) GetClient() (*v9.Client, error) {
 	return r.GetClient_()
 }
 
 type RedisClientIOCInterface interface {
 	Create(addr, password string, db uint8) error
 	create() error
-	GetClient() (*redis.Client, error)
+	GetClient() (*v9.Client, error)
 }
 
 var _redisClientSDID string
