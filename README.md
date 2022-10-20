@@ -1,6 +1,6 @@
 # clover
 
-基于DDD思想设计的支持微服务的快速开发平台。
+基于领域驱动设计思想设计，支持微服务的快速开发框架和系统架构。
 代码分层设计参考[alibaba/COLA](https://github.com/alibaba/COLA)的分层设计理念。
 
 ## 配置优先级
