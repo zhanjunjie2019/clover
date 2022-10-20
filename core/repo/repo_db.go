@@ -21,7 +21,7 @@ func (r *RepoDBFactory) Initialization() error {
 	if err != nil {
 		return err
 	}
-	ctx, span := r.OpenTelemetry.Start(context.Background(), "init db tables")
+	ctx, span := r.OpenTelemetry.Start(context.Background(), "Init DB Tables")
 	defer span.End()
 	for _, repo := range r.Repos {
 		err := repo.AutoMigrate(ctx, db)
