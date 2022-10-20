@@ -13,30 +13,30 @@
 
 无默认值，若空值，最终读取配置文件的配置内容
 
-| 变量名                     | 定义                     | 示例                                       |
-|-------------------------|------------------------|------------------------------------------|
-| SVC_MODE                | 服务模式,1正式2测试            | 2                                        |
-| SVC_NAME                | 服务部署名                  | clover-tenant                            |
-| SVC_NUM                 | 服务实例序号                 | 1                                        |
-| SVC_PORT                | 服务端口号                  | 8900                                     |
-| SVC_VERSION             | 服务版本号                  | v1.0.0                                   |
-| CONSUL_ADDR             | consul服务配置中心路径         | http://127.0.0.1:8500                    |
-| CONSUL_REGISTER_TTL     | consul服务注册时限           | 2                                        |
-| LOG_LEVEL               | 日志级别                   | debug/info/warn/error/dpanic/panic/fatal |
-| LOG_DIRECTOR            | 日志输出文件夹                | ../deploy/docker/filebeat/logs           |
-| LOG_MAX_AGE             | 日志最大天数                 | 7                                        |
-| LOG_IN_CONSOLE          | 是否输出到控制台，1是2否          | 1                                        |
-| JWT_SIGNING_KEY         | jwt签名密钥                | clover                                   |
-| JWT_EXPIRES_TIME        | jwt续约时限，单位秒            | 14400                                    |
-| REDIS_ENABLED           | 是否启用redis，1是2否         | 1                                        |
-| REDIS_ADDR              | redis域名地址              | 127.0.0.1:6379                           |
-| REDIS_POSSWORD          | redis密码                | clover                                   |
-| REDIS_DB                | redis子库                | 1                                        |
-| OTEL_ENABLED            | 是否启用遥测，1是2否            | 1                                        |
-| OTEL_COLLECTOR_ENDPOINT | 遥测collector的grpc切入点    | 127.0.0.1:4317                           |
-| NSQ_ENABLED             | 是否开启NSQ消息队列，1是2否       | 1                                        |
-| NSQ_NSQD_ADDR           | 用于生产者使用的nsqd服务地址       | 127.0.0.1:4150                           |
-| NSQ_LOOKUPD_ADDR        | 用于消费者使用的nsqlookupd服务地址 | 127.0.0.1:4161                           |
+| 变量名                     | 定义                     | 示例                             |
+|-------------------------|------------------------|--------------------------------|
+| SVC_MODE                | 服务模式,1正式2测试            | 2                              |
+| SVC_NAME                | 服务部署名                  | clover-tenant                  |
+| SVC_NUM                 | 服务实例序号                 | 1                              |
+| SVC_PORT                | 服务端口号                  | 8900                           |
+| SVC_VERSION             | 服务版本号                  | v1.0.0                         |
+| CONSUL_ADDR             | consul服务配置中心路径         | http://127.0.0.1:8500          |
+| CONSUL_REGISTER_TTL     | consul服务注册时限           | 2                              |
+| LOG_LEVEL               | 日志级别                   | debug                          |
+| LOG_DIRECTOR            | 日志输出文件夹                | ../deploy/docker/filebeat/logs |
+| LOG_MAX_AGE             | 日志最大天数                 | 7                              |
+| LOG_IN_CONSOLE          | 是否输出到控制台，1是2否          | 1                              |
+| JWT_SIGNING_KEY         | jwt签名密钥                | clover                         |
+| JWT_EXPIRES_TIME        | jwt续约时限，单位秒            | 14400                          |
+| REDIS_ENABLED           | 是否启用redis，1是2否         | 1                              |
+| REDIS_ADDR              | redis域名地址              | 127.0.0.1:6379                 |
+| REDIS_POSSWORD          | redis密码                | clover                         |
+| REDIS_DB                | redis子库                | 1                              |
+| OTEL_ENABLED            | 是否启用遥测，1是2否            | 1                              |
+| OTEL_COLLECTOR_ENDPOINT | 遥测collector的grpc切入点    | 127.0.0.1:4317                 |
+| NSQ_ENABLED             | 是否开启NSQ消息队列，1是2否       | 1                              |
+| NSQ_NSQD_ADDR           | 用于生产者使用的nsqd服务地址       | 127.0.0.1:4150                 |
+| NSQ_LOOKUPD_ADDR        | 用于消费者使用的nsqlookupd服务地址 | 127.0.0.1:4161                 |
 
 ## 接口文档生成
 
