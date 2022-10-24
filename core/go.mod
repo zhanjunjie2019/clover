@@ -2,8 +2,6 @@ module github.com/zhanjunjie2019/clover/core
 
 go 1.19
 
-replace github.com/zhanjunjie2019/clover/global => ../global
-
 require (
 	github.com/alibaba/ioc-golang v1.0.1
 	github.com/alibaba/sentinel-golang v1.0.4
@@ -12,7 +10,6 @@ require (
 	github.com/nsqio/go-nsq v1.1.0
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a
 	github.com/swaggo/gin-swagger v1.5.3
-	github.com/zhanjunjie2019/clover/global v0.0.0-00010101000000-000000000000
 	go-micro.dev/v4 v4.9.0
 	go.uber.org/zap v1.23.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -116,6 +113,7 @@ require (
 	github.com/urfave/cli/v2 v2.20.2 // indirect
 	github.com/xanzy/ssh-agent v0.3.2 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221020105235-eecaf6b1799c // indirect
 	go.opentelemetry.io/otel v1.11.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.11.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.11.0 // indirect

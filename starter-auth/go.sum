@@ -1237,6 +1237,10 @@ github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1
 github.com/yusufpapurcu/wmi v1.2.2 h1:KBNDSne4vP5mbSWnJbO+51IMOXJB67QiYCSBrubbPRg=
 github.com/yusufpapurcu/wmi v1.2.2/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQmPyzfmi0=
 github.com/zenazn/goji v0.9.0/go.mod h1:7S9M489iMyHBNxwZnk9/EHS098H4/F6TATF2mIxtB1Q=
+github.com/zhanjunjie2019/clover/core v0.0.0-20221020105235-eecaf6b1799c h1:UeyModbBhgQA76E9YUD06lEUG7qHkVPrJd2Jp5P7QoE=
+github.com/zhanjunjie2019/clover/core v0.0.0-20221020105235-eecaf6b1799c/go.mod h1:sELOBuiyhmYXYiPAMvmIXfPU7jFc9NIIKpMSyePE5s0=
+github.com/zhanjunjie2019/clover/global v0.0.0-20221020105235-eecaf6b1799c h1:e4MQVKBs+nm0D7IZIhsiSBhC8joOIl4bsZ3QNcXcJFc=
+github.com/zhanjunjie2019/clover/global v0.0.0-20221020105235-eecaf6b1799c/go.mod h1:mSYDesEKiolbycw+cgfdMZ0m3BzG0MpC309P0VMz1Xc=
 github.com/zouyx/agollo/v3 v3.4.5/go.mod h1:LJr3kDmm23QSW+F1Ol4TMHDa7HvJvscMdVxJ2IpUTVc=
 go-micro.dev/v4 v4.9.0 h1:pd1CpqMT9hA47jSmX8mfdGK865PkMh95Rwj5RdfqPqE=
 go-micro.dev/v4 v4.9.0/go.mod h1:Ju8HrZ5hQSF+QguZ2QUs9Kbe42MHP1tJa/fpP5g07Cs=

@@ -2,19 +2,10 @@ module github.com/zhanjunjie2019/clover/starter-auth
 
 go 1.19
 
-replace (
-	github.com/zhanjunjie2019/clover/core => ../core
-	github.com/zhanjunjie2019/clover/global => ../global
-	github.com/zhanjunjie2019/clover/share => ../share
-)
-
 require (
 	github.com/alibaba/ioc-golang v1.0.1
 	github.com/gin-gonic/gin v1.8.1
 	github.com/swaggo/swag v1.8.1
-	github.com/zhanjunjie2019/clover/core v0.0.0-00010101000000-000000000000
-	github.com/zhanjunjie2019/clover/global v0.0.0-00010101000000-000000000000
-	github.com/zhanjunjie2019/clover/share v0.0.0-00010101000000-000000000000
 	gorm.io/gorm v1.23.10
 )
 
@@ -211,6 +202,7 @@ require (
 	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221020105235-eecaf6b1799c // indirect
 	go-micro.dev/v4 v4.9.0 // indirect
 	go.mongodb.org/mongo-driver v1.10.3 // indirect
 	go.opencensus.io v0.23.0 // indirect
