@@ -14,7 +14,7 @@ RUN go install github.com/swaggo/swag/cmd/swag
 
 RUN swag init --pd
 
-RUN go build -v -mod=vendor -o server .
+RUN go build -v -o server .
 
 FROM alpine:3.16.2
 
