@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  clover-auth:
+    image: "clover-auth"
+    restart: always
+    container_name: clover-auth
+    volumes:
+      - './config/auth:/go/server/configs'
+    networks:
+      - custom_net
+    ports:
+      - '8900:8900'
+
+networks:
+  custom_net:
+    external:
+      name: app_net

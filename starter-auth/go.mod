@@ -6,9 +6,9 @@ require (
 	github.com/alibaba/ioc-golang v1.0.1
 	github.com/gin-gonic/gin v1.8.1
 	github.com/swaggo/swag v1.8.7
-	github.com/zhanjunjie2019/clover/core v0.0.0-20221024063245-c9b9b26a7fd6
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221024063245-c9b9b26a7fd6
-	github.com/zhanjunjie2019/clover/share v0.0.0-20221024063245-c9b9b26a7fd6
+	github.com/zhanjunjie2019/clover/core v0.0.0-20221025010714-08522eed1fa0
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221025010714-08522eed1fa0
+	github.com/zhanjunjie2019/clover/share v0.0.0-20221025010714-08522eed1fa0
 	gorm.io/gorm v1.24.1-0.20221019064659-5dd2bb482755
 )
 

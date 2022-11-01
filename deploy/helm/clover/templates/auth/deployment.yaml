@@ -1,0 +1,50 @@
+{{- if .Values.auth.enabled }}
+  {{- $superName := print .Release.Name "-auth" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ $superName | quote }}
+  labels:
+    app: {{ $superName | quote }}
+spec:
+  replicas: {{ .Values.auth.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ $superName | quote }}
+  template:
+    metadata:
+      labels:
+        app: {{ $superName | quote }}
+    spec:
+      volumes:
+        - name: {{ print $superName "-volumes" | quote }}
+          configMap:
+            name: {{ print $superName "-config" | quote }}
+            items:
+              - key: server
+                path: {{ print "path/" $superName "/server" | quote }}
+              - key: sentinel
+                path: {{ print "path/" $superName "/sentinel" | quote }}
+              - key: global
+                path: {{ print "path/" $superName "/global" | quote }}
+              - key: db
+                path: {{ print "path/" $superName "/db" | quote }}
+      initContainers:
+        {{- range $wait := .Values.auth.waitFor }}
+        - name: {{ print $wait "-check" }}
+          image: busybox
+          command: [ 'sh', '-c', 'until nslookup {{ $wait }}; do echo waiting for {{ $wait }}; sleep 2; done;' ]
+        {{- end }}
+      restartPolicy: Always
+      containers:
+        - image: {{ print .Values.auth.image.repository ":" .Values.auth.image.tag | quote }}
+          imagePullPolicy: Always
+          name: {{ $superName | quote }}
+          env:
+            {{- range $key, $value := .Values.auth.env }}
+            {{- $upKey := upper $key }}
+            - name: {{ $upKey | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+{{- end }}

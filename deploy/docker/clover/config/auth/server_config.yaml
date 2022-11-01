@@ -14,7 +14,7 @@ svcConf:
 # consul配置
 consulConf:
   # 服务配置中心路径
-  consulAddr: "localhost:8500"
+  consulAddr: "consul:8500"
   # 注册时限
   registerTTL: 2
   # 注册间隔

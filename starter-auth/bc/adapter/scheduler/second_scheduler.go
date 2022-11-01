@@ -19,11 +19,11 @@ func (s *SecondScheduler) GetTaskTypeCode() string {
 }
 
 func (s *SecondScheduler) GetSpec() string {
-	return "* * * * * ?"
+	return "*/2 * * * * ?"
 }
 
 func (s *SecondScheduler) GetLockDuration() time.Duration {
-	return 500 * time.Microsecond
+	return time.Second
 }
 
 func (s *SecondScheduler) RunTask(ctx contextx.Context, layout *defs.LogLayout) error {

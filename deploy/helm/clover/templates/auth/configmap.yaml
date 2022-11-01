@@ -1,0 +1,19 @@
+{{- if .Values.auth.enabled }}
+  {{- $superName := print .Release.Name "-auth" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ print $superName "-config" | quote }}
+  labels:
+    app: {{ print $superName "-config" | quote }}
+data:
+  server: |
+    {{- include "auth.server.config" . | indent 4 }}
+  sentinel: |
+    {{- include "auth.sentinel.config" . | indent 4 }}
+  global: |
+    {{- include "auth.global.config" . | indent 4 }}
+  db: |
+    {{- include "auth.db.config" . | indent 4 }}
+{{- end }}

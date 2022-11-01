@@ -1,0 +1,16 @@
+# helm install clover ./clover --dry-run --debug
+auth:
+  enabled: true
+  fullnameOverride: clover-auth-svc
+  image:
+    repository: clover-auth
+    tag: latest
+  replicas: 1
+  service:
+    targetPort: 8900
+    nodePort:
+      enabled: true
+      port: 30010
+  waitFor:
+  env:
+    tz: Asia/Shanghai
