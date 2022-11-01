@@ -20,7 +20,7 @@
 | SVC_NUM                 | 服务实例序号                 | 1                              |
 | SVC_PORT                | 服务端口号                  | 8900                           |
 | SVC_VERSION             | 服务版本号                  | v1.0.0                         |
-| CONSUL_ADDR             | consul服务配置中心路径         | http://consul:8500             |
+| CONSUL_ADDR             | consul服务配置中心路径         | consul:8500                    |
 | CONSUL_REGISTER_TTL     | consul服务注册时限           | 2                              |
 | LOG_LEVEL               | 日志级别                   | debug                          |
 | LOG_DIRECTOR            | 日志输出文件夹                | ../deploy/docker/filebeat/logs |
