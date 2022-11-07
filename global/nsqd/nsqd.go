@@ -2,8 +2,11 @@ package nsqd
 
 import (
 	"context"
+	"github.com/golang/protobuf/proto"
 	"github.com/nsqio/go-nsq"
+	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
+	"go.opentelemetry.io/otel/trace"
 )
 
 // +ioc:autowire=true
@@ -27,7 +30,19 @@ func (n *NsqProducer) CreatePublisher(producerAddr string) error {
 }
 
 func (n *NsqProducer) Publish(ctx context.Context, topic string, body []byte) error {
-	_, span := n.OpenTelemetry.Start(ctx, "Producer "+topic)
+	c, span := n.OpenTelemetry.Start(ctx, "Producer "+topic)
 	defer span.End()
-	return n.producer.Publish(topic, body)
+	msg := protobuf.NsqMessage{
+		Body: body,
+	}
+	sc := trace.SpanContextFromContext(c)
+	if sc.IsValid() {
+		msg.TraceId = sc.TraceID().String()
+		msg.TraceSpanID = sc.SpanID().String()
+	}
+	bytes, err := proto.Marshal(&msg)
+	if err != nil {
+		return err
+	}
+	return n.producer.Publish(topic, bytes)
 }

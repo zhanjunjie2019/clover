@@ -2,9 +2,11 @@ package consumer
 
 import (
 	"context"
+	//"github.com/golang/protobuf/proto"
 	"github.com/nsqio/go-nsq"
 	"github.com/zhanjunjie2019/clover/global/confs"
 	"github.com/zhanjunjie2019/clover/global/defs"
+	//"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -53,11 +55,16 @@ type messageHandler struct {
 }
 
 func (m *messageHandler) HandleMessage(message *nsq.Message) error {
+	layout := defs.NewLogLayout(zapcore.InfoLevel)
+	//var pb protobuf.NsqMessage
+	//err := proto.Unmarshal(message.Body, &pb)
+	//if err != nil {
+	//	layout.Error("消息监听错误"+err.Error(), zap.Error(err))
+	//}
 	// 开启一个根级span
 	ctx, span := m.provider.Start(context.Background(), "Consumer "+m.consumer.GetTopic())
 	defer span.End()
 	start := time.Now()
-	layout := defs.NewLogLayout(zapcore.InfoLevel)
 	defer func() {
 		// 异常日志处理
 		if recoverErr := recover(); recoverErr != nil {

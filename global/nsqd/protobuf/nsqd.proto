@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package protobuf;
+
+message NsqMessage {
+  // 链路信息
+  string traceId = 1;
+  // 链路信息
+  string traceSpanID = 2;
+  // 消息内容
+  bytes body = 3;
+  // 签名验证
+  string sign = 4;
+}
