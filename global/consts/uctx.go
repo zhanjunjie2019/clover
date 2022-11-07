@@ -6,4 +6,5 @@ const (
 	CtxSpanCtxVar  = "spanCtxVar"
 	CtxJwtVar      = "jwtVar"
 	CtxTenantIDVar = "tenantIDVar"
+	CtxGormDBVar   = "gormDBVar"
 )
