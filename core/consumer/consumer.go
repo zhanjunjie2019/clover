@@ -2,6 +2,8 @@ package consumer
 
 import (
 	"context"
+	"github.com/golang/protobuf/proto"
+	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
 	//"github.com/golang/protobuf/proto"
 	"github.com/nsqio/go-nsq"
 	"github.com/zhanjunjie2019/clover/global/confs"
@@ -56,11 +58,12 @@ type messageHandler struct {
 
 func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 	layout := defs.NewLogLayout(zapcore.InfoLevel)
-	//var pb protobuf.NsqMessage
-	//err := proto.Unmarshal(message.Body, &pb)
-	//if err != nil {
-	//	layout.Error("消息监听错误"+err.Error(), zap.Error(err))
-	//}
+	var pb protobuf.NsqMessage
+	err := proto.Unmarshal(message.Body, &pb)
+	if err != nil {
+		layout.Error("消息监听错误"+err.Error(), zap.Error(err))
+		return err
+	}
 	// 开启一个根级span
 	ctx, span := m.provider.Start(context.Background(), "Consumer "+m.consumer.GetTopic())
 	defer span.End()
@@ -81,7 +84,7 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 		zap.String("topic", m.consumer.GetTopic()),
 		zap.String("msgBody", string(message.Body)),
 	)
-	err := m.consumer.HandleMessage(ctx, layout, message.Body)
+	err = m.consumer.HandleMessage(ctx, layout, message.Body)
 	if err != nil {
 		layout.Error("消息监听错误"+err.Error(), zap.Error(err))
 	}

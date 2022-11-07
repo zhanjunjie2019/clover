@@ -128,6 +128,10 @@ func (o *OpenTelemetry) Extract(ctx context.Context, headers http.Header) contex
 	if len(spanID) != 16 {
 		return ctx
 	}
+	return o.GetCtx(ctx, traceID, spanID)
+}
+
+func (o *OpenTelemetry) GetCtx(ctx context.Context, traceID, spanID string) context.Context {
 	var (
 		err error
 		scc trace.SpanContextConfig
@@ -146,6 +150,5 @@ func (o *OpenTelemetry) Extract(ctx context.Context, headers http.Header) contex
 	if !sc.IsValid() {
 		return ctx
 	}
-
 	return trace.ContextWithRemoteSpanContext(ctx, sc)
 }

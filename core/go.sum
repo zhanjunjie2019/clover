@@ -726,6 +726,8 @@ github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1
 github.com/zenazn/goji v0.9.0/go.mod h1:7S9M489iMyHBNxwZnk9/EHS098H4/F6TATF2mIxtB1Q=
 github.com/zhanjunjie2019/clover/global v0.0.0-20221025010714-08522eed1fa0 h1:1Vws56G7lygnecbOEX+OJRzrVtU73Zy/jNXbT995DeU=
 github.com/zhanjunjie2019/clover/global v0.0.0-20221025010714-08522eed1fa0/go.mod h1:ZGz6VwKjka7UkZ1WX3xm4E/slcLcNZg2NjFV8kO2Cbs=
+github.com/zhanjunjie2019/clover/global v0.0.0-20221107073330-71330601dc5e h1:yhZJR1lMcBOSHHnxb17GaQ55M7GLReuzJQWqeK9cP1Y=
+github.com/zhanjunjie2019/clover/global v0.0.0-20221107073330-71330601dc5e/go.mod h1:ZGz6VwKjka7UkZ1WX3xm4E/slcLcNZg2NjFV8kO2Cbs=
 go-micro.dev/v4 v4.9.0 h1:pd1CpqMT9hA47jSmX8mfdGK865PkMh95Rwj5RdfqPqE=
 go-micro.dev/v4 v4.9.0/go.mod h1:Ju8HrZ5hQSF+QguZ2QUs9Kbe42MHP1tJa/fpP5g07Cs=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=

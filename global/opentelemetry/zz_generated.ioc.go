@@ -40,6 +40,7 @@ type openTelemetry_ struct {
 	InvokeFunc_   func(ctx contextx.Context, spanName string, fn func(contextx.Context, any) (any, error), args any) (any, error)
 	Inject_       func(ctx contextx.Context, headers http.Header)
 	Extract_      func(ctx contextx.Context, headers http.Header) contextx.Context
+	GetCtx_       func(ctx contextx.Context, traceID, spanID string) contextx.Context
 }
 
 func (o *openTelemetry_) Shutdown() {
@@ -66,6 +67,10 @@ func (o *openTelemetry_) Extract(ctx contextx.Context, headers http.Header) cont
 	return o.Extract_(ctx, headers)
 }
 
+func (o *openTelemetry_) GetCtx(ctx contextx.Context, traceID, spanID string) contextx.Context {
+	return o.GetCtx_(ctx, traceID, spanID)
+}
+
 type OpenTelemetryIOCInterface interface {
 	Shutdown()
 	InitProvider() error
@@ -73,6 +78,7 @@ type OpenTelemetryIOCInterface interface {
 	InvokeFunc(ctx contextx.Context, spanName string, fn func(contextx.Context, any) (any, error), args any) (any, error)
 	Inject(ctx contextx.Context, headers http.Header)
 	Extract(ctx contextx.Context, headers http.Header) contextx.Context
+	GetCtx(ctx contextx.Context, traceID, spanID string) contextx.Context
 }
 
 var _openTelemetrySDID string
