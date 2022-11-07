@@ -6,7 +6,6 @@ import (
 	"github.com/nsqio/go-nsq"
 	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
-	"go.opentelemetry.io/otel/trace"
 )
 
 // +ioc:autowire=true
@@ -30,12 +29,12 @@ func (n *NsqProducer) CreatePublisher(producerAddr string) error {
 }
 
 func (n *NsqProducer) Publish(ctx context.Context, topic string, body []byte) error {
-	c, span := n.OpenTelemetry.Start(ctx, "Producer "+topic)
+	_, span := n.OpenTelemetry.Start(ctx, "Producer "+topic)
 	defer span.End()
 	msg := protobuf.NsqMessage{
 		Body: body,
 	}
-	sc := trace.SpanContextFromContext(c)
+	sc := span.SpanContext()
 	if sc.IsValid() {
 		msg.TraceId = sc.TraceID().String()
 		msg.TraceSpanID = sc.SpanID().String()

@@ -62,8 +62,8 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 		layout.Error("消息监听错误"+err.Error(), zap.Error(err))
 		return err
 	}
-	// 开启一个根级span
-	ctx, span := m.provider.Start(context.Background(), "Consumer "+m.consumer.GetTopic())
+	ctx := m.provider.GetCtx(context.Background(), pb.TraceId, pb.TraceSpanID)
+	ctx, span := m.provider.Start(ctx, "Consumer "+m.consumer.GetTopic())
 	defer span.End()
 	start := time.Now()
 	defer func() {

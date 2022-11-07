@@ -16,7 +16,7 @@ import (
 func InitLogger() error {
 	serverConfig := confs.GetServerConfig()
 	logCore := getEncoderCore(serverConfig.LogConf.TransportLevel(), serverConfig)
-	logger := zap.New(logCore)
+	logger := zap.New(logCore, zap.AddCaller(), zap.AddCallerSkip(1))
 	defs.SetLogger(logger)
 	return nil
 }
