@@ -3,12 +3,10 @@ package consumer
 import (
 	"context"
 	"github.com/golang/protobuf/proto"
-	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
-	//"github.com/golang/protobuf/proto"
 	"github.com/nsqio/go-nsq"
 	"github.com/zhanjunjie2019/clover/global/confs"
 	"github.com/zhanjunjie2019/clover/global/defs"
-	//"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
+	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -82,9 +80,9 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 	}()
 	layout.AppendLogsFields(
 		zap.String("topic", m.consumer.GetTopic()),
-		zap.String("msgBody", string(message.Body)),
+		zap.String("msgBody", string(pb.Body)),
 	)
-	err = m.consumer.HandleMessage(ctx, layout, message.Body)
+	err = m.consumer.HandleMessage(ctx, layout, pb.Body)
 	if err != nil {
 		layout.Error("消息监听错误"+err.Error(), zap.Error(err))
 	}
