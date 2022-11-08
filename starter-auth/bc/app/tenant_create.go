@@ -4,22 +4,32 @@ import (
 	"context"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/errs"
+	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/global/utils"
 	"github.com/zhanjunjie2019/clover/share/auth/dto"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/biserrs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl"
+	"gorm.io/gorm"
 )
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
+// +ioc:autowire:type=allimpls
+// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IAppDef
 
 type TenantCreateApp struct {
 	TenantGateway gateway.ITenantGateway `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl.TenantGateway"`
+	DB            *gorm.DB
+}
+
+func (t *TenantCreateApp) SetGormDB(db *gorm.DB) {
+	t.DB = db
 }
 
 func (t *TenantCreateApp) TenantCreate(ctx context.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
+	ctx = uctx.SetAppDB(ctx, t.DB)
 	if len(tenantID) == 0 {
 		tid = utils.UUID()
 	} else {

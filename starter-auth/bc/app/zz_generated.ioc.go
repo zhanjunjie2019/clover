@@ -11,7 +11,9 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
+	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
 	"github.com/zhanjunjie2019/clover/global/defs"
+	"gorm.io/gorm"
 )
 
 func init() {
@@ -25,15 +27,27 @@ func init() {
 			return &TenantCreateApp{}
 		},
 		Metadata: map[string]interface{}{
-			"aop":      map[string]interface{}{},
-			"autowire": map[string]interface{}{},
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IAppDef),
+					},
+				},
+			},
 		},
 	}
 	singleton.RegisterStructDescriptor(tenantCreateAppStructDescriptor)
+	allimpls.RegisterStructDescriptor(tenantCreateAppStructDescriptor)
 }
 
 type tenantCreateApp_ struct {
+	SetGormDB_    func(db *gorm.DB)
 	TenantCreate_ func(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error)
+}
+
+func (t *tenantCreateApp_) SetGormDB(db *gorm.DB) {
+	t.SetGormDB_(db)
 }
 
 func (t *tenantCreateApp_) TenantCreate(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
@@ -41,6 +55,7 @@ func (t *tenantCreateApp_) TenantCreate(ctx contextx.Context, layout *defs.LogLa
 }
 
 type TenantCreateAppIOCInterface interface {
+	SetGormDB(db *gorm.DB)
 	TenantCreate(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error)
 }
 

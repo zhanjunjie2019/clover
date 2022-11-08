@@ -14,7 +14,6 @@ import (
 	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
 	defs "github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
-	"gorm.io/gorm"
 )
 
 func init() {
@@ -43,13 +42,13 @@ func init() {
 }
 
 type tenantRepo_ struct {
-	AutoMigrate_    func(ctx contextx.Context, db *gorm.DB) error
+	AutoMigrate_    func(ctx contextx.Context) error
 	FindByTenantID_ func(ctx contextx.Context, tenantID string) (tenantPO po.Tenant, exist bool, err error)
 	Save_           func(ctx contextx.Context, tenantPO po.Tenant) error
 }
 
-func (t *tenantRepo_) AutoMigrate(ctx contextx.Context, db *gorm.DB) error {
-	return t.AutoMigrate_(ctx, db)
+func (t *tenantRepo_) AutoMigrate(ctx contextx.Context) error {
+	return t.AutoMigrate_(ctx)
 }
 
 func (t *tenantRepo_) FindByTenantID(ctx contextx.Context, tenantID string) (tenantPO po.Tenant, exist bool, err error) {
@@ -61,7 +60,7 @@ func (t *tenantRepo_) Save(ctx contextx.Context, tenantPO po.Tenant) error {
 }
 
 type TenantRepoIOCInterface interface {
-	AutoMigrate(ctx contextx.Context, db *gorm.DB) error
+	AutoMigrate(ctx contextx.Context) error
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenantPO po.Tenant, exist bool, err error)
 	Save(ctx contextx.Context, tenantPO po.Tenant) error
 }
