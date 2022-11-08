@@ -20,3 +20,7 @@ func GetAppDB(ctx context.Context) *gorm.DB {
 	}
 	return nil
 }
+
+func GetAppDBWithCtx(ctx context.Context) *gorm.DB {
+	return GetAppDB(ctx).WithContext(ctx)
+}
