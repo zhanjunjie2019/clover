@@ -106,11 +106,3 @@ func GetOpenTelemetryIOCInterfaceSingleton() (OpenTelemetryIOCInterface, error) 
 	impl := i.(OpenTelemetryIOCInterface)
 	return impl, nil
 }
-
-type ThisOpenTelemetry struct {
-}
-
-func (t *ThisOpenTelemetry) This() OpenTelemetryIOCInterface {
-	thisPtr, _ := GetOpenTelemetryIOCInterfaceSingleton()
-	return thisPtr
-}

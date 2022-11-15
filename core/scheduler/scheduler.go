@@ -2,6 +2,7 @@ package scheduler
 
 import (
 	"context"
+	"github.com/zhanjunjie2019/clover/global/confs"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	"github.com/zhanjunjie2019/clover/global/redisc"
@@ -22,9 +23,10 @@ type Server struct {
 }
 
 func (s *Server) SchedulersStart() error {
+	svcConf := confs.GetServerConfig().SvcConf
 	s.timer = utils.NewTimer()
 	for _, sc := range s.Schedulers {
-		err := s.startScheduler(sc)
+		err := s.startScheduler(sc, svcConf.SvcName)
 		if err != nil {
 			return err
 		}
@@ -32,13 +34,13 @@ func (s *Server) SchedulersStart() error {
 	return nil
 }
 
-func (s *Server) startScheduler(scheduler defs.IScheduler) error {
+func (s *Server) startScheduler(scheduler defs.IScheduler, svcName string) error {
 	_, err := s.timer.AddTaskByFunc(
 		scheduler.GetTaskTypeCode(),
 		scheduler.GetSpec(),
 		func() {
 			// 竞争分布式并发锁
-			ok, _ := redisc.RedisConcurrentLockInTime(context.Background(), s.RedisClient, scheduler.GetTaskTypeCode(), scheduler.GetLockDuration())
+			ok, _ := redisc.RedisConcurrentLockInTime(context.Background(), s.RedisClient, svcName+"."+scheduler.GetTaskTypeCode(), scheduler.GetLockDuration())
 			if ok {
 				layout := defs.NewLogLayout(zapcore.InfoLevel)
 				start := time.Now()

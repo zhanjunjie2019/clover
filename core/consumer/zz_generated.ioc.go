@@ -67,11 +67,3 @@ func GetServerIOCInterfaceSingleton() (ServerIOCInterface, error) {
 	impl := i.(ServerIOCInterface)
 	return impl, nil
 }
-
-type ThisServer struct {
-}
-
-func (t *ThisServer) This() ServerIOCInterface {
-	thisPtr, _ := GetServerIOCInterfaceSingleton()
-	return thisPtr
-}

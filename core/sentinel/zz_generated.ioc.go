@@ -93,11 +93,3 @@ func GetSentinelLoaderIOCInterfaceSingleton() (SentinelLoaderIOCInterface, error
 	impl := i.(SentinelLoaderIOCInterface)
 	return impl, nil
 }
-
-type ThisSentinelLoader struct {
-}
-
-func (t *ThisSentinelLoader) This() SentinelLoaderIOCInterface {
-	thisPtr, _ := GetSentinelLoaderIOCInterfaceSingleton()
-	return thisPtr
-}

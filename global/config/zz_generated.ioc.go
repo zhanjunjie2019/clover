@@ -92,11 +92,3 @@ func GetConfigDefinesIOCInterfaceSingleton() (ConfigDefinesIOCInterface, error) 
 	impl := i.(ConfigDefinesIOCInterface)
 	return impl, nil
 }
-
-type ThisConfigDefines struct {
-}
-
-func (t *ThisConfigDefines) This() ConfigDefinesIOCInterface {
-	thisPtr, _ := GetConfigDefinesIOCInterfaceSingleton()
-	return thisPtr
-}

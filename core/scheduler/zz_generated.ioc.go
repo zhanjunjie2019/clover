@@ -33,20 +33,20 @@ func init() {
 
 type server_ struct {
 	SchedulersStart_ func() error
-	startScheduler_  func(scheduler defs.IScheduler) error
+	startScheduler_  func(scheduler defs.IScheduler, svcName string) error
 }
 
 func (s *server_) SchedulersStart() error {
 	return s.SchedulersStart_()
 }
 
-func (s *server_) startScheduler(scheduler defs.IScheduler) error {
-	return s.startScheduler_(scheduler)
+func (s *server_) startScheduler(scheduler defs.IScheduler, svcName string) error {
+	return s.startScheduler_(scheduler, svcName)
 }
 
 type ServerIOCInterface interface {
 	SchedulersStart() error
-	startScheduler(scheduler defs.IScheduler) error
+	startScheduler(scheduler defs.IScheduler, svcName string) error
 }
 
 var _serverSDID string
@@ -73,12 +73,4 @@ func GetServerIOCInterfaceSingleton() (ServerIOCInterface, error) {
 	}
 	impl := i.(ServerIOCInterface)
 	return impl, nil
-}
-
-type ThisServer struct {
-}
-
-func (t *ThisServer) This() ServerIOCInterface {
-	thisPtr, _ := GetServerIOCInterfaceSingleton()
-	return thisPtr
 }

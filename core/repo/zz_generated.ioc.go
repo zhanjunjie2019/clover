@@ -67,11 +67,3 @@ func GetRepoDBFactoryIOCInterfaceSingleton() (RepoDBFactoryIOCInterface, error) 
 	impl := i.(RepoDBFactoryIOCInterface)
 	return impl, nil
 }
-
-type ThisRepoDBFactory struct {
-}
-
-func (t *ThisRepoDBFactory) This() RepoDBFactoryIOCInterface {
-	thisPtr, _ := GetRepoDBFactoryIOCInterfaceSingleton()
-	return thisPtr
-}

@@ -68,11 +68,3 @@ func GetDBFactoryIOCInterfaceSingleton() (DBFactoryIOCInterface, error) {
 	impl := i.(DBFactoryIOCInterface)
 	return impl, nil
 }
-
-type ThisDBFactory struct {
-}
-
-func (t *ThisDBFactory) This() DBFactoryIOCInterface {
-	thisPtr, _ := GetDBFactoryIOCInterfaceSingleton()
-	return thisPtr
-}

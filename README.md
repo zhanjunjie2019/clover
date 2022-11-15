@@ -1,4 +1,6 @@
-# clover
+# Clover
+
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 基于领域驱动设计思想设计，支持微服务的快速开发框架和系统架构。
 代码分层设计参考[alibaba/COLA](https://github.com/alibaba/COLA)的分层设计理念。
