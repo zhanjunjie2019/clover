@@ -14,6 +14,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/middleware"
 	"go-micro.dev/v4/registry"
 	"go-micro.dev/v4/web"
+	"net/http"
 	"time"
 )
 
@@ -47,6 +48,10 @@ func (s *Server) RunServer() error {
 		gin.SetMode(gin.DebugMode)
 		engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
+	engine.GET("/health", func(c *gin.Context) {
+		rsMap := gin.H{"STATUS": "UP"}
+		c.JSON(http.StatusOK, rsMap)
+	})
 	reg := consulReg.NewRegistry(
 		registry.Addrs(serverConfig.ConsulConf.ConsulAddr),
 	)
@@ -59,6 +64,7 @@ func (s *Server) RunServer() error {
 		web.Address(address),
 		web.RegisterTTL(time.Duration(serverConfig.ConsulConf.RegisterTTL)*time.Second),
 		web.RegisterInterval(time.Duration(serverConfig.ConsulConf.RegisterInterval)*time.Second),
+		web.Version(serverConfig.SvcConf.SvcVersion),
 		web.Registry(reg),
 		web.Handler(engine),
 	)
