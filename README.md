@@ -5,7 +5,9 @@
 基于领域驱动设计思想设计，支持微服务的快速开发框架和系统架构。
 代码分层设计参考[alibaba/COLA](https://github.com/alibaba/COLA)的分层设计理念。
 
-## 代码分层架构
+## 架构图
+
+### 代码分层依赖架构
 
 ![分层依赖架构](http://assets.processon.com/chart_image/637334050791290b4b9a005e.png)
 
