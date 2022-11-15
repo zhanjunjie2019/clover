@@ -33,9 +33,15 @@ func (n *NsqProducer) CreatePublisher(producerAddr string) error {
 	return nil
 }
 
-func (n *NsqProducer) Publish(ctx context.Context, topic string, body []byte) error {
+func (n *NsqProducer) Publish(ctx context.Context, topic string, body []byte) (err error) {
 	_, span := n.OpenTelemetry.Start(ctx, "Producer "+topic)
-	defer span.End()
+	defer func() {
+		if err == nil {
+			span.End()
+		} else {
+			span.RecordError(err)
+		}
+	}()
 	msg := protobuf.NsqMessage{
 		Body: body,
 	}
