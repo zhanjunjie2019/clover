@@ -16,7 +16,7 @@ import (
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IController
 
 type TenantCreateController struct {
-	TenantCreateApp app.TenantCreateAppIOCInterface `singleton:""`
+	TenantApp app.TenantAppIOCInterface `singleton:""`
 }
 
 func (t *TenantCreateController) GetOption() defs.ControllerOption {
@@ -42,7 +42,7 @@ func (t *TenantCreateController) Handle(c *gin.Context) {
 			tid       string
 			secretKey string
 		)
-		tid, secretKey, err = t.TenantCreateApp.TenantCreate(ctx, uctx.GetLogLayout(c), tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName)
+		tid, secretKey, err = t.TenantApp.TenantCreate(ctx, uctx.GetLogLayout(c), tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.TenantCreateRspVO{
 				TenantID:  tid,

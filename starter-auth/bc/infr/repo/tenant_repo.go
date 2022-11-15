@@ -16,7 +16,7 @@ type TenantRepo struct {
 }
 
 func (t *TenantRepo) AutoMigrate(ctx context.Context) error {
-	return uctx.GetAppDBWithCtx(ctx).AutoMigrate(po.Tenant{})
+	return uctx.GetAppDBWithCtx(ctx).AutoMigrate(&po.Tenant{})
 }
 
 func (t *TenantRepo) FindByTenantID(ctx context.Context, tenantID string) (tenantPO po.Tenant, exist bool, err error) {

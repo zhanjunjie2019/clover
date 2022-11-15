@@ -19,12 +19,12 @@ import (
 func init() {
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &tenantCreateApp_{}
+			return &tenantApp_{}
 		},
 	})
-	tenantCreateAppStructDescriptor := &autowire.StructDescriptor{
+	tenantAppStructDescriptor := &autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &TenantCreateApp{}
+			return &TenantApp{}
 		},
 		Metadata: map[string]interface{}{
 			"aop": map[string]interface{}{},
@@ -37,58 +37,64 @@ func init() {
 			},
 		},
 	}
-	singleton.RegisterStructDescriptor(tenantCreateAppStructDescriptor)
-	allimpls.RegisterStructDescriptor(tenantCreateAppStructDescriptor)
+	singleton.RegisterStructDescriptor(tenantAppStructDescriptor)
+	allimpls.RegisterStructDescriptor(tenantAppStructDescriptor)
 }
 
-type tenantCreateApp_ struct {
+type tenantApp_ struct {
 	SetGormDB_    func(db *gorm.DB)
 	TenantCreate_ func(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error)
+	TenantInit_   func(ctx contextx.Context, layout *defs.LogLayout, tenantID string) (err error)
 }
 
-func (t *tenantCreateApp_) SetGormDB(db *gorm.DB) {
+func (t *tenantApp_) SetGormDB(db *gorm.DB) {
 	t.SetGormDB_(db)
 }
 
-func (t *tenantCreateApp_) TenantCreate(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
+func (t *tenantApp_) TenantCreate(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
 	return t.TenantCreate_(ctx, layout, tenantID, tenantName)
 }
 
-type TenantCreateAppIOCInterface interface {
+func (t *tenantApp_) TenantInit(ctx contextx.Context, layout *defs.LogLayout, tenantID string) (err error) {
+	return t.TenantInit_(ctx, layout, tenantID)
+}
+
+type TenantAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	TenantCreate(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error)
+	TenantInit(ctx contextx.Context, layout *defs.LogLayout, tenantID string) (err error)
 }
 
-var _tenantCreateAppSDID string
+var _tenantAppSDID string
 
-func GetTenantCreateAppSingleton() (*TenantCreateApp, error) {
-	if _tenantCreateAppSDID == "" {
-		_tenantCreateAppSDID = util.GetSDIDByStructPtr(new(TenantCreateApp))
+func GetTenantAppSingleton() (*TenantApp, error) {
+	if _tenantAppSDID == "" {
+		_tenantAppSDID = util.GetSDIDByStructPtr(new(TenantApp))
 	}
-	i, err := singleton.GetImpl(_tenantCreateAppSDID, nil)
+	i, err := singleton.GetImpl(_tenantAppSDID, nil)
 	if err != nil {
 		return nil, err
 	}
-	impl := i.(*TenantCreateApp)
+	impl := i.(*TenantApp)
 	return impl, nil
 }
 
-func GetTenantCreateAppIOCInterfaceSingleton() (TenantCreateAppIOCInterface, error) {
-	if _tenantCreateAppSDID == "" {
-		_tenantCreateAppSDID = util.GetSDIDByStructPtr(new(TenantCreateApp))
+func GetTenantAppIOCInterfaceSingleton() (TenantAppIOCInterface, error) {
+	if _tenantAppSDID == "" {
+		_tenantAppSDID = util.GetSDIDByStructPtr(new(TenantApp))
 	}
-	i, err := singleton.GetImplWithProxy(_tenantCreateAppSDID, nil)
+	i, err := singleton.GetImplWithProxy(_tenantAppSDID, nil)
 	if err != nil {
 		return nil, err
 	}
-	impl := i.(TenantCreateAppIOCInterface)
+	impl := i.(TenantAppIOCInterface)
 	return impl, nil
 }
 
-type ThisTenantCreateApp struct {
+type ThisTenantApp struct {
 }
 
-func (t *ThisTenantCreateApp) This() TenantCreateAppIOCInterface {
-	thisPtr, _ := GetTenantCreateAppIOCInterfaceSingleton()
+func (t *ThisTenantApp) This() TenantAppIOCInterface {
+	thisPtr, _ := GetTenantAppIOCInterfaceSingleton()
 	return thisPtr
 }

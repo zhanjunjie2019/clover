@@ -15,12 +15,14 @@ import (
 // +ioc:autowire:type=singleton
 
 type TenantGateway struct {
-	Repo        repo.TenantRepoIOCInterface  `singleton:""`
+	TenantRepo  repo.TenantRepoIOCInterface  `singleton:""`
+	UserRepo    repo.UserRepoIOCInterface    `singleton:""`
+	RoleRepo    repo.RoleRepoIOCInterface    `singleton:""`
 	NsqProducer nsqd.NsqProducerIOCInterface `singleton:""`
 }
 
 func (t *TenantGateway) FindByTenantID(ctx context.Context, tenantID string) (tenant model.Tenant, exist bool, err error) {
-	tenantPO, exist, err := t.Repo.FindByTenantID(ctx, tenantID)
+	tenantPO, exist, err := t.TenantRepo.FindByTenantID(ctx, tenantID)
 	if err != nil {
 		return nil, false, err
 	}
@@ -31,7 +33,7 @@ func (t *TenantGateway) FindByTenantID(ctx context.Context, tenantID string) (te
 }
 
 func (t *TenantGateway) Save(ctx context.Context, tenant model.Tenant) error {
-	return t.Repo.Save(ctx, convs.TenantDOToPO(tenant))
+	return t.TenantRepo.Save(ctx, convs.TenantDOToPO(tenant))
 }
 
 func (t *TenantGateway) PublishInitEvent(ctx context.Context, dto dto.TenantInitEventDTO) error {
@@ -40,4 +42,13 @@ func (t *TenantGateway) PublishInitEvent(ctx context.Context, dto dto.TenantInit
 		return err
 	}
 	return t.NsqProducer.Publish(ctx, topic.TenantInitTopic, bs)
+}
+
+func (t *TenantGateway) TenantTablesManualMigrate(ctx context.Context) (err error) {
+	err = t.UserRepo.ManualMigrate(ctx)
+	if err != nil {
+		return
+	}
+	err = t.RoleRepo.ManualMigrate(ctx)
+	return
 }

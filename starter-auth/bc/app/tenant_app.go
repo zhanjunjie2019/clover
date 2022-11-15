@@ -19,16 +19,16 @@ import (
 // +ioc:autowire:type=allimpls
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IAppDef
 
-type TenantCreateApp struct {
+type TenantApp struct {
 	TenantGateway gateway.ITenantGateway `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl.TenantGateway"`
 	DB            *gorm.DB
 }
 
-func (t *TenantCreateApp) SetGormDB(db *gorm.DB) {
+func (t *TenantApp) SetGormDB(db *gorm.DB) {
 	t.DB = db
 }
 
-func (t *TenantCreateApp) TenantCreate(ctx context.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
+func (t *TenantApp) TenantCreate(ctx context.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
 	ctx = uctx.SetAppDB(ctx, t.DB)
 	if len(tenantID) == 0 {
 		tid = utils.UUID()
@@ -64,4 +64,10 @@ func (t *TenantCreateApp) TenantCreate(ctx context.Context, layout *defs.LogLayo
 		return
 	}
 	return tenant.FullValue().TenantID, tenant.FullValue().SecretKey, nil
+}
+
+func (t *TenantApp) TenantInit(ctx context.Context, layout *defs.LogLayout, tenantID string) (err error) {
+	ctx = uctx.SetAppDB(ctx, t.DB)
+	ctx = uctx.SetTenantID(ctx, tenantID)
+	return t.TenantGateway.TenantTablesManualMigrate(ctx)
 }

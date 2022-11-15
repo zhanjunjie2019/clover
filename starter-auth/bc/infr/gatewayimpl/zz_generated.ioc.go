@@ -34,9 +34,10 @@ func init() {
 }
 
 type tenantGateway_ struct {
-	FindByTenantID_   func(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
-	Save_             func(ctx contextx.Context, tenant model.Tenant) error
-	PublishInitEvent_ func(ctx contextx.Context, dto dto.TenantInitEventDTO) error
+	FindByTenantID_            func(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
+	Save_                      func(ctx contextx.Context, tenant model.Tenant) error
+	PublishInitEvent_          func(ctx contextx.Context, dto dto.TenantInitEventDTO) error
+	TenantTablesManualMigrate_ func(ctx contextx.Context) (err error)
 }
 
 func (t *tenantGateway_) FindByTenantID(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error) {
@@ -51,10 +52,15 @@ func (t *tenantGateway_) PublishInitEvent(ctx contextx.Context, dto dto.TenantIn
 	return t.PublishInitEvent_(ctx, dto)
 }
 
+func (t *tenantGateway_) TenantTablesManualMigrate(ctx contextx.Context) (err error) {
+	return t.TenantTablesManualMigrate_(ctx)
+}
+
 type TenantGatewayIOCInterface interface {
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save(ctx contextx.Context, tenant model.Tenant) error
 	PublishInitEvent(ctx contextx.Context, dto dto.TenantInitEventDTO) error
+	TenantTablesManualMigrate(ctx contextx.Context) (err error)
 }
 
 var _tenantGatewaySDID string
