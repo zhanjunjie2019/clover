@@ -7,6 +7,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
+	"github.com/zhanjunjie2019/clover/global/uctx"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"runtime"
@@ -43,7 +44,8 @@ func (n *NsqProducer) Publish(ctx context.Context, topic string, body []byte) (e
 		}
 	}()
 	msg := protobuf.NsqMessage{
-		Body: body,
+		TenantID: uctx.GetTenantID(ctx),
+		Body:     body,
 	}
 	sc := span.SpanContext()
 	if sc.IsValid() {

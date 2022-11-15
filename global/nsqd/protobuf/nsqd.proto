@@ -7,8 +7,10 @@ message NsqMessage {
   string traceId = 1;
   // 链路信息
   string traceSpanID = 2;
+  // 相关的租户
+  string tenantID = 3;
   // 消息内容
-  bytes body = 3;
+  bytes body = 4;
   // 签名验证
-  string sign = 4;
+  string sign = 5;
 }

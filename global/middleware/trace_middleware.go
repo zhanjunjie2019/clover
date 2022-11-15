@@ -25,6 +25,10 @@ func (t *TraceMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) g
 			ctx, span := t.OpenTelemetry.Start(ctx, "HTTP "+req.Method+" "+req.RequestURI)
 			defer span.End()
 			// 需要传递上下文
+			tenantID := uctx.GetTenantID(ctx)
+			if len(tenantID) > 0 {
+				ctx = uctx.SetTenantID(ctx, tenantID)
+			}
 			uctx.SetSpanContext(c, ctx)
 			// 获取链路追踪ID
 			var traceID = span.SpanContext().TraceID().String()

@@ -6,6 +6,10 @@ import (
 	"github.com/zhanjunjie2019/clover/global/consts"
 )
 
+func SetTenantID(ctx context.Context, tenantID string) context.Context {
+	return context.WithValue(ctx, consts.CtxTenantIDVar, tenantID)
+}
+
 func GetTenantID(ctx context.Context) string {
 	c, ok := ctx.(*gin.Context)
 	if ok {
@@ -20,8 +24,18 @@ func GetTenantID(ctx context.Context) string {
 		if len(tenantID) == 0 {
 			tenantID = c.Param("TenantId")
 		}
-		c.Set(consts.CtxTenantIDVar, tenantID)
+		if len(tenantID) == 0 {
+			c.Set(consts.CtxTenantIDVar, tenantID)
+		}
 		return tenantID
+	} else {
+		value := ctx.Value(consts.CtxTenantIDVar)
+		if value != nil {
+			s, ok := value.(string)
+			if ok {
+				return s
+			}
+		}
 	}
 	return ""
 }
