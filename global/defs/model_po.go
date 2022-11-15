@@ -27,8 +27,6 @@ func (i ID) String() string {
 type ModelPO struct {
 	// 主键，默认自增长
 	ID ID `json:"id" gorm:"primarykey"`
-	// TenantID 租户ID
-	TenantID string `json:"tenantID" gorm:"column:tenant_id;comment:租户ID;size:64;"`
 	// 乐观锁
 	Revision uint64 `json:"-" gorm:"column:revision;comment:乐观锁;size:64;"`
 	// 创建时间戳
