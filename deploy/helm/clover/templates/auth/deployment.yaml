@@ -64,4 +64,9 @@ spec:
             - name: {{ $upKey | quote }}
               value: {{ $value | quote }}
             {{- end }}
+          readinessProbe:
+            exec:
+              command: ["curl","http://127.0.0.1:{{ .Values.auth.service.targetPort }}/health"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
 {{- end }}

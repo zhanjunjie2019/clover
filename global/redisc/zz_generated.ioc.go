@@ -80,3 +80,11 @@ func GetRedisClientIOCInterfaceSingleton() (RedisClientIOCInterface, error) {
 	impl := i.(RedisClientIOCInterface)
 	return impl, nil
 }
+
+type ThisRedisClient struct {
+}
+
+func (t *ThisRedisClient) This() RedisClientIOCInterface {
+	thisPtr, _ := GetRedisClientIOCInterfaceSingleton()
+	return thisPtr
+}

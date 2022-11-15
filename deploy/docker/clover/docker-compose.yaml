@@ -7,6 +7,11 @@ services:
     container_name: clover-auth
     volumes:
       - './config/auth:/go/server/configs'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8900/health" ]
+      interval: 3s
+      timeout: 5s
+      retries: 6
     networks:
       - custom_net
     ports:

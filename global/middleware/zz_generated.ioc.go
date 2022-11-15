@@ -151,6 +151,14 @@ func GetAuthMiddlewareIOCInterfaceSingleton() (AuthMiddlewareIOCInterface, error
 	return impl, nil
 }
 
+type ThisAuthMiddleware struct {
+}
+
+func (t *ThisAuthMiddleware) This() AuthMiddlewareIOCInterface {
+	thisPtr, _ := GetAuthMiddlewareIOCInterfaceSingleton()
+	return thisPtr
+}
+
 var _loggerMiddlewareSDID string
 
 func GetLoggerMiddlewareSingleton() (*LoggerMiddleware, error) {
@@ -175,6 +183,14 @@ func GetLoggerMiddlewareIOCInterfaceSingleton() (LoggerMiddlewareIOCInterface, e
 	}
 	impl := i.(LoggerMiddlewareIOCInterface)
 	return impl, nil
+}
+
+type ThisLoggerMiddleware struct {
+}
+
+func (t *ThisLoggerMiddleware) This() LoggerMiddlewareIOCInterface {
+	thisPtr, _ := GetLoggerMiddlewareIOCInterfaceSingleton()
+	return thisPtr
 }
 
 var _sentinelMiddlewareSDID string
@@ -203,6 +219,14 @@ func GetSentinelMiddlewareIOCInterfaceSingleton() (SentinelMiddlewareIOCInterfac
 	return impl, nil
 }
 
+type ThisSentinelMiddleware struct {
+}
+
+func (t *ThisSentinelMiddleware) This() SentinelMiddlewareIOCInterface {
+	thisPtr, _ := GetSentinelMiddlewareIOCInterfaceSingleton()
+	return thisPtr
+}
+
 var _traceMiddlewareSDID string
 
 func GetTraceMiddlewareSingleton() (*TraceMiddleware, error) {
@@ -227,4 +251,12 @@ func GetTraceMiddlewareIOCInterfaceSingleton() (TraceMiddlewareIOCInterface, err
 	}
 	impl := i.(TraceMiddlewareIOCInterface)
 	return impl, nil
+}
+
+type ThisTraceMiddleware struct {
+}
+
+func (t *ThisTraceMiddleware) This() TraceMiddlewareIOCInterface {
+	thisPtr, _ := GetTraceMiddlewareIOCInterfaceSingleton()
+	return thisPtr
 }

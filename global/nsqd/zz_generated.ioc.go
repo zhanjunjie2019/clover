@@ -74,3 +74,11 @@ func GetNsqProducerIOCInterfaceSingleton() (NsqProducerIOCInterface, error) {
 	impl := i.(NsqProducerIOCInterface)
 	return impl, nil
 }
+
+type ThisNsqProducer struct {
+}
+
+func (t *ThisNsqProducer) This() NsqProducerIOCInterface {
+	thisPtr, _ := GetNsqProducerIOCInterfaceSingleton()
+	return thisPtr
+}
