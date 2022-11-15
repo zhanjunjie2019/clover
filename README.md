@@ -7,7 +7,7 @@
 
 ## 代码分层架构
 
-![分层依赖架构](docs/depend.jpg)
+![分层依赖架构](http://assets.processon.com/chart_image/637334050791290b4b9a005e.png)
 
 ## 配置优先级
 
