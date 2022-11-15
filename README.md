@@ -7,7 +7,7 @@
 
 ## 代码分层架构
 
-![分层依赖架构](docs/depend.png)
+![分层依赖架构](docs/depend.jpg)
 
 ## 配置优先级
 
