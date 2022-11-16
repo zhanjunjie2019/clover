@@ -12,9 +12,9 @@ require (
 	github.com/alibaba/ioc-golang v1.0.2
 	github.com/gin-gonic/gin v1.8.1
 	github.com/swaggo/swag v1.8.7
-	github.com/zhanjunjie2019/clover/core v0.0.0-20221115092405-f36c0446a878
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221115092405-f36c0446a878
-	github.com/zhanjunjie2019/clover/share v0.0.0-20221115092405-f36c0446a878
+	github.com/zhanjunjie2019/clover/core v0.0.0-20221115095416-cc79d845a2f2
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221115095416-cc79d845a2f2
+	github.com/zhanjunjie2019/clover/share v0.0.0-20221115095416-cc79d845a2f2
 	gorm.io/gorm v1.24.1
 )
 
@@ -95,10 +95,10 @@ require (
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.13.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.14.0 // indirect
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645 // indirect
 	github.com/hailocab/go-hostpool v0.0.0-20160125115350-e80d13ce29ed // indirect
-	github.com/hashicorp/consul/api v1.15.3 // indirect
+	github.com/hashicorp/consul/api v1.16.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.3.1 // indirect
