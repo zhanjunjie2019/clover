@@ -9,11 +9,11 @@
 
 ### 服务分层依赖架构
 
-![服务分层依赖架构](http://assets.processon.com/chart_image/63745a045653bb3a8405069a.png)
+![服务分层依赖架构](https://assets.processon.com/chart_image/63745a045653bb3a8405069a.png)
 
 ### 代码分层依赖架构
 
-![分层依赖架构](http://assets.processon.com/chart_image/637334050791290b4b9a005e.png)
+![分层依赖架构](https://assets.processon.com/chart_image/637334050791290b4b9a005e.png)
 
 ## 配置优先级
 
