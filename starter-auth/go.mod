@@ -12,9 +12,9 @@ require (
 	github.com/alibaba/ioc-golang v1.0.2
 	github.com/gin-gonic/gin v1.8.1
 	github.com/swaggo/swag v1.8.7
-	github.com/zhanjunjie2019/clover/core v0.0.0-20221115095416-cc79d845a2f2
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221115095416-cc79d845a2f2
-	github.com/zhanjunjie2019/clover/share v0.0.0-20221115095416-cc79d845a2f2
+	github.com/zhanjunjie2019/clover/core v0.0.0-20221116052952-6575183df6ff
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221116052952-6575183df6ff
+	github.com/zhanjunjie2019/clover/share v0.0.0-20221116052952-6575183df6ff
 	gorm.io/gorm v1.24.1
 )
 

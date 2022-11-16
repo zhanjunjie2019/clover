@@ -62,7 +62,7 @@ func (s *Starter) Run() error {
 	// 初始化数据库连接
 	errs.Panic(s.RepoDBFactory.Initialization())
 	// 启动定时任务调度
-	errs.Panic(s.SchedulerServer.SchedulersStart())
+	//errs.Panic(s.SchedulerServer.SchedulersStart())
 	// 启动NSQ消息队列监听
 	errs.Panic(s.ConsumerServer.ConsumersStart())
 	// 启动HTTP请求监听
