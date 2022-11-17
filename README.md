@@ -11,6 +11,10 @@
 
 ![服务分层依赖架构](https://assets.processon.com/chart_image/63745a045653bb3a8405069a.png)
 
+### 领域分层领域图
+
+![领域分层领域图](http://assets.processon.com/chart_image/637597c60791290b4b9fb724.png)
+
 ### 代码分层依赖架构
 
 ![分层依赖架构](https://assets.processon.com/chart_image/637334050791290b4b9a005e.png)
