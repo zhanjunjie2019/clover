@@ -6,6 +6,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	"github.com/zhanjunjie2019/clover/global/redisc"
+	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/global/utils"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -42,13 +43,16 @@ func (s *Server) startScheduler(scheduler defs.IScheduler, svcName string) error
 			// 竞争分布式并发锁
 			ok, _ := redisc.RedisConcurrentLockInTime(context.Background(), s.RedisClient, svcName+"."+scheduler.GetTaskTypeCode(), scheduler.GetLockDuration())
 			if ok {
+				// 链路上下文中传递日志输出器
 				layout := defs.NewLogLayout(zapcore.InfoLevel)
+				ctx := uctx.WithValueLogLayout(context.Background(), layout)
+
 				start := time.Now()
 				// 开启一个根级span
-				ctx, span := s.OpenTelemetry.Start(context.Background(), "Scheduler "+scheduler.GetTaskTypeCode())
+				ctx, span := s.OpenTelemetry.Start(ctx, "Scheduler "+scheduler.GetTaskTypeCode())
 				defer span.End()
 
-				err := scheduler.RunTask(ctx, layout)
+				err := scheduler.RunTask(ctx)
 				if err != nil {
 					layout.Error(err.Error(), zap.Error(err))
 				}

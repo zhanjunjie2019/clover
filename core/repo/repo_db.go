@@ -26,7 +26,7 @@ func (r *RepoDBFactory) Initialization() error {
 	if err != nil {
 		return err
 	}
-	ctx = uctx.SetAppDB(ctx, db)
+	ctx = uctx.WithValueAppDB(ctx, db)
 	for _, repo := range r.Repos {
 		err = repo.AutoMigrate(ctx)
 		if err != nil {
