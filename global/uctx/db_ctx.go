@@ -28,3 +28,7 @@ func GetAppDB(ctx context.Context) *gorm.DB {
 func GetAppDBWithCtx(ctx context.Context) *gorm.DB {
 	return GetAppDB(ctx).WithContext(ctx)
 }
+
+func GetTenantTableDBWithCtx(ctx context.Context, tablePrefile string) *gorm.DB {
+	return GetAppDB(ctx).WithContext(ctx).Table(tablePrefile + "_" + GetTenantID(ctx))
+}

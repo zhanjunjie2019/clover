@@ -31,6 +31,30 @@ definitions:
         description: 租户ID
         type: string
     type: object
+  vo.UserAuthorizationCodeReqVO:
+    properties:
+      password:
+        description: 密码
+        type: string
+      redirectUrl:
+        description: 重定向路径，可选，若无按租户设置
+        type: string
+      userName:
+        description: 账户名
+        type: string
+    required:
+    - password
+    - userName
+    type: object
+  vo.UserAuthorizationCodeRspVO:
+    properties:
+      authorizationCode:
+        description: 授权码
+        type: string
+      redirectUrl:
+        description: 重定向路径
+        type: string
+    type: object
 info:
   contact: {}
   description: clover-auth接口文档
@@ -61,6 +85,37 @@ paths:
                   $ref: '#/definitions/vo.TenantCreateRspVO'
               type: object
       summary: 初始化租户
+      tags:
+      - auth
+  /user-authorization-code:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
+      - description: 用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.UserAuthorizationCodeReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.UserAuthorizationCodeRspVO'
+              type: object
+      summary: 用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口
       tags:
       - auth
 swagger: "2.0"

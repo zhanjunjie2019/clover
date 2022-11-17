@@ -2,7 +2,6 @@ package scheduler
 
 import (
 	contextx "context"
-	"github.com/zhanjunjie2019/clover/global/defs"
 	"time"
 )
 
@@ -25,6 +24,6 @@ func (s *SecondScheduler) GetLockDuration() time.Duration {
 	return time.Second
 }
 
-func (s *SecondScheduler) RunTask(ctx contextx.Context, layout *defs.LogLayout) error {
+func (s *SecondScheduler) RunTask(ctx contextx.Context) error {
 	return nil
 }

@@ -35,6 +35,27 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(tenantCreateControllerStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &userAuthorizationCodeController_{}
+		},
+	})
+	userAuthorizationCodeControllerStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &UserAuthorizationCodeController{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IController),
+					},
+				},
+			},
+		},
+	}
+	allimpls.RegisterStructDescriptor(userAuthorizationCodeControllerStructDescriptor)
 }
 
 type tenantCreateController_ struct {
@@ -50,9 +71,28 @@ func (t *tenantCreateController_) Handle(c *gin.Context) {
 	t.Handle_(c)
 }
 
+type userAuthorizationCodeController_ struct {
+	GetOption_ func() defs.ControllerOption
+	Handle_    func(c *gin.Context)
+}
+
+func (u *userAuthorizationCodeController_) GetOption() defs.ControllerOption {
+	return u.GetOption_()
+}
+
+func (u *userAuthorizationCodeController_) Handle(c *gin.Context) {
+	u.Handle_(c)
+}
+
 type TenantCreateControllerIOCInterface interface {
 	GetOption() defs.ControllerOption
 	Handle(c *gin.Context)
 }
 
+type UserAuthorizationCodeControllerIOCInterface interface {
+	GetOption() defs.ControllerOption
+	Handle(c *gin.Context)
+}
+
 var _tenantCreateControllerSDID string
+var _userAuthorizationCodeControllerSDID string

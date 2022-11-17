@@ -15,5 +15,5 @@ type PermissionRepo struct {
 }
 
 func (p *PermissionRepo) AutoMigrate(ctx context.Context) error {
-	return uctx.GetAppDBWithCtx(ctx).AutoMigrate(&po.Permission{})
+	return uctx.GetAppDBWithCtx(ctx).AutoMigrate(po.Permission{})
 }

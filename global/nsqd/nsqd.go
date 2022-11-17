@@ -85,6 +85,7 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 	// 链路上下文中传递租户ID
 	if len(pb.TenantID) > 0 {
 		ctx = uctx.WithValueTenantID(ctx, pb.TenantID)
+		layout.AppendLogsFields(zap.String("tenantID", pb.TenantID))
 	}
 	ctx = m.provider.GetCtx(ctx, pb.TraceId, pb.TraceSpanID)
 	ctx, span := m.provider.Start(ctx, "Consumer "+m.consumer.GetTopic())

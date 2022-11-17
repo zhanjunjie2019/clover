@@ -31,6 +31,21 @@ func init() {
 		},
 	}
 	singleton.RegisterStructDescriptor(tenantGatewayStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &userGateway_{}
+		},
+	})
+	userGatewayStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &UserGateway{}
+		},
+		Metadata: map[string]interface{}{
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
+		},
+	}
+	singleton.RegisterStructDescriptor(userGatewayStructDescriptor)
 }
 
 type tenantGateway_ struct {
@@ -56,11 +71,23 @@ func (t *tenantGateway_) TenantTablesManualMigrate(ctx contextx.Context) (err er
 	return t.TenantTablesManualMigrate_(ctx)
 }
 
+type userGateway_ struct {
+	FindByUserName_ func(ctx contextx.Context, userName string) (user model.User, exist bool, err error)
+}
+
+func (u *userGateway_) FindByUserName(ctx contextx.Context, userName string) (user model.User, exist bool, err error) {
+	return u.FindByUserName_(ctx, userName)
+}
+
 type TenantGatewayIOCInterface interface {
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save(ctx contextx.Context, tenant model.Tenant) error
 	PublishInitEvent(ctx contextx.Context, dto dto.TenantInitEventDTO) error
 	TenantTablesManualMigrate(ctx contextx.Context) (err error)
+}
+
+type UserGatewayIOCInterface interface {
+	FindByUserName(ctx contextx.Context, userName string) (user model.User, exist bool, err error)
 }
 
 var _tenantGatewaySDID string
@@ -94,5 +121,39 @@ type ThisTenantGateway struct {
 
 func (t *ThisTenantGateway) This() TenantGatewayIOCInterface {
 	thisPtr, _ := GetTenantGatewayIOCInterfaceSingleton()
+	return thisPtr
+}
+
+var _userGatewaySDID string
+
+func GetUserGatewaySingleton() (*UserGateway, error) {
+	if _userGatewaySDID == "" {
+		_userGatewaySDID = util.GetSDIDByStructPtr(new(UserGateway))
+	}
+	i, err := singleton.GetImpl(_userGatewaySDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*UserGateway)
+	return impl, nil
+}
+
+func GetUserGatewayIOCInterfaceSingleton() (UserGatewayIOCInterface, error) {
+	if _userGatewaySDID == "" {
+		_userGatewaySDID = util.GetSDIDByStructPtr(new(UserGateway))
+	}
+	i, err := singleton.GetImplWithProxy(_userGatewaySDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(UserGatewayIOCInterface)
+	return impl, nil
+}
+
+type ThisUserGateway struct {
+}
+
+func (t *ThisUserGateway) This() UserGatewayIOCInterface {
+	thisPtr, _ := GetUserGatewayIOCInterfaceSingleton()
 	return thisPtr
 }

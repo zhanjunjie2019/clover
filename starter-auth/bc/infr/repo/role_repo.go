@@ -8,11 +8,17 @@ import (
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
+// +ioc:autowire:constructFunc=InitRoleRepo
 
 type RoleRepo struct {
+	TablePre string
+}
+
+func InitRoleRepo(r *RoleRepo) (*RoleRepo, error) {
+	r.TablePre = "roles"
+	return r, nil
 }
 
 func (r *RoleRepo) ManualMigrate(ctx context.Context) error {
-	p := &po.Role{TenantID: uctx.GetTenantID(ctx)}
-	return uctx.GetAppDBWithCtx(ctx).Table(p.TableName()).AutoMigrate(p)
+	return uctx.GetTenantTableDBWithCtx(ctx, r.TablePre).AutoMigrate(po.Role{})
 }

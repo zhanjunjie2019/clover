@@ -3,7 +3,6 @@ package consumer
 import (
 	"context"
 	"encoding/json"
-	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/share/auth/dto"
 	"github.com/zhanjunjie2019/clover/share/auth/topic"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/app"
@@ -21,11 +20,11 @@ func (t *TenantInitConsumer) GetTopic() string {
 	return topic.TenantInitTopic
 }
 
-func (t *TenantInitConsumer) HandleMessage(ctx context.Context, layout *defs.LogLayout, bytes []byte) error {
+func (t *TenantInitConsumer) HandleMessage(ctx context.Context, bytes []byte) error {
 	var dto dto.TenantInitEventDTO
 	err := json.Unmarshal(bytes, &dto)
 	if err != nil {
 		return err
 	}
-	return t.TenantApp.TenantInit(ctx, layout, dto.TenantID)
+	return t.TenantApp.TenantInit(ctx, dto.TenantID)
 }

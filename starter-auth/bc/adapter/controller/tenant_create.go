@@ -42,7 +42,7 @@ func (t *TenantCreateController) Handle(c *gin.Context) {
 			tid       string
 			secretKey string
 		)
-		tid, secretKey, err = t.TenantApp.TenantCreate(ctx, uctx.GetLogLayout(c), tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName)
+		tid, secretKey, err = t.TenantApp.TenantCreate(ctx, tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.TenantCreateRspVO{
 				TenantID:  tid,

@@ -10,7 +10,7 @@ import (
 	autowire "github.com/alibaba/ioc-golang/autowire"
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	"github.com/zhanjunjie2019/clover/global/defs"
+	defs "github.com/zhanjunjie2019/clover/global/defs"
 	timex "time"
 )
 
@@ -42,7 +42,7 @@ type secondScheduler_ struct {
 	GetTaskTypeCode_ func() string
 	GetSpec_         func() string
 	GetLockDuration_ func() timex.Duration
-	RunTask_         func(ctx contextx.Context, layout *defs.LogLayout) error
+	RunTask_         func(ctx contextx.Context) error
 }
 
 func (s *secondScheduler_) GetTaskTypeCode() string {
@@ -57,15 +57,15 @@ func (s *secondScheduler_) GetLockDuration() timex.Duration {
 	return s.GetLockDuration_()
 }
 
-func (s *secondScheduler_) RunTask(ctx contextx.Context, layout *defs.LogLayout) error {
-	return s.RunTask_(ctx, layout)
+func (s *secondScheduler_) RunTask(ctx contextx.Context) error {
+	return s.RunTask_(ctx)
 }
 
 type SecondSchedulerIOCInterface interface {
 	GetTaskTypeCode() string
 	GetSpec() string
 	GetLockDuration() timex.Duration
-	RunTask(ctx contextx.Context, layout *defs.LogLayout) error
+	RunTask(ctx contextx.Context) error
 }
 
 var _secondSchedulerSDID string

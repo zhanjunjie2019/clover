@@ -12,7 +12,7 @@ import (
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	"github.com/zhanjunjie2019/clover/global/defs"
+	defs "github.com/zhanjunjie2019/clover/global/defs"
 	"gorm.io/gorm"
 )
 
@@ -39,30 +39,70 @@ func init() {
 	}
 	singleton.RegisterStructDescriptor(tenantAppStructDescriptor)
 	allimpls.RegisterStructDescriptor(tenantAppStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &userApp_{}
+		},
+	})
+	userAppStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &UserApp{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IAppDef),
+					},
+				},
+			},
+		},
+	}
+	singleton.RegisterStructDescriptor(userAppStructDescriptor)
+	allimpls.RegisterStructDescriptor(userAppStructDescriptor)
 }
 
 type tenantApp_ struct {
 	SetGormDB_    func(db *gorm.DB)
-	TenantCreate_ func(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error)
-	TenantInit_   func(ctx contextx.Context, layout *defs.LogLayout, tenantID string) (err error)
+	TenantCreate_ func(ctx contextx.Context, tenantID, tenantName string) (tid, secretKey string, err error)
+	TenantInit_   func(ctx contextx.Context, tenantID string) (err error)
 }
 
 func (t *tenantApp_) SetGormDB(db *gorm.DB) {
 	t.SetGormDB_(db)
 }
 
-func (t *tenantApp_) TenantCreate(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
-	return t.TenantCreate_(ctx, layout, tenantID, tenantName)
+func (t *tenantApp_) TenantCreate(ctx contextx.Context, tenantID, tenantName string) (tid, secretKey string, err error) {
+	return t.TenantCreate_(ctx, tenantID, tenantName)
 }
 
-func (t *tenantApp_) TenantInit(ctx contextx.Context, layout *defs.LogLayout, tenantID string) (err error) {
-	return t.TenantInit_(ctx, layout, tenantID)
+func (t *tenantApp_) TenantInit(ctx contextx.Context, tenantID string) (err error) {
+	return t.TenantInit_(ctx, tenantID)
+}
+
+type userApp_ struct {
+	SetGormDB_             func(db *gorm.DB)
+	UserAuthorizationCode_ func(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error)
+}
+
+func (u *userApp_) SetGormDB(db *gorm.DB) {
+	u.SetGormDB_(db)
+}
+
+func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error) {
+	return u.UserAuthorizationCode_(ctx, userName, password, redirect)
 }
 
 type TenantAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
-	TenantCreate(ctx contextx.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error)
-	TenantInit(ctx contextx.Context, layout *defs.LogLayout, tenantID string) (err error)
+	TenantCreate(ctx contextx.Context, tenantID, tenantName string) (tid, secretKey string, err error)
+	TenantInit(ctx contextx.Context, tenantID string) (err error)
+}
+
+type UserAppIOCInterface interface {
+	SetGormDB(db *gorm.DB)
+	UserAuthorizationCode(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error)
 }
 
 var _tenantAppSDID string
@@ -96,5 +136,39 @@ type ThisTenantApp struct {
 
 func (t *ThisTenantApp) This() TenantAppIOCInterface {
 	thisPtr, _ := GetTenantAppIOCInterfaceSingleton()
+	return thisPtr
+}
+
+var _userAppSDID string
+
+func GetUserAppSingleton() (*UserApp, error) {
+	if _userAppSDID == "" {
+		_userAppSDID = util.GetSDIDByStructPtr(new(UserApp))
+	}
+	i, err := singleton.GetImpl(_userAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*UserApp)
+	return impl, nil
+}
+
+func GetUserAppIOCInterfaceSingleton() (UserAppIOCInterface, error) {
+	if _userAppSDID == "" {
+		_userAppSDID = util.GetSDIDByStructPtr(new(UserApp))
+	}
+	i, err := singleton.GetImplWithProxy(_userAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(UserAppIOCInterface)
+	return impl, nil
+}
+
+type ThisUserApp struct {
+}
+
+func (t *ThisUserApp) This() UserAppIOCInterface {
+	thisPtr, _ := GetUserAppIOCInterfaceSingleton()
 	return thisPtr
 }

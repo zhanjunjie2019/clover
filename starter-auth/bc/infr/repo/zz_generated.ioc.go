@@ -48,6 +48,11 @@ func init() {
 		Factory: func() interface{} {
 			return &RoleRepo{}
 		},
+		ConstructFunc: func(i interface{}, _ interface{}) (interface{}, error) {
+			impl := i.(*RoleRepo)
+			var constructFunc RoleRepoConstructFunc = InitRoleRepo
+			return constructFunc(impl)
+		},
 		Metadata: map[string]interface{}{
 			"aop":      map[string]interface{}{},
 			"autowire": map[string]interface{}{},
@@ -85,6 +90,11 @@ func init() {
 		Factory: func() interface{} {
 			return &UserRepo{}
 		},
+		ConstructFunc: func(i interface{}, _ interface{}) (interface{}, error) {
+			impl := i.(*UserRepo)
+			var constructFunc UserRepoConstructFunc = InitUserRepo
+			return constructFunc(impl)
+		},
 		Metadata: map[string]interface{}{
 			"aop":      map[string]interface{}{},
 			"autowire": map[string]interface{}{},
@@ -93,6 +103,8 @@ func init() {
 	singleton.RegisterStructDescriptor(userRepoStructDescriptor)
 }
 
+type RoleRepoConstructFunc func(impl *RoleRepo) (*RoleRepo, error)
+type UserRepoConstructFunc func(impl *UserRepo) (*UserRepo, error)
 type permissionRepo_ struct {
 	AutoMigrate_ func(ctx contextx.Context) error
 }
@@ -128,11 +140,16 @@ func (t *tenantRepo_) Save(ctx contextx.Context, tenantPO po.Tenant) error {
 }
 
 type userRepo_ struct {
-	ManualMigrate_ func(ctx contextx.Context) error
+	ManualMigrate_  func(ctx contextx.Context) error
+	FindByUserName_ func(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
 }
 
 func (u *userRepo_) ManualMigrate(ctx contextx.Context) error {
 	return u.ManualMigrate_(ctx)
+}
+
+func (u *userRepo_) FindByUserName(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error) {
+	return u.FindByUserName_(ctx, userName)
 }
 
 type PermissionRepoIOCInterface interface {
@@ -151,6 +168,7 @@ type TenantRepoIOCInterface interface {
 
 type UserRepoIOCInterface interface {
 	ManualMigrate(ctx contextx.Context) error
+	FindByUserName(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
 }
 
 var _permissionRepoSDID string

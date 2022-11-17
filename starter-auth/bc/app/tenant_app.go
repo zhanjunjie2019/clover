@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/global/utils"
@@ -28,8 +27,8 @@ func (t *TenantApp) SetGormDB(db *gorm.DB) {
 	t.DB = db
 }
 
-func (t *TenantApp) TenantCreate(ctx context.Context, layout *defs.LogLayout, tenantID, tenantName string) (tid, secretKey string, err error) {
-	ctx = uctx.SetAppDB(ctx, t.DB)
+func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName string) (tid, secretKey string, err error) {
+	ctx = uctx.WithValueAppDB(ctx, t.DB)
 	if len(tenantID) == 0 {
 		tid = utils.UUID()
 	} else {
@@ -66,8 +65,7 @@ func (t *TenantApp) TenantCreate(ctx context.Context, layout *defs.LogLayout, te
 	return tenant.FullValue().TenantID, tenant.FullValue().SecretKey, nil
 }
 
-func (t *TenantApp) TenantInit(ctx context.Context, layout *defs.LogLayout, tenantID string) (err error) {
-	ctx = uctx.SetAppDB(ctx, t.DB)
-	ctx = uctx.SetTenantID(ctx, tenantID)
+func (t *TenantApp) TenantInit(ctx context.Context, tenantID string) (err error) {
+	ctx = uctx.WithValueTenantAndAppDB(ctx, tenantID, t.DB)
 	return t.TenantGateway.TenantTablesManualMigrate(ctx)
 }

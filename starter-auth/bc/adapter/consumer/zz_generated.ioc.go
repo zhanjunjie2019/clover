@@ -10,7 +10,7 @@ import (
 	autowire "github.com/alibaba/ioc-golang/autowire"
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	"github.com/zhanjunjie2019/clover/global/defs"
+	defs "github.com/zhanjunjie2019/clover/global/defs"
 )
 
 func init() {
@@ -39,20 +39,20 @@ func init() {
 
 type tenantInitConsumer_ struct {
 	GetTopic_      func() string
-	HandleMessage_ func(ctx contextx.Context, layout *defs.LogLayout, bytes []byte) error
+	HandleMessage_ func(ctx contextx.Context, bytes []byte) error
 }
 
 func (t *tenantInitConsumer_) GetTopic() string {
 	return t.GetTopic_()
 }
 
-func (t *tenantInitConsumer_) HandleMessage(ctx contextx.Context, layout *defs.LogLayout, bytes []byte) error {
-	return t.HandleMessage_(ctx, layout, bytes)
+func (t *tenantInitConsumer_) HandleMessage(ctx contextx.Context, bytes []byte) error {
+	return t.HandleMessage_(ctx, bytes)
 }
 
 type TenantInitConsumerIOCInterface interface {
 	GetTopic() string
-	HandleMessage(ctx contextx.Context, layout *defs.LogLayout, bytes []byte) error
+	HandleMessage(ctx contextx.Context, bytes []byte) error
 }
 
 var _tenantInitConsumerSDID string

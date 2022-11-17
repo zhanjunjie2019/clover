@@ -60,6 +60,58 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user-authorization-code": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "租户ID",
+                        "name": "Tenant-ID",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.UserAuthorizationCodeReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.UserAuthorizationCodeRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -104,6 +156,40 @@ const docTemplate = `{
                 },
                 "tenantID": {
                     "description": "租户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.UserAuthorizationCodeReqVO": {
+            "type": "object",
+            "required": [
+                "password",
+                "userName"
+            ],
+            "properties": {
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "redirectUrl": {
+                    "description": "重定向路径，可选，若无按租户设置",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "账户名",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.UserAuthorizationCodeRspVO": {
+            "type": "object",
+            "properties": {
+                "authorizationCode": {
+                    "description": "授权码",
+                    "type": "string"
+                },
+                "redirectUrl": {
+                    "description": "重定向路径",
                     "type": "string"
                 }
             }
