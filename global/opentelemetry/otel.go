@@ -3,6 +3,7 @@ package opentelemetry
 import (
 	"context"
 	"fmt"
+	"github.com/MrAlias/flow"
 	"github.com/gin-gonic/gin"
 	"github.com/zhanjunjie2019/clover/global/confs"
 	"github.com/zhanjunjie2019/clover/global/consts"
@@ -76,7 +77,8 @@ func (o *OpenTelemetry) InitProvider() error {
 		tracerProvider := sdktrace.NewTracerProvider(
 			sdktrace.WithSampler(sdktrace.AlwaysSample()),
 			sdktrace.WithResource(res),
-			sdktrace.WithSpanProcessor(bsp),
+			//sdktrace.WithSpanProcessor(bsp),
+			flow.WithSpanProcessor(bsp),
 		)
 
 		otel.SetTracerProvider(tracerProvider)

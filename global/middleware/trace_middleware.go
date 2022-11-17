@@ -7,6 +7,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/global/utils"
+	"go.uber.org/zap/zapcore"
 )
 
 // +ioc:autowire=true
@@ -24,11 +25,16 @@ func (t *TraceMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) g
 			ctx := t.OpenTelemetry.Extract(req.Context(), req.Header)
 			ctx, span := t.OpenTelemetry.Start(ctx, "HTTP "+req.Method+" "+req.RequestURI)
 			defer span.End()
-			// 需要传递上下文
-			tenantID := uctx.GetTenantID(ctx)
+			// 需要传递链路上下文
+			tenantID := uctx.GetTenantID(c)
 			if len(tenantID) > 0 {
-				ctx = uctx.SetTenantID(ctx, tenantID)
+				ctx = uctx.WithValueTenantID(ctx, tenantID)
 			}
+			// 链路上下文中传递日志输出器
+			layout := defs.NewLogLayout(zapcore.InfoLevel)
+			uctx.SetLogLayout2GinCtx(c, layout)
+			ctx = uctx.WithValueLogLayout(ctx, layout)
+			// 传递链路上下文
 			uctx.SetSpanContext(c, ctx)
 			// 获取链路追踪ID
 			var traceID = span.SpanContext().TraceID().String()

@@ -73,13 +73,20 @@ type messageHandler struct {
 
 func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 	layout := defs.NewLogLayout(zapcore.InfoLevel)
+
 	var pb protobuf.NsqMessage
 	err := proto.Unmarshal(message.Body, &pb)
 	if err != nil {
 		layout.Error("消息监听错误"+err.Error(), zap.Error(err))
 		return err
 	}
-	ctx := m.provider.GetCtx(context.Background(), pb.TraceId, pb.TraceSpanID)
+	// 链路上下文中传递日志输出器
+	ctx := uctx.WithValueLogLayout(context.Background(), layout)
+	// 链路上下文中传递租户ID
+	if len(pb.TenantID) > 0 {
+		ctx = uctx.WithValueTenantID(ctx, pb.TenantID)
+	}
+	ctx = m.provider.GetCtx(ctx, pb.TraceId, pb.TraceSpanID)
 	ctx, span := m.provider.Start(ctx, "Consumer "+m.consumer.GetTopic())
 	defer span.End()
 	start := time.Now()
@@ -100,7 +107,8 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 		zap.String("traceID", pb.TraceId),
 		zap.String("msgBody", string(pb.Body)),
 	)
-	err = m.consumer.HandleMessage(ctx, layout, pb.Body)
+
+	err = m.consumer.HandleMessage(ctx, pb.Body)
 	if err != nil {
 		layout.Error("消息监听错误"+err.Error(), zap.Error(err))
 	}

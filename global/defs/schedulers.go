@@ -13,5 +13,5 @@ type IScheduler interface {
 	// GetLockDuration 并发限制间隔，多久时间内限制重复并发
 	GetLockDuration() time.Duration
 	// RunTask 指定核心任务
-	RunTask(contextx.Context, *LogLayout) error
+	RunTask(contextx.Context) error
 }

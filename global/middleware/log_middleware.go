@@ -7,7 +7,6 @@ import (
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"io"
 	"net/http"
 	"runtime"
@@ -22,7 +21,7 @@ type LoggerMiddleware struct{}
 func (l *LoggerMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
-		layout := defs.NewLogLayout(zapcore.InfoLevel)
+		layout := uctx.GetLogLayout(c)
 		defer func() {
 			// 异常日志处理
 			if recoverErr := recover(); recoverErr != nil {
@@ -36,7 +35,6 @@ func (l *LoggerMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) 
 			)
 			layout.Println()
 		}()
-		uctx.SetLogLayout(c, layout)
 		// 读取请求体
 		var body, err = c.GetRawData()
 		if err != nil {
@@ -62,6 +60,7 @@ func (l *LoggerMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) 
 			zap.String("traceID", uctx.GetTraceID(c)),
 			zap.String("authCode", option.AuthCode),
 			zap.String("rUri", option.RelativePath),
+			zap.String("tenantID", uctx.GetTenantID(c)),
 		)
 		c.Next()
 	}

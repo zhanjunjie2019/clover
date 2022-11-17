@@ -8,8 +8,12 @@ import (
 	"go.uber.org/zap"
 )
 
-func SetLogLayout(ctx *gin.Context, layout *defs.LogLayout) {
+func SetLogLayout2GinCtx(ctx *gin.Context, layout *defs.LogLayout) {
 	ctx.Set(consts.CtxLogsVar, layout)
+}
+
+func WithValueLogLayout(ctx context.Context, layout *defs.LogLayout) context.Context {
+	return context.WithValue(ctx, consts.CtxLogsVar, layout)
 }
 
 func GetLogLayout(ctx context.Context) *defs.LogLayout {
@@ -17,6 +21,14 @@ func GetLogLayout(ctx context.Context) *defs.LogLayout {
 	if ok {
 		value, ok := c.Get(consts.CtxLogsVar)
 		if ok {
+			layout, ok := value.(*defs.LogLayout)
+			if ok {
+				return layout
+			}
+		}
+	} else {
+		value := ctx.Value(consts.CtxLogsVar)
+		if value != nil {
 			layout, ok := value.(*defs.LogLayout)
 			if ok {
 				return layout

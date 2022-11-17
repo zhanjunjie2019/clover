@@ -2,6 +2,7 @@ package redisc
 
 import (
 	"context"
+	"github.com/go-redis/redis/extra/redisotel/v9"
 	redis "github.com/go-redis/redis/v9"
 )
 
@@ -29,6 +30,14 @@ func (r *RedisClient) create() error {
 		DB:       int(r.db),
 	})
 	err := client.Ping(context.Background()).Err()
+	if err != nil {
+		return err
+	}
+	err = redisotel.InstrumentTracing(client)
+	if err != nil {
+		return err
+	}
+	err = redisotel.InstrumentMetrics(client)
 	if err != nil {
 		return err
 	}

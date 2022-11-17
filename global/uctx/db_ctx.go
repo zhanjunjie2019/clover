@@ -6,8 +6,12 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetAppDB(ctx context.Context, db *gorm.DB) context.Context {
+func WithValueAppDB(ctx context.Context, db *gorm.DB) context.Context {
 	return context.WithValue(ctx, consts.CtxGormDBVar, db)
+}
+
+func WithValueTenantAndAppDB(ctx context.Context, tenantID string, db *gorm.DB) context.Context {
+	return context.WithValue(context.WithValue(ctx, consts.CtxTenantIDVar, tenantID), consts.CtxGormDBVar, db)
 }
 
 func GetAppDB(ctx context.Context) *gorm.DB {

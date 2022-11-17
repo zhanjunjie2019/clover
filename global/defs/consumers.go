@@ -4,5 +4,5 @@ import "context"
 
 type IConsumer interface {
 	GetTopic() string
-	HandleMessage(context.Context, *LogLayout, []byte) error
+	HandleMessage(context.Context, []byte) error
 }
