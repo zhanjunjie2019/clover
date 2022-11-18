@@ -25,12 +25,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "tenant"
                 ],
-                "summary": "初始化租户",
+                "summary": "创建租户",
                 "parameters": [
                     {
-                        "description": "初始化租户",
+                        "description": "创建租户",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -61,6 +61,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/tenant-token-create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tenant"
+                ],
+                "summary": "创建租户Token",
+                "parameters": [
+                    {
+                        "description": "创建租户Token",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.TenantTokenCreateReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.TenantTokenCreateRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/user-authorization-code": {
             "post": {
                 "consumes": [
@@ -70,14 +115,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "user"
                 ],
                 "summary": "登录验证用户账号密码，验证通过后在Redis保存一个授权码60秒有效，关联用户信息。用以可以用授权码接口换取登录Token。",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "租户ID",
-                        "name": "\"Tenant-ID\"",
+                        "name": "Tenant-ID",
                         "in": "header",
                         "required": true
                     },
@@ -112,6 +157,63 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user-create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "创建用户，需要租户管理员权限",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "租户ID",
+                        "name": "Tenant-ID",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "创建用户",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.UserCreateReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.UserCreateRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -137,12 +239,20 @@ const docTemplate = `{
                 "tenantName"
             ],
             "properties": {
+                "AccessTokenTimeLimit": {
+                    "description": "访问Token有效时限，非必要，默认7200s",
+                    "type": "integer"
+                },
                 "redirectUrl": {
                     "description": "授权码重定向路径，非必要",
                     "type": "string"
                 },
+                "refreshTokenTimeLimit": {
+                    "description": "刷新Token有效时限，非必要，默认86400s",
+                    "type": "integer"
+                },
                 "tenantID": {
-                    "description": "租户ID，不传默认则随机生成",
+                    "description": "租户ID，非必要，不传默认则随机生成",
                     "type": "string"
                 },
                 "tenantName": {
@@ -164,6 +274,52 @@ const docTemplate = `{
                 }
             }
         },
+        "vo.TenantTokenCreateReqVO": {
+            "type": "object",
+            "required": [
+                "secretKey",
+                "tenantID"
+            ],
+            "properties": {
+                "accessTokenExpirationTime": {
+                    "description": "访问Token过期时间戳，非必要，不传则按当前时间+戳追加租户设置有效时限",
+                    "type": "integer"
+                },
+                "refreshTokenExpirationTime": {
+                    "description": "刷新Token过期时间戳，非必要，不传则按当前时间+戳追加租户设置有效时限",
+                    "type": "integer"
+                },
+                "secretKey": {
+                    "description": "租户密钥",
+                    "type": "string"
+                },
+                "tenantID": {
+                    "description": "租户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.TenantTokenCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "description": "访问Token",
+                    "type": "string"
+                },
+                "accessTokenExpirationTime": {
+                    "description": "访问Token过期时间戳",
+                    "type": "integer"
+                },
+                "refreshToken": {
+                    "description": "刷新Token",
+                    "type": "string"
+                },
+                "refreshTokenExpirationTime": {
+                    "description": "刷新Token过期时间戳",
+                    "type": "integer"
+                }
+            }
+        },
         "vo.UserAuthorizationCodeReqVO": {
             "type": "object",
             "required": [
@@ -176,7 +332,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "redirectUrl": {
-                    "description": "重定向路径，可选，若无按租户设置",
+                    "description": "重定向路径，非必要，不传则按租户设置",
                     "type": "string"
                 },
                 "userName": {
@@ -197,6 +353,39 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "vo.UserCreateReqVO": {
+            "type": "object",
+            "required": [
+                "password",
+                "userName"
+            ],
+            "properties": {
+                "password": {
+                    "description": "Password 密码",
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "UserName 用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.UserCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "description": "UserId 用户ID",
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "C-Token",
+            "in": "header"
         }
     }
 }`

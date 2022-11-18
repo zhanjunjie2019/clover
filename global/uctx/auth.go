@@ -38,9 +38,8 @@ func CreateJwtClaimsToken(claims defs.JwtClaims) (string, error) {
 }
 
 func GetJwtClaimsByBearerToken(c *gin.Context) (defs.JwtClaims, error) {
-	bearerToken := c.Request.Header.Get(consts.AuthHeaderKey)
-	if len(bearerToken) > 8 {
-		token := bearerToken[7:]
+	token := c.Request.Header.Get(consts.TokenHeaderKey)
+	if len(token) > 0 {
 		jc, err := ParseYhUserTokenClaims(token, GetTenantID(c))
 		if err == nil && jc != nil {
 			c.Set(consts.CtxJwtVar, *jc)

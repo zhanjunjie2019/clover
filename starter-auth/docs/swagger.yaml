@@ -13,11 +13,17 @@ definitions:
     type: object
   vo.TenantCreateReqVO:
     properties:
+      AccessTokenTimeLimit:
+        description: 访问Token有效时限，非必要，默认7200s
+        type: integer
       redirectUrl:
         description: 授权码重定向路径，非必要
         type: string
+      refreshTokenTimeLimit:
+        description: 刷新Token有效时限，非必要，默认86400s
+        type: integer
       tenantID:
-        description: 租户ID，不传默认则随机生成
+        description: 租户ID，非必要，不传默认则随机生成
         type: string
       tenantName:
         description: 租户名
@@ -34,13 +40,46 @@ definitions:
         description: 租户ID
         type: string
     type: object
+  vo.TenantTokenCreateReqVO:
+    properties:
+      accessTokenExpirationTime:
+        description: 访问Token过期时间戳，非必要，不传则按当前时间+戳追加租户设置有效时限
+        type: integer
+      refreshTokenExpirationTime:
+        description: 刷新Token过期时间戳，非必要，不传则按当前时间+戳追加租户设置有效时限
+        type: integer
+      secretKey:
+        description: 租户密钥
+        type: string
+      tenantID:
+        description: 租户ID
+        type: string
+    required:
+    - secretKey
+    - tenantID
+    type: object
+  vo.TenantTokenCreateRspVO:
+    properties:
+      accessToken:
+        description: 访问Token
+        type: string
+      accessTokenExpirationTime:
+        description: 访问Token过期时间戳
+        type: integer
+      refreshToken:
+        description: 刷新Token
+        type: string
+      refreshTokenExpirationTime:
+        description: 刷新Token过期时间戳
+        type: integer
+    type: object
   vo.UserAuthorizationCodeReqVO:
     properties:
       password:
         description: 密码
         type: string
       redirectUrl:
-        description: 重定向路径，可选，若无按租户设置
+        description: 重定向路径，非必要，不传则按租户设置
         type: string
       userName:
         description: 账户名
@@ -58,6 +97,24 @@ definitions:
         description: 重定向路径
         type: string
     type: object
+  vo.UserCreateReqVO:
+    properties:
+      password:
+        description: Password 密码
+        type: string
+      userName:
+        description: UserName 用户名
+        type: string
+    required:
+    - password
+    - userName
+    type: object
+  vo.UserCreateRspVO:
+    properties:
+      userId:
+        description: UserId 用户ID
+        type: integer
+    type: object
 info:
   contact: {}
   description: clover-auth接口文档
@@ -69,7 +126,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: 初始化租户
+      - description: 创建租户
         in: body
         name: data
         required: true
@@ -87,9 +144,35 @@ paths:
                 data:
                   $ref: '#/definitions/vo.TenantCreateRspVO'
               type: object
-      summary: 初始化租户
+      summary: 创建租户
       tags:
-      - auth
+      - tenant
+  /tenant-token-create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建租户Token
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.TenantTokenCreateReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.TenantTokenCreateRspVO'
+              type: object
+      summary: 创建租户Token
+      tags:
+      - tenant
   /user-authorization-code:
     post:
       consumes:
@@ -97,7 +180,7 @@ paths:
       parameters:
       - description: 租户ID
         in: header
-        name: '"Tenant-ID"'
+        name: Tenant-ID
         required: true
         type: string
       - description: 用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口
@@ -120,5 +203,43 @@ paths:
               type: object
       summary: 登录验证用户账号密码，验证通过后在Redis保存一个授权码60秒有效，关联用户信息。用以可以用授权码接口换取登录Token。
       tags:
-      - auth
+      - user
+  /user-create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
+      - description: 创建用户
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.UserCreateReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.UserCreateRspVO'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 创建用户，需要租户管理员权限
+      tags:
+      - user
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: C-Token
+    type: apiKey
 swagger: "2.0"

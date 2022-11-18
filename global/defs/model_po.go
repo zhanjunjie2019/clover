@@ -20,6 +20,10 @@ func (i ID) Int64() int64 {
 	return int64(i)
 }
 
+func (i ID) UInt64() uint64 {
+	return uint64(i)
+}
+
 func (i ID) String() string {
 	return strconv.Itoa(int(i))
 }

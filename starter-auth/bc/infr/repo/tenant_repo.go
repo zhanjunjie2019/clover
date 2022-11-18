@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
 	"gorm.io/gorm"
@@ -29,6 +30,7 @@ func (t *TenantRepo) FindByTenantID(ctx context.Context, tenantID string) (tenan
 	return
 }
 
-func (t *TenantRepo) Save(ctx context.Context, tenantPO po.Tenant) error {
-	return uctx.GetAppDBWithCtx(ctx).Save(&tenantPO).Error
+func (t *TenantRepo) Save(ctx context.Context, tenantPO po.Tenant) (defs.ID, error) {
+	err := uctx.GetAppDBWithCtx(ctx).Save(&tenantPO).Error
+	return tenantPO.ID, err
 }

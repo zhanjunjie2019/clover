@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
 	"gorm.io/gorm"
@@ -22,6 +23,11 @@ func InitUserRepo(u *UserRepo) (*UserRepo, error) {
 
 func (u *UserRepo) ManualMigrate(ctx context.Context) error {
 	return uctx.GetTenantTableDBWithCtx(ctx, u.TablePre).AutoMigrate(po.User{})
+}
+
+func (u *UserRepo) Save(ctx context.Context, userPO po.User) (defs.ID, error) {
+	err := uctx.GetTenantTableDBWithCtx(ctx, u.TablePre).Save(&userPO).Error
+	return userPO.ID, err
 }
 
 func (u *UserRepo) FindByUserName(ctx context.Context, userName string) (userPO po.User, exist bool, err error) {

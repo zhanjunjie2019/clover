@@ -5,7 +5,7 @@ type UserAuthorizationCodeReqVO struct {
 	UserName string `json:"userName" validate:"required"`
 	// 密码
 	Password string `json:"password" validate:"required"`
-	// 重定向路径，可选，若无按租户设置
+	// 重定向路径，非必要，不传则按租户设置
 	RedirectUrl string `json:"redirectUrl"`
 }
 

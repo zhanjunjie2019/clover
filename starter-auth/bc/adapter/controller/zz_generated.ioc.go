@@ -37,6 +37,27 @@ func init() {
 	allimpls.RegisterStructDescriptor(tenantCreateControllerStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &tenantTokenCreateController_{}
+		},
+	})
+	tenantTokenCreateControllerStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &TenantTokenCreateController{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IController),
+					},
+				},
+			},
+		},
+	}
+	allimpls.RegisterStructDescriptor(tenantTokenCreateControllerStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &userAuthorizationCodeController_{}
 		},
 	})
@@ -56,6 +77,27 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(userAuthorizationCodeControllerStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &userCreateController_{}
+		},
+	})
+	userCreateControllerStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &UserCreateController{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IController),
+					},
+				},
+			},
+		},
+	}
+	allimpls.RegisterStructDescriptor(userCreateControllerStructDescriptor)
 }
 
 type tenantCreateController_ struct {
@@ -68,6 +110,19 @@ func (t *tenantCreateController_) GetOption() defs.ControllerOption {
 }
 
 func (t *tenantCreateController_) Handle(c *gin.Context) {
+	t.Handle_(c)
+}
+
+type tenantTokenCreateController_ struct {
+	GetOption_ func() defs.ControllerOption
+	Handle_    func(c *gin.Context)
+}
+
+func (t *tenantTokenCreateController_) GetOption() defs.ControllerOption {
+	return t.GetOption_()
+}
+
+func (t *tenantTokenCreateController_) Handle(c *gin.Context) {
 	t.Handle_(c)
 }
 
@@ -84,7 +139,25 @@ func (u *userAuthorizationCodeController_) Handle(c *gin.Context) {
 	u.Handle_(c)
 }
 
+type userCreateController_ struct {
+	GetOption_ func() defs.ControllerOption
+	Handle_    func(c *gin.Context)
+}
+
+func (u *userCreateController_) GetOption() defs.ControllerOption {
+	return u.GetOption_()
+}
+
+func (u *userCreateController_) Handle(c *gin.Context) {
+	u.Handle_(c)
+}
+
 type TenantCreateControllerIOCInterface interface {
+	GetOption() defs.ControllerOption
+	Handle(c *gin.Context)
+}
+
+type TenantTokenCreateControllerIOCInterface interface {
 	GetOption() defs.ControllerOption
 	Handle(c *gin.Context)
 }
@@ -94,5 +167,12 @@ type UserAuthorizationCodeControllerIOCInterface interface {
 	Handle(c *gin.Context)
 }
 
+type UserCreateControllerIOCInterface interface {
+	GetOption() defs.ControllerOption
+	Handle(c *gin.Context)
+}
+
 var _tenantCreateControllerSDID string
+var _tenantTokenCreateControllerSDID string
 var _userAuthorizationCodeControllerSDID string
+var _userCreateControllerSDID string

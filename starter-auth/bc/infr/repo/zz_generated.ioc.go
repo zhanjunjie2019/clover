@@ -12,7 +12,7 @@ import (
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	defs "github.com/zhanjunjie2019/clover/global/defs"
+	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
 )
 
@@ -124,7 +124,7 @@ func (r *roleRepo_) ManualMigrate(ctx contextx.Context) error {
 type tenantRepo_ struct {
 	AutoMigrate_    func(ctx contextx.Context) error
 	FindByTenantID_ func(ctx contextx.Context, tenantID string) (tenantPO po.Tenant, exist bool, err error)
-	Save_           func(ctx contextx.Context, tenantPO po.Tenant) error
+	Save_           func(ctx contextx.Context, tenantPO po.Tenant) (defs.ID, error)
 }
 
 func (t *tenantRepo_) AutoMigrate(ctx contextx.Context) error {
@@ -135,17 +135,22 @@ func (t *tenantRepo_) FindByTenantID(ctx contextx.Context, tenantID string) (ten
 	return t.FindByTenantID_(ctx, tenantID)
 }
 
-func (t *tenantRepo_) Save(ctx contextx.Context, tenantPO po.Tenant) error {
+func (t *tenantRepo_) Save(ctx contextx.Context, tenantPO po.Tenant) (defs.ID, error) {
 	return t.Save_(ctx, tenantPO)
 }
 
 type userRepo_ struct {
 	ManualMigrate_  func(ctx contextx.Context) error
+	Save_           func(ctx contextx.Context, userPO po.User) (defs.ID, error)
 	FindByUserName_ func(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
 }
 
 func (u *userRepo_) ManualMigrate(ctx contextx.Context) error {
 	return u.ManualMigrate_(ctx)
+}
+
+func (u *userRepo_) Save(ctx contextx.Context, userPO po.User) (defs.ID, error) {
+	return u.Save_(ctx, userPO)
 }
 
 func (u *userRepo_) FindByUserName(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error) {
@@ -163,11 +168,12 @@ type RoleRepoIOCInterface interface {
 type TenantRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenantPO po.Tenant, exist bool, err error)
-	Save(ctx contextx.Context, tenantPO po.Tenant) error
+	Save(ctx contextx.Context, tenantPO po.Tenant) (defs.ID, error)
 }
 
 type UserRepoIOCInterface interface {
 	ManualMigrate(ctx contextx.Context) error
+	Save(ctx contextx.Context, userPO po.User) (defs.ID, error)
 	FindByUserName(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
 }
 

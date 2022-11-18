@@ -21,10 +21,13 @@ import (
 //go:generate go mod tidy
 //go:generate go mod download
 
-// @title       clover-auth-api
-// @version     v1.0.0
-// @description clover-auth接口文档
+// @Title       clover-auth-api
+// @Version     v1.0.0
+// @Description clover-auth接口文档
 // @BasePath    /auth
+// @SecurityDefinitions.Apikey ApiKeyAuth
+// @In header
+// @Name C-Token
 
 func main() {
 	// 加载依赖注入

@@ -9,7 +9,7 @@ import (
 
 var validate = validator.New()
 
-// ShouldBindJSON 解析并验证请求bosy参数，返回链路span上下文
+// ShouldBindJSON 解析并验证请求body参数，返回链路span上下文
 func ShouldBindJSON(c *gin.Context, obj any) (ctx context.Context, err error) {
 	err = c.ShouldBindJSON(obj)
 	if err != nil {

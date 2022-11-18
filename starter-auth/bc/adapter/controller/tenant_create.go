@@ -26,23 +26,29 @@ func (t *TenantCreateController) GetOption() defs.ControllerOption {
 	}
 }
 
-// Handle 初始化租户
-// @Tags auth
-// @Summary 初始化租户
+// Handle 创建租户
+// @Tags tenant
+// @Summary 创建租户
 // @accept application/json
 // @Produce application/json
-// @Param data body vo.TenantCreateReqVO true "初始化租户"
+// @Param data body vo.TenantCreateReqVO true "创建租户"
 // @Success 200 {object} response.Response{data=vo.TenantCreateRspVO}
 // @Router /tenant-create [post]
 func (t *TenantCreateController) Handle(c *gin.Context) {
 	var tenantCreateReqVO vo.TenantCreateReqVO
 	ctx, err := uctx.ShouldBindJSON(c, &tenantCreateReqVO)
 	if err == nil {
-		var (
-			tid       string
-			secretKey string
+		var tid, secretKey string
+		if tenantCreateReqVO.AccessTokenTimeLimit == 0 {
+			tenantCreateReqVO.AccessTokenTimeLimit = 7200
+		}
+		if tenantCreateReqVO.RefreshTokenTimeLimit == 0 {
+			tenantCreateReqVO.RefreshTokenTimeLimit = 86400
+		}
+		tid, secretKey, err = t.TenantApp.TenantCreate(ctx,
+			tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName, tenantCreateReqVO.RedirectUrl,
+			tenantCreateReqVO.AccessTokenTimeLimit, tenantCreateReqVO.RefreshTokenTimeLimit,
 		)
-		tid, secretKey, err = t.TenantApp.TenantCreate(ctx, tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName, tenantCreateReqVO.RedirectUrl)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.TenantCreateRspVO{
 				TenantID:  tid,

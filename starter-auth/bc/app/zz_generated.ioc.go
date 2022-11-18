@@ -12,7 +12,7 @@ import (
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	defs "github.com/zhanjunjie2019/clover/global/defs"
+	"github.com/zhanjunjie2019/clover/global/defs"
 	"gorm.io/gorm"
 )
 
@@ -64,30 +64,40 @@ func init() {
 }
 
 type tenantApp_ struct {
-	SetGormDB_    func(db *gorm.DB)
-	TenantCreate_ func(ctx contextx.Context, tenantID, tenantName, redirect string) (tid, secretKey string, err error)
-	TenantInit_   func(ctx contextx.Context, tenantID string) (err error)
+	SetGormDB_         func(db *gorm.DB)
+	TenantCreate_      func(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL, refreshTTL uint64) (tid, secretKey string, err error)
+	TenantInit_        func(ctx contextx.Context, tenantID string) (err error)
+	TenantTokenCreate_ func(ctx contextx.Context, tenantID, secretKey string, accessTokenExpTime, refreshTokenExpTime int64) (accessToken, refreshToken string, accessTokenExpirationTime, refreshTokenExpirationTime int64, err error)
 }
 
 func (t *tenantApp_) SetGormDB(db *gorm.DB) {
 	t.SetGormDB_(db)
 }
 
-func (t *tenantApp_) TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string) (tid, secretKey string, err error) {
-	return t.TenantCreate_(ctx, tenantID, tenantName, redirect)
+func (t *tenantApp_) TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL, refreshTTL uint64) (tid, secretKey string, err error) {
+	return t.TenantCreate_(ctx, tenantID, tenantName, redirect, accessTTL, refreshTTL)
 }
 
 func (t *tenantApp_) TenantInit(ctx contextx.Context, tenantID string) (err error) {
 	return t.TenantInit_(ctx, tenantID)
 }
 
+func (t *tenantApp_) TenantTokenCreate(ctx contextx.Context, tenantID, secretKey string, accessTokenExpTime, refreshTokenExpTime int64) (accessToken, refreshToken string, accessTokenExpirationTime, refreshTokenExpirationTime int64, err error) {
+	return t.TenantTokenCreate_(ctx, tenantID, secretKey, accessTokenExpTime, refreshTokenExpTime)
+}
+
 type userApp_ struct {
 	SetGormDB_             func(db *gorm.DB)
+	UserCreate_            func(ctx contextx.Context, userName, password string) (id defs.ID, err error)
 	UserAuthorizationCode_ func(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error)
 }
 
 func (u *userApp_) SetGormDB(db *gorm.DB) {
 	u.SetGormDB_(db)
+}
+
+func (u *userApp_) UserCreate(ctx contextx.Context, userName, password string) (id defs.ID, err error) {
+	return u.UserCreate_(ctx, userName, password)
 }
 
 func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error) {
@@ -96,12 +106,14 @@ func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, userName, passwor
 
 type TenantAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
-	TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string) (tid, secretKey string, err error)
+	TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL, refreshTTL uint64) (tid, secretKey string, err error)
 	TenantInit(ctx contextx.Context, tenantID string) (err error)
+	TenantTokenCreate(ctx contextx.Context, tenantID, secretKey string, accessTokenExpTime, refreshTokenExpTime int64) (accessToken, refreshToken string, accessTokenExpirationTime, refreshTokenExpirationTime int64, err error)
 }
 
 type UserAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
+	UserCreate(ctx contextx.Context, userName, password string) (id defs.ID, err error)
 	UserAuthorizationCode(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error)
 }
 

@@ -60,4 +60,8 @@ type TenantValue struct {
 	SecretKey string
 	// RedirectUrl 授权码重定向路径
 	RedirectUrl string
+	// AccessTokenTimeLimit 访问Token有效时限
+	AccessTokenTimeLimit uint64
+	// RefreshTokenTimeLimit 刷新Token有效时限
+	RefreshTokenTimeLimit uint64
 }

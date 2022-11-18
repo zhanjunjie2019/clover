@@ -3,6 +3,7 @@ package gatewayimpl
 import (
 	"context"
 	"encoding/json"
+	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/nsqd"
 	"github.com/zhanjunjie2019/clover/share/auth/dto"
 	"github.com/zhanjunjie2019/clover/share/auth/topic"
@@ -32,7 +33,7 @@ func (t *TenantGateway) FindByTenantID(ctx context.Context, tenantID string) (te
 	return
 }
 
-func (t *TenantGateway) Save(ctx context.Context, tenant model.Tenant) error {
+func (t *TenantGateway) Save(ctx context.Context, tenant model.Tenant) (defs.ID, error) {
 	return t.TenantRepo.Save(ctx, convs.TenantDOToPO(tenant))
 }
 

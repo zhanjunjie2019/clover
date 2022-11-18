@@ -12,4 +12,8 @@ type Tenant struct {
 	SecretKey string `json:"secretKey" gorm:"column:secret_key;comment:租户密钥;size:64;"`
 	// RedirectUrl 授权码定向路径
 	RedirectUrl string `json:"redirectUrl" gorm:"column:redirect_url;comment:授权码定向路径;size:512;"`
+	// AccessTokenTimeLimit 访问Token有效时限
+	AccessTokenTimeLimit uint64 `json:"accessTokenTimeLimit" gorm:"column:access_token_time_timit;comment:访问Token有效时限;"`
+	// RefreshTokenTimeLimit 刷新Token有效时限
+	RefreshTokenTimeLimit uint64 `json:"refreshTokenTimeLimit" gorm:"column:refresh_token_time_timit;comment:刷新Token有效时限;"`
 }

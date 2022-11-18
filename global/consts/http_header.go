@@ -3,6 +3,6 @@ package consts
 const (
 	TraceIDHeaderKey     = "Trace-ID"
 	TraceSpanIDHeaderKey = "Trace-Span-ID"
-	AuthHeaderKey        = "Authorization"
+	TokenHeaderKey       = "C-Token"
 	TenantIDHeaderKey    = "Tenant-ID"
 )
