@@ -4,14 +4,15 @@ import (
 	"github.com/alibaba/ioc-golang"
 	"github.com/zhanjunjie2019/clover/core/consumer"
 	"github.com/zhanjunjie2019/clover/core/repo"
+	"github.com/zhanjunjie2019/clover/core/scheduler"
 	"github.com/zhanjunjie2019/clover/core/web"
 	"github.com/zhanjunjie2019/clover/global/config"
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/logs"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
-	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/adapter/consumer"
-	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/adapter/controller"
-	_ "github.com/zhanjunjie2019/clover/starter-auth/docs"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/consumer"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/scheduler"
+	_ "github.com/zhanjunjie2019/clover/starter-example/docs"
 )
 
 //go:generate go env -w GO111MODULE=on
@@ -19,10 +20,10 @@ import (
 //go:generate go mod tidy
 //go:generate go mod download
 
-// @Title       clover-auth-api
+// @Title       clover-example-api
 // @Version     v1.0.0
-// @Description clover-auth接口文档
-// @BasePath    /auth
+// @Description clover-example接口文档
+// @BasePath    /example
 // @SecurityDefinitions.Apikey ApiKeyAuth
 // @In header
 // @Name C-Token
@@ -43,11 +44,12 @@ func main() {
 // +ioc:autowire:type=singleton
 
 type Starter struct {
-	ConsumerServer consumer.ServerIOCInterface             `singleton:""`
-	WebServer      web.ServerIOCInterface                  `singleton:""`
-	RepoDBFactory  repo.RepoDBFactoryIOCInterface          `singleton:""`
-	OpenTelemetry  opentelemetry.OpenTelemetryIOCInterface `singleton:""`
-	ConfigDefines  config.ConfigDefinesIOCInterface        `singleton:""`
+	SchedulerServer scheduler.ServerIOCInterface            `singleton:""`
+	ConsumerServer  consumer.ServerIOCInterface             `singleton:""`
+	WebServer       web.ServerIOCInterface                  `singleton:""`
+	RepoDBFactory   repo.RepoDBFactoryIOCInterface          `singleton:""`
+	OpenTelemetry   opentelemetry.OpenTelemetryIOCInterface `singleton:""`
+	ConfigDefines   config.ConfigDefinesIOCInterface        `singleton:""`
 }
 
 func (s *Starter) Run() error {
@@ -61,6 +63,8 @@ func (s *Starter) Run() error {
 	errs.Panic(s.OpenTelemetry.InitProvider())
 	// 初始化数据库连接
 	errs.Panic(s.RepoDBFactory.Initialization())
+	// 启动定时任务调度
+	errs.Panic(s.SchedulerServer.SchedulersStart())
 	// 启动NSQ消息队列监听
 	errs.Panic(s.ConsumerServer.ConsumersStart())
 	// 启动HTTP请求监听

@@ -13,7 +13,7 @@ type SecondScheduler struct {
 }
 
 func (s *SecondScheduler) GetTaskTypeCode() string {
-	return "auth.SecondScheduler"
+	return "example.SecondScheduler"
 }
 
 func (s *SecondScheduler) GetSpec() string {

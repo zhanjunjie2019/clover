@@ -35,7 +35,7 @@
 | 变量名                     | 定义                     | 示例                             |
 |-------------------------|------------------------|--------------------------------|
 | SVC_MODE                | 服务模式,1正式2测试            | 2                              |
-| SVC_NAME                | 服务部署名                  | clover-tenant                  |
+| SVC_NAME                | 服务部署名                  | clover-example                 |
 | SVC_NUM                 | 服务实例序号                 | 1                              |
 | SVC_PORT                | 服务端口号                  | 8900                           |
 | SVC_VERSION             | 服务版本号                  | v1.0.0                         |
@@ -79,6 +79,7 @@ swag init --pd
 | nsqlookupd      | 4160/4161                 | 无                                                                                    |
 | nsqd            | 4150/4151                 | 无                                                                                    |
 | nsqadmin        | 4171                      | [http://127.0.0.1:4171/](http://127.0.0.1:4171/)                                     |
+| clover-example  | 8700                      | [http://127.0.0.1:8700/swagger/index.html](http://127.0.0.1:8700/swagger/index.html) |
 | clover-auth     | 8900                      | [http://127.0.0.1:8900/swagger/index.html](http://127.0.0.1:8900/swagger/index.html) |
 
 ## 开发时本地运行设置
