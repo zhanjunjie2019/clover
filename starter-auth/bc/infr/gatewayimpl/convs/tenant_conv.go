@@ -8,9 +8,10 @@ import (
 
 func TenantPOToDO(po po.Tenant) model.Tenant {
 	return model.NewTenant(po.ID, model.TenantValue{
-		TenantID:   po.TenantID,
-		TenantName: po.TenantName,
-		SecretKey:  po.SecretKey,
+		TenantID:    po.TenantID,
+		TenantName:  po.TenantName,
+		SecretKey:   po.SecretKey,
+		RedirectUrl: po.RedirectUrl,
 	})
 }
 
@@ -20,8 +21,9 @@ func TenantDOToPO(do model.Tenant) po.Tenant {
 		ModelPO: defs.ModelPO{
 			ID: do.ID(),
 		},
-		TenantID:   value.TenantID,
-		TenantName: value.TenantName,
-		SecretKey:  value.SecretKey,
+		TenantID:    value.TenantID,
+		TenantName:  value.TenantName,
+		SecretKey:   value.SecretKey,
+		RedirectUrl: value.RedirectUrl,
 	}
 }

@@ -27,7 +27,7 @@ func (t *TenantApp) SetGormDB(db *gorm.DB) {
 	t.DB = db
 }
 
-func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName string) (tid, secretKey string, err error) {
+func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redirect string) (tid, secretKey string, err error) {
 	ctx = uctx.WithValueAppDB(ctx, t.DB)
 	if len(tenantID) == 0 {
 		tid = utils.UUID()
@@ -44,8 +44,9 @@ func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName strin
 		return
 	}
 	tenant := model.NewTenant(0, model.TenantValue{
-		TenantID:   tenantID,
-		TenantName: tenantName,
+		TenantID:    tenantID,
+		TenantName:  tenantName,
+		RedirectUrl: redirect,
 	})
 	tenant.GenerateSecretKey()
 	err = t.TenantGateway.Save(ctx, tenant)

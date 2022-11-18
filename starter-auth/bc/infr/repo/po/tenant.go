@@ -10,4 +10,6 @@ type Tenant struct {
 	TenantName string `json:"tenantName" gorm:"column:tenant_name;comment:租户名;size:64;"`
 	// SecretKey 租户密钥
 	SecretKey string `json:"secretKey" gorm:"column:secret_key;comment:租户密钥;size:64;"`
+	// RedirectUrl 授权码定向路径
+	RedirectUrl string `json:"redirectUrl" gorm:"column:redirect_url;comment:授权码定向路径;size:512;"`
 }

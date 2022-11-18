@@ -28,7 +28,7 @@ func (u *UserAuthorizationCodeController) GetOption() defs.ControllerOption {
 
 // Handle 用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口
 // @Tags auth
-// @Summary 用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口
+// @Summary 登录验证用户账号密码，验证通过后在Redis保存一个授权码60秒有效，关联用户信息。用以可以用授权码接口换取登录Token。
 // @accept application/json
 // @Produce application/json
 // @Param "Tenant-ID" header string true "租户ID"

@@ -58,4 +58,6 @@ type TenantValue struct {
 	TenantName string
 	// SecretKey 租户密钥
 	SecretKey string
+	// RedirectUrl 授权码重定向路径
+	RedirectUrl string
 }

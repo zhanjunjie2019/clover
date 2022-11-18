@@ -65,7 +65,7 @@ func init() {
 
 type tenantApp_ struct {
 	SetGormDB_    func(db *gorm.DB)
-	TenantCreate_ func(ctx contextx.Context, tenantID, tenantName string) (tid, secretKey string, err error)
+	TenantCreate_ func(ctx contextx.Context, tenantID, tenantName, redirect string) (tid, secretKey string, err error)
 	TenantInit_   func(ctx contextx.Context, tenantID string) (err error)
 }
 
@@ -73,8 +73,8 @@ func (t *tenantApp_) SetGormDB(db *gorm.DB) {
 	t.SetGormDB_(db)
 }
 
-func (t *tenantApp_) TenantCreate(ctx contextx.Context, tenantID, tenantName string) (tid, secretKey string, err error) {
-	return t.TenantCreate_(ctx, tenantID, tenantName)
+func (t *tenantApp_) TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string) (tid, secretKey string, err error) {
+	return t.TenantCreate_(ctx, tenantID, tenantName, redirect)
 }
 
 func (t *tenantApp_) TenantInit(ctx contextx.Context, tenantID string) (err error) {
@@ -96,7 +96,7 @@ func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, userName, passwor
 
 type TenantAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
-	TenantCreate(ctx contextx.Context, tenantID, tenantName string) (tid, secretKey string, err error)
+	TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string) (tid, secretKey string, err error)
 	TenantInit(ctx contextx.Context, tenantID string) (err error)
 }
 

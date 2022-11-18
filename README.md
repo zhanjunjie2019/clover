@@ -1,6 +1,9 @@
 # Clover
 
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![GitHub](https://img.shields.io/github/license/zhanjunjie2019/clover)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![GitHub go.mod Go version (branch)](https://img.shields.io/github/go-mod/go-version/zhanjunjie2019/clover/master)](https://github.com/golang/go.git)
+[![CodeQL](https://github.com/zhanjunjie2019/clover/actions/workflows/codeql.yml/badge.svg)](https://github.com/zhanjunjie2019/clover/actions/workflows/codeql.yml)
+[![Codacy Security Scan](https://github.com/zhanjunjie2019/clover/actions/workflows/codacy.yml/badge.svg)](https://github.com/zhanjunjie2019/clover/actions/workflows/codacy.yml)
 
 基于领域驱动设计思想，支持微服务的快速开发框架和系统架构。
 代码分层参考[alibaba/COLA](https://github.com/alibaba/COLA)的设计。

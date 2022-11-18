@@ -5,6 +5,8 @@ type TenantCreateReqVO struct {
 	TenantID string `json:"tenantID"`
 	// 租户名
 	TenantName string `json:"tenantName" validate:"required"`
+	// 授权码重定向路径，非必要
+	RedirectUrl string `json:"redirectUrl"`
 }
 
 type TenantCreateRspVO struct {
