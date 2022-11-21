@@ -4,6 +4,7 @@ services:
   nsqlookupd:
     image: "nsqio/nsq"
     container_name: 'nsqlookupd'
+    restart: always
     command: "/nsqlookupd"
     ports:
       - "4160:4160"
@@ -14,6 +15,7 @@ services:
   nsqd:
     image: "nsqio/nsq"
     container_name: 'nsqd'
+    restart: always
     command: "/nsqd --lookupd-tcp-address=nsqlookupd:4160 --broadcast-address=nsqd"
     depends_on:
       - nsqlookupd
@@ -26,6 +28,7 @@ services:
   nsqadmin:
     image: "nsqio/nsq"
     container_name: 'nsqadmin'
+    restart: always
     command: "/nsqadmin --lookupd-http-address=nsqlookupd:4161"
     depends_on:
       - nsqlookupd

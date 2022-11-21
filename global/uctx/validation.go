@@ -22,3 +22,17 @@ func ShouldBindJSON(c *gin.Context, obj any) (ctx context.Context, err error) {
 	ctx = GetSpanContext(c)
 	return
 }
+
+// ShouldBindQuery 解析并验证请求query参数，返回链路span上下文
+func ShouldBindQuery(c *gin.Context, obj any) (ctx context.Context, err error) {
+	err = c.ShouldBindQuery(obj)
+	if err != nil {
+		return c, errs.ReqParamsErr
+	}
+	err = validate.Struct(obj)
+	if err != nil {
+		return c, errs.ReqParamsErr
+	}
+	ctx = GetSpanContext(c)
+	return
+}
