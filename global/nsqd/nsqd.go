@@ -2,7 +2,7 @@ package nsqd
 
 import (
 	"context"
-	"github.com/golang/protobuf/proto"
+	"github.com/gogo/protobuf/proto"
 	"github.com/nsqio/go-nsq"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
@@ -71,11 +71,11 @@ type messageHandler struct {
 	consumer defs.IConsumer
 }
 
-func (m *messageHandler) HandleMessage(message *nsq.Message) error {
+func (m *messageHandler) HandleMessage(message *nsq.Message) (err error) {
 	layout := defs.NewLogLayout(zapcore.InfoLevel)
 
 	var pb protobuf.NsqMessage
-	err := proto.Unmarshal(message.Body, &pb)
+	err = proto.Unmarshal(message.Body, &pb)
 	if err != nil {
 		layout.Error("消息监听错误"+err.Error(), zap.Error(err))
 		return err
@@ -89,7 +89,6 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 	}
 	ctx = m.provider.GetCtx(ctx, pb.TraceId, pb.TraceSpanID)
 	ctx, span := m.provider.Start(ctx, "Consumer "+m.consumer.GetTopic())
-	defer span.End()
 	start := time.Now()
 	defer func() {
 		// 异常日志处理
@@ -97,6 +96,12 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) error {
 			buf := make([]byte, 1<<12)
 			runtime.Stack(buf, false)
 			layout.Error("消息监听故障：" + string(buf))
+			span.RecordError(err)
+		} else if err != nil {
+			layout.Error("消息监听故障："+err.Error(), zap.Error(err))
+			span.RecordError(err)
+		} else {
+			span.End()
 		}
 		layout.AppendLogsFields(
 			zap.Int64("rt", time.Since(start).Milliseconds()),

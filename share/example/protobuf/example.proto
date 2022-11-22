@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package protobuf;
+
+message ExampleDTO {
+  // 姓
+  string FirstName = 1;
+  // 名
+  string LastName = 2;
+}

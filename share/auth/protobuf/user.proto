@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package protobuf;
+
+message UserAuthorizationCode{
+  // 租户ID
+  string TenantID = 1;
+  // 用户ID
+  uint64 UserID = 2;
+  // 用户名
+  string UserName = 3;
+}

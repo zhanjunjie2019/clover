@@ -12,7 +12,7 @@ import (
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	"github.com/zhanjunjie2019/clover/global/defs"
-	"github.com/zhanjunjie2019/clover/share/auth/dto"
+	"github.com/zhanjunjie2019/clover/share/auth/protobuf"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
 )
 
@@ -52,7 +52,7 @@ func init() {
 type tenantGateway_ struct {
 	FindByTenantID_            func(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save_                      func(ctx contextx.Context, tenant model.Tenant) (defs.ID, error)
-	PublishInitEvent_          func(ctx contextx.Context, dto dto.TenantInitEventDTO) error
+	PublishInitEvent_          func(ctx contextx.Context, dto protobuf.TenantInitEventDTO) error
 	TenantTablesManualMigrate_ func(ctx contextx.Context) (err error)
 }
 
@@ -64,7 +64,7 @@ func (t *tenantGateway_) Save(ctx contextx.Context, tenant model.Tenant) (defs.I
 	return t.Save_(ctx, tenant)
 }
 
-func (t *tenantGateway_) PublishInitEvent(ctx contextx.Context, dto dto.TenantInitEventDTO) error {
+func (t *tenantGateway_) PublishInitEvent(ctx contextx.Context, dto protobuf.TenantInitEventDTO) error {
 	return t.PublishInitEvent_(ctx, dto)
 }
 
@@ -88,7 +88,7 @@ func (u *userGateway_) FindByUserName(ctx contextx.Context, userName string) (us
 type TenantGatewayIOCInterface interface {
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save(ctx contextx.Context, tenant model.Tenant) (defs.ID, error)
-	PublishInitEvent(ctx contextx.Context, dto dto.TenantInitEventDTO) error
+	PublishInitEvent(ctx contextx.Context, dto protobuf.TenantInitEventDTO) error
 	TenantTablesManualMigrate(ctx contextx.Context) (err error)
 }
 

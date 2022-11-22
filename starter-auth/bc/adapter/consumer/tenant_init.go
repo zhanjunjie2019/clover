@@ -2,8 +2,8 @@ package consumer
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/zhanjunjie2019/clover/share/auth/dto"
+	"github.com/gogo/protobuf/proto"
+	"github.com/zhanjunjie2019/clover/share/auth/protobuf"
 	"github.com/zhanjunjie2019/clover/share/auth/topic"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/app"
 )
@@ -21,8 +21,8 @@ func (t *TenantInitConsumer) GetTopic() string {
 }
 
 func (t *TenantInitConsumer) HandleMessage(ctx context.Context, bytes []byte) error {
-	var dto dto.TenantInitEventDTO
-	err := json.Unmarshal(bytes, &dto)
+	var dto protobuf.TenantInitEventDTO
+	err := proto.Unmarshal(bytes, &dto)
 	if err != nil {
 		return err
 	}

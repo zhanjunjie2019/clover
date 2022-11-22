@@ -30,15 +30,15 @@ func (i ID) String() string {
 
 type ModelPO struct {
 	// 主键，默认自增长
-	ID ID `json:"id" gorm:"primarykey"`
+	ID ID `gorm:"primarykey"`
 	// 乐观锁
-	Revision uint64 `json:"-" gorm:"column:revision;comment:乐观锁;size:64;"`
+	Revision uint64 `gorm:"column:revision;comment:乐观锁;size:64;"`
 	// 创建时间戳
-	CreatedAt uint64 `json:"createdAt" gorm:"autoCreateTime:milli"`
+	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
 	// 修改时间戳
-	UpdatedAt uint64 `json:"updatedAt" gorm:"autoUpdateTime:milli"`
+	UpdatedAt uint64 `gorm:"autoUpdateTime:milli"`
 	// 删除标识符
-	DeletedAt gorm.DeletedAt `json:"-" gorm:"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 func (m *ModelPO) BeforeCreate(tx *gorm.DB) (err error) {

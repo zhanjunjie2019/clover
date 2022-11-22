@@ -11,6 +11,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/logs"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/consumer"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/controller"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/scheduler"
 	_ "github.com/zhanjunjie2019/clover/starter-example/docs"
 )

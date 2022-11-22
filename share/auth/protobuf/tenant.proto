@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package protobuf;
+
+message TenantInitEventDTO {
+  // 租户ID
+  string TenantID = 1;
+  // 租户名
+  string TenantName = 2;
+}

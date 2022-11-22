@@ -20,7 +20,7 @@ type Tenant interface {
 	// FullValue 核心数据
 	FullValue() TenantValue
 	// GenerateSecretKey 生成密钥
-	GenerateSecretKey()
+	GenerateSecretKey() string
 	// VerifySecretKey 验证密钥
 	VerifySecretKey(sk string) bool
 }
@@ -38,10 +38,11 @@ func (t tenant) FullValue() TenantValue {
 	return t.value
 }
 
-func (t *tenant) GenerateSecretKey() {
+func (t *tenant) GenerateSecretKey() string {
 	if len(t.value.SecretKey) == 0 {
 		t.value.SecretKey = utils.UUID()
 	}
+	return t.value.SecretKey
 }
 
 func (t tenant) VerifySecretKey(sk string) bool {
