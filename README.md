@@ -1,7 +1,7 @@
 # Clover
 
 <div align=center>
-<img src="./icon.svg" width =100 height =100 />
+<img src="./icon.png" />
 
 [![GitHub](https://img.shields.io/github/license/zhanjunjie2019/clover)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![GitHub go.mod Go version (branch)](https://img.shields.io/github/go-mod/go-version/zhanjunjie2019/clover/master)](https://github.com/golang/go.git)
