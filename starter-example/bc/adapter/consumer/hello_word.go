@@ -8,6 +8,10 @@ import (
 	"github.com/zhanjunjie2019/clover/share/example/topic"
 )
 
+// +ioc:autowire=true
+// +ioc:autowire:type=allimpls
+// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IConsumer
+
 type HelloWordConsumer struct {
 }
 

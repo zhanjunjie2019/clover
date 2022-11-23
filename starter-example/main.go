@@ -30,14 +30,14 @@ import (
 // @Name C-Token
 
 func main() {
-	// 加载依赖注入
+	// 加载依赖注入，必须
 	errs.Panic(ioc.Load())
 
-	// 获取starter实例
+	// 获取starter实例，必须
 	starter, err := GetStarterSingleton()
 	errs.Panic(err)
 
-	// 运行starter
+	// 运行starter，必须
 	errs.Panic(starter.Run())
 }
 
@@ -54,20 +54,20 @@ type Starter struct {
 }
 
 func (s *Starter) Run() error {
-	// 加载本地配置
+	// 加载本地配置，必须
 	errs.Panic(s.ConfigDefines.LoadAllConfigByLocal())
-	// 初始化日志组件
+	// 初始化日志组件，必须
 	errs.Panic(logs.InitLogger())
-	// 加载远程配置
+	// 加载远程配置，非必须
 	errs.Panic(s.ConfigDefines.LoadAllConfigByConsul())
-	// 初始化遥感链路追踪
+	// 初始化遥感链路追踪，非必须
 	errs.Panic(s.OpenTelemetry.InitProvider())
-	// 初始化数据库连接
+	// 初始化数据库连接，非必须
 	errs.Panic(s.RepoDBFactory.Initialization())
-	// 启动定时任务调度
+	// 启动定时任务调度，非必须
 	errs.Panic(s.SchedulerServer.SchedulersStart())
-	// 启动NSQ消息队列监听
+	// 启动NSQ消息队列监听，非必须
 	errs.Panic(s.ConsumerServer.ConsumersStart())
-	// 启动HTTP请求监听
+	// 启动HTTP请求监听，必须
 	return s.WebServer.RunServer()
 }
