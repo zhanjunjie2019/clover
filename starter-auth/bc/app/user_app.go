@@ -13,6 +13,7 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/bcconsts"
+	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl"
 	"gorm.io/gorm"
 	"time"
 )

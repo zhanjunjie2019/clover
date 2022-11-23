@@ -8,6 +8,7 @@ import (
 	"github.com/zhanjunjie2019/clover/share/example/protobuf"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/domain/model"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/infr/gatewayimpl"
 	"gorm.io/gorm"
 )
 

@@ -13,9 +13,9 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/swaggo/swag v1.8.7
-	github.com/zhanjunjie2019/clover/core v0.0.0-20221117082526-cf9f91f74a29
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221121071245-9ed1da1d9a0f
-	github.com/zhanjunjie2019/clover/share v0.0.0-20221117082526-cf9f91f74a29
+	github.com/zhanjunjie2019/clover/core v0.0.0-20221122093237-46a09eeb2fe6
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221122093237-46a09eeb2fe6
+	github.com/zhanjunjie2019/clover/share v0.0.0-20221122093237-46a09eeb2fe6
 	gorm.io/gorm v1.24.2
 )
 

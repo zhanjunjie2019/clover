@@ -1278,6 +1278,12 @@ github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5t
 github.com/yusufpapurcu/wmi v1.2.2 h1:KBNDSne4vP5mbSWnJbO+51IMOXJB67QiYCSBrubbPRg=
 github.com/yusufpapurcu/wmi v1.2.2/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQmPyzfmi0=
 github.com/zenazn/goji v0.9.0/go.mod h1:7S9M489iMyHBNxwZnk9/EHS098H4/F6TATF2mIxtB1Q=
+github.com/zhanjunjie2019/clover/core v0.0.0-20221122093237-46a09eeb2fe6 h1:+VBHt7FXMJWyWXlttKNUg1FQA52rBsKYJCo5FpIIWxc=
+github.com/zhanjunjie2019/clover/core v0.0.0-20221122093237-46a09eeb2fe6/go.mod h1:M28i5q9ZRr+Y+1CrpwGfaWLJd0Go3n7UroAoxYdGKR4=
+github.com/zhanjunjie2019/clover/global v0.0.0-20221122093237-46a09eeb2fe6 h1:ibtQQ3w5I3+sjbjAyJLhcq8qJEKpBgGMfwiiUk5MZy4=
+github.com/zhanjunjie2019/clover/global v0.0.0-20221122093237-46a09eeb2fe6/go.mod h1:i9aPiRDgtpohWJXFB6Uk8THOsXeXokMiVC3UnwwWiE8=
+github.com/zhanjunjie2019/clover/share v0.0.0-20221122093237-46a09eeb2fe6 h1:L7uEFq1SSwtLG5a6AOr8ro+s3HNAG+sUnWOTVoldy2I=
+github.com/zhanjunjie2019/clover/share v0.0.0-20221122093237-46a09eeb2fe6/go.mod h1:E/tYmB8JGY/9MwlrMmpHW8LvBuFcslwS4f1GB5Ksn6U=
 github.com/zouyx/agollo/v3 v3.4.5/go.mod h1:LJr3kDmm23QSW+F1Ol4TMHDa7HvJvscMdVxJ2IpUTVc=
 go-micro.dev/v4 v4.9.0 h1:pd1CpqMT9hA47jSmX8mfdGK865PkMh95Rwj5RdfqPqE=
 go-micro.dev/v4 v4.9.0/go.mod h1:Ju8HrZ5hQSF+QguZ2QUs9Kbe42MHP1tJa/fpP5g07Cs=
