@@ -16,8 +16,8 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/tenant-create": {
-            "post": {
+        "/hellow-word": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],

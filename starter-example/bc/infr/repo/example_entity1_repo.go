@@ -16,7 +16,7 @@ type ExampleEntity1Repo struct {
 }
 
 func (e *ExampleEntity1Repo) AutoMigrate(ctx context.Context) error {
-	return uctx.GetAppDBWithCtx(ctx).AutoMigrate()
+	return uctx.GetAppDBWithCtx(ctx).AutoMigrate(&po.ExampleEntity1{})
 }
 
 func (e *ExampleEntity1Repo) Save(ctx context.Context, entity1 po.ExampleEntity1) (id defs.ID, err error) {

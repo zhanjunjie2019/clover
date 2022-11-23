@@ -33,7 +33,7 @@ func (h *HelloWordController) GetOption() defs.ControllerOption {
 // @Produce application/json
 // @Param data query vo.HelloWordReqVO true "参数描述"
 // @Success 200 {object} response.Response{data=vo.HelloWordRspVO}
-// @Router /tenant-create [post]
+// @Router /hellow-word [get]
 func (h *HelloWordController) Handle(c *gin.Context) {
 	var helloWordReqVO vo.HelloWordReqVO
 	ctx, err := uctx.ShouldBindQuery(c, &helloWordReqVO)

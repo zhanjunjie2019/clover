@@ -23,8 +23,8 @@ info:
   title: clover-example-api
   version: v1.0.0
 paths:
-  /tenant-create:
-    post:
+  /hellow-word:
+    get:
       consumes:
       - application/json
       parameters:

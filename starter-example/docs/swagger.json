@@ -8,8 +8,8 @@
     },
     "basePath": "/example",
     "paths": {
-        "/tenant-create": {
-            "post": {
+        "/hellow-word": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],
