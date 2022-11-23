@@ -35,12 +35,12 @@ func init() {
 }
 
 type exampleGateway_ struct {
-	SaveExample1_        func(ctx contextx.Context, entity1 model.Entity1) (id defs.ID, err error)
+	SaveExampleEntity_   func(ctx contextx.Context, entity model.ExampleEntity) (id defs.ID, err error)
 	PublishEventMessage_ func(ctx contextx.Context, dto protobuf.ExampleDTO) error
 }
 
-func (e *exampleGateway_) SaveExample1(ctx contextx.Context, entity1 model.Entity1) (id defs.ID, err error) {
-	return e.SaveExample1_(ctx, entity1)
+func (e *exampleGateway_) SaveExampleEntity(ctx contextx.Context, entity model.ExampleEntity) (id defs.ID, err error) {
+	return e.SaveExampleEntity_(ctx, entity)
 }
 
 func (e *exampleGateway_) PublishEventMessage(ctx contextx.Context, dto protobuf.ExampleDTO) error {
@@ -48,7 +48,7 @@ func (e *exampleGateway_) PublishEventMessage(ctx contextx.Context, dto protobuf
 }
 
 type ExampleGatewayIOCInterface interface {
-	SaveExample1(ctx contextx.Context, entity1 model.Entity1) (id defs.ID, err error)
+	SaveExampleEntity(ctx contextx.Context, entity model.ExampleEntity) (id defs.ID, err error)
 	PublishEventMessage(ctx contextx.Context, dto protobuf.ExampleDTO) error
 }
 

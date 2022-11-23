@@ -2,7 +2,7 @@ package po
 
 import "github.com/zhanjunjie2019/clover/global/defs"
 
-type ExampleEntity1 struct {
+type ExampleEntity struct {
 	defs.ModelPO
 	// FirstName 姓
 	FirstName string `gorm:"column:first_name;comment:姓;size:64;"`

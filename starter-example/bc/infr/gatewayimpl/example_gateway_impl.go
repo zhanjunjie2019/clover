@@ -16,19 +16,19 @@ import (
 // +ioc:autowire:type=singleton
 
 type ExampleGateway struct {
-	Entity1Repo repo.ExampleEntity1RepoIOCInterface `singleton:""`
-	Entity2Repo repo.ExampleEntity2RepoIOCInterface `singleton:""`
-	NsqProducer nsqd.NsqProducerIOCInterface        `singleton:""`
+	ExampleEntityRepo      repo.ExampleEntityRepoIOCInterface      `singleton:""`
+	ExampleValueObjectRepo repo.ExampleValueObjectRepoIOCInterface `singleton:""`
+	NsqProducer            nsqd.NsqProducerIOCInterface            `singleton:""`
 }
 
-func (e *ExampleGateway) SaveExample1(ctx context.Context, entity1 model.Entity1) (id defs.ID, err error) {
-	entity1PO, entity2PO := convs.Entity1DOToPOWithEntity2(entity1)
-	id, err = e.Entity1Repo.Save(ctx, entity1PO)
+func (e *ExampleGateway) SaveExampleEntity(ctx context.Context, entity model.ExampleEntity) (id defs.ID, err error) {
+	exampleEntity, exampleValueObject := convs.EntityDOToPOWithValueObject(entity)
+	id, err = e.ExampleEntityRepo.Save(ctx, exampleEntity)
 	if err != nil {
 		return
 	}
-	entity2PO.Entity1ID = id
-	_, err = e.Entity2Repo.Save(ctx, entity2PO)
+	exampleValueObject.EntityID = id
+	_, err = e.ExampleValueObjectRepo.Save(ctx, exampleValueObject)
 	return
 }
 

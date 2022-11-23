@@ -8,6 +8,6 @@ import (
 )
 
 type IExampleGateway interface {
-	SaveExample1(ctx context.Context, entity1 model.Entity1) (defs.ID, error)
+	SaveExampleEntity(ctx context.Context, entity model.ExampleEntity) (defs.ID, error)
 	PublishEventMessage(ctx context.Context, dto protobuf.ExampleDTO) error
 }

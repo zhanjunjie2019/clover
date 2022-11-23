@@ -19,12 +19,12 @@ import (
 func init() {
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &exampleEntity1Repo_{}
+			return &exampleEntityRepo_{}
 		},
 	})
-	exampleEntity1RepoStructDescriptor := &autowire.StructDescriptor{
+	exampleEntityRepoStructDescriptor := &autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &ExampleEntity1Repo{}
+			return &ExampleEntityRepo{}
 		},
 		Metadata: map[string]interface{}{
 			"aop": map[string]interface{}{},
@@ -37,16 +37,16 @@ func init() {
 			},
 		},
 	}
-	singleton.RegisterStructDescriptor(exampleEntity1RepoStructDescriptor)
-	allimpls.RegisterStructDescriptor(exampleEntity1RepoStructDescriptor)
+	singleton.RegisterStructDescriptor(exampleEntityRepoStructDescriptor)
+	allimpls.RegisterStructDescriptor(exampleEntityRepoStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &exampleEntity2Repo_{}
+			return &exampleValueObjectRepo_{}
 		},
 	})
-	exampleEntity2RepoStructDescriptor := &autowire.StructDescriptor{
+	exampleValueObjectRepoStructDescriptor := &autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &ExampleEntity2Repo{}
+			return &ExampleValueObjectRepo{}
 		},
 		Metadata: map[string]interface{}{
 			"aop": map[string]interface{}{},
@@ -59,110 +59,110 @@ func init() {
 			},
 		},
 	}
-	singleton.RegisterStructDescriptor(exampleEntity2RepoStructDescriptor)
-	allimpls.RegisterStructDescriptor(exampleEntity2RepoStructDescriptor)
+	singleton.RegisterStructDescriptor(exampleValueObjectRepoStructDescriptor)
+	allimpls.RegisterStructDescriptor(exampleValueObjectRepoStructDescriptor)
 }
 
-type exampleEntity1Repo_ struct {
+type exampleEntityRepo_ struct {
 	AutoMigrate_ func(ctx contextx.Context) error
-	Save_        func(ctx contextx.Context, entity1 po.ExampleEntity1) (id defs.ID, err error)
+	Save_        func(ctx contextx.Context, entity po.ExampleEntity) (id defs.ID, err error)
 }
 
-func (e *exampleEntity1Repo_) AutoMigrate(ctx contextx.Context) error {
+func (e *exampleEntityRepo_) AutoMigrate(ctx contextx.Context) error {
 	return e.AutoMigrate_(ctx)
 }
 
-func (e *exampleEntity1Repo_) Save(ctx contextx.Context, entity1 po.ExampleEntity1) (id defs.ID, err error) {
-	return e.Save_(ctx, entity1)
+func (e *exampleEntityRepo_) Save(ctx contextx.Context, entity po.ExampleEntity) (id defs.ID, err error) {
+	return e.Save_(ctx, entity)
 }
 
-type exampleEntity2Repo_ struct {
+type exampleValueObjectRepo_ struct {
 	AutoMigrate_ func(ctx contextx.Context) error
-	Save_        func(ctx contextx.Context, entity2 po.ExampleEntity2) (id defs.ID, err error)
+	Save_        func(ctx contextx.Context, valueObject po.ExampleValueObject) (id defs.ID, err error)
 }
 
-func (e *exampleEntity2Repo_) AutoMigrate(ctx contextx.Context) error {
+func (e *exampleValueObjectRepo_) AutoMigrate(ctx contextx.Context) error {
 	return e.AutoMigrate_(ctx)
 }
 
-func (e *exampleEntity2Repo_) Save(ctx contextx.Context, entity2 po.ExampleEntity2) (id defs.ID, err error) {
-	return e.Save_(ctx, entity2)
+func (e *exampleValueObjectRepo_) Save(ctx contextx.Context, valueObject po.ExampleValueObject) (id defs.ID, err error) {
+	return e.Save_(ctx, valueObject)
 }
 
-type ExampleEntity1RepoIOCInterface interface {
+type ExampleEntityRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
-	Save(ctx contextx.Context, entity1 po.ExampleEntity1) (id defs.ID, err error)
+	Save(ctx contextx.Context, entity po.ExampleEntity) (id defs.ID, err error)
 }
 
-type ExampleEntity2RepoIOCInterface interface {
+type ExampleValueObjectRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
-	Save(ctx contextx.Context, entity2 po.ExampleEntity2) (id defs.ID, err error)
+	Save(ctx contextx.Context, valueObject po.ExampleValueObject) (id defs.ID, err error)
 }
 
-var _exampleEntity1RepoSDID string
+var _exampleEntityRepoSDID string
 
-func GetExampleEntity1RepoSingleton() (*ExampleEntity1Repo, error) {
-	if _exampleEntity1RepoSDID == "" {
-		_exampleEntity1RepoSDID = util.GetSDIDByStructPtr(new(ExampleEntity1Repo))
+func GetExampleEntityRepoSingleton() (*ExampleEntityRepo, error) {
+	if _exampleEntityRepoSDID == "" {
+		_exampleEntityRepoSDID = util.GetSDIDByStructPtr(new(ExampleEntityRepo))
 	}
-	i, err := singleton.GetImpl(_exampleEntity1RepoSDID, nil)
+	i, err := singleton.GetImpl(_exampleEntityRepoSDID, nil)
 	if err != nil {
 		return nil, err
 	}
-	impl := i.(*ExampleEntity1Repo)
+	impl := i.(*ExampleEntityRepo)
 	return impl, nil
 }
 
-func GetExampleEntity1RepoIOCInterfaceSingleton() (ExampleEntity1RepoIOCInterface, error) {
-	if _exampleEntity1RepoSDID == "" {
-		_exampleEntity1RepoSDID = util.GetSDIDByStructPtr(new(ExampleEntity1Repo))
+func GetExampleEntityRepoIOCInterfaceSingleton() (ExampleEntityRepoIOCInterface, error) {
+	if _exampleEntityRepoSDID == "" {
+		_exampleEntityRepoSDID = util.GetSDIDByStructPtr(new(ExampleEntityRepo))
 	}
-	i, err := singleton.GetImplWithProxy(_exampleEntity1RepoSDID, nil)
+	i, err := singleton.GetImplWithProxy(_exampleEntityRepoSDID, nil)
 	if err != nil {
 		return nil, err
 	}
-	impl := i.(ExampleEntity1RepoIOCInterface)
+	impl := i.(ExampleEntityRepoIOCInterface)
 	return impl, nil
 }
 
-type ThisExampleEntity1Repo struct {
+type ThisExampleEntityRepo struct {
 }
 
-func (t *ThisExampleEntity1Repo) This() ExampleEntity1RepoIOCInterface {
-	thisPtr, _ := GetExampleEntity1RepoIOCInterfaceSingleton()
+func (t *ThisExampleEntityRepo) This() ExampleEntityRepoIOCInterface {
+	thisPtr, _ := GetExampleEntityRepoIOCInterfaceSingleton()
 	return thisPtr
 }
 
-var _exampleEntity2RepoSDID string
+var _exampleValueObjectRepoSDID string
 
-func GetExampleEntity2RepoSingleton() (*ExampleEntity2Repo, error) {
-	if _exampleEntity2RepoSDID == "" {
-		_exampleEntity2RepoSDID = util.GetSDIDByStructPtr(new(ExampleEntity2Repo))
+func GetExampleValueObjectRepoSingleton() (*ExampleValueObjectRepo, error) {
+	if _exampleValueObjectRepoSDID == "" {
+		_exampleValueObjectRepoSDID = util.GetSDIDByStructPtr(new(ExampleValueObjectRepo))
 	}
-	i, err := singleton.GetImpl(_exampleEntity2RepoSDID, nil)
+	i, err := singleton.GetImpl(_exampleValueObjectRepoSDID, nil)
 	if err != nil {
 		return nil, err
 	}
-	impl := i.(*ExampleEntity2Repo)
+	impl := i.(*ExampleValueObjectRepo)
 	return impl, nil
 }
 
-func GetExampleEntity2RepoIOCInterfaceSingleton() (ExampleEntity2RepoIOCInterface, error) {
-	if _exampleEntity2RepoSDID == "" {
-		_exampleEntity2RepoSDID = util.GetSDIDByStructPtr(new(ExampleEntity2Repo))
+func GetExampleValueObjectRepoIOCInterfaceSingleton() (ExampleValueObjectRepoIOCInterface, error) {
+	if _exampleValueObjectRepoSDID == "" {
+		_exampleValueObjectRepoSDID = util.GetSDIDByStructPtr(new(ExampleValueObjectRepo))
 	}
-	i, err := singleton.GetImplWithProxy(_exampleEntity2RepoSDID, nil)
+	i, err := singleton.GetImplWithProxy(_exampleValueObjectRepoSDID, nil)
 	if err != nil {
 		return nil, err
 	}
-	impl := i.(ExampleEntity2RepoIOCInterface)
+	impl := i.(ExampleValueObjectRepoIOCInterface)
 	return impl, nil
 }
 
-type ThisExampleEntity2Repo struct {
+type ThisExampleValueObjectRepo struct {
 }
 
-func (t *ThisExampleEntity2Repo) This() ExampleEntity2RepoIOCInterface {
-	thisPtr, _ := GetExampleEntity2RepoIOCInterfaceSingleton()
+func (t *ThisExampleValueObjectRepo) This() ExampleValueObjectRepoIOCInterface {
+	thisPtr, _ := GetExampleValueObjectRepoIOCInterfaceSingleton()
 	return thisPtr
 }

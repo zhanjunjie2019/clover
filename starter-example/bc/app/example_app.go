@@ -31,14 +31,16 @@ func (e *ExampleApp) ExampleHellowWord(ctx context.Context, firstName, lastName 
 	// 开启事务的tx，传到gateway，还可以开启下级子事务，树形嵌套
 	err = e.DB.Transaction(func(tx *gorm.DB) (err error) {
 		ctx = uctx.WithValueAppDB(ctx, tx)
-		entity1 := model.NewEntity1(0, model.Entity1Value{
+		entity1 := model.NewExampleEntity(0, model.ExampleEntityValue{
 			FirstName: firstName,
 			LastName:  lastName,
 		})
-		entity1.SetEntity2(model.NewEntity2(0, model.Entity2Value{
-			RandomValue: utils.UUID(),
-		}))
-		_, err = e.ExampleGateway.SaveExample1(ctx, entity1)
+		entity1.SetValueObject(model.ExampleValueObject{
+			RandomValue1: utils.UUID(),
+			RandomValue2: utils.UUID(),
+			RandomValue3: utils.UUID(),
+		})
+		_, err = e.ExampleGateway.SaveExampleEntity(ctx, entity1)
 		if err != nil {
 			err = errs.ToUnifiedError(err)
 			return

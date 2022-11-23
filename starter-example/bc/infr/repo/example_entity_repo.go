@@ -12,14 +12,14 @@ import (
 // +ioc:autowire:type=allimpls
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IRepo
 
-type ExampleEntity1Repo struct {
+type ExampleEntityRepo struct {
 }
 
-func (e *ExampleEntity1Repo) AutoMigrate(ctx context.Context) error {
-	return uctx.GetAppDBWithCtx(ctx).AutoMigrate(&po.ExampleEntity1{})
+func (e *ExampleEntityRepo) AutoMigrate(ctx context.Context) error {
+	return uctx.GetAppDBWithCtx(ctx).AutoMigrate(&po.ExampleEntity{})
 }
 
-func (e *ExampleEntity1Repo) Save(ctx context.Context, entity1 po.ExampleEntity1) (id defs.ID, err error) {
-	err = uctx.GetAppDBWithCtx(ctx).Save(&entity1).Error
-	return entity1.ID, err
+func (e *ExampleEntityRepo) Save(ctx context.Context, entity po.ExampleEntity) (id defs.ID, err error) {
+	err = uctx.GetAppDBWithCtx(ctx).Save(&entity).Error
+	return entity.ID, err
 }
