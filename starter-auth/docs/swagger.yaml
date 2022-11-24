@@ -126,6 +126,11 @@ paths:
       consumes:
       - application/json
       parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
       - description: 创建租户
         in: body
         name: data
@@ -144,6 +149,8 @@ paths:
                 data:
                   $ref: '#/definitions/vo.TenantCreateRspVO'
               type: object
+      security:
+      - ApiKeyAuth: []
       summary: 创建租户
       tags:
       - tenant

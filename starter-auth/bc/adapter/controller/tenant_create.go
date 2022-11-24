@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zhanjunjie2019/clover/global/consts"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/response"
 	"github.com/zhanjunjie2019/clover/global/uctx"
@@ -23,14 +24,17 @@ func (t *TenantCreateController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
 		RelativePath: bcconsts.ModuleCode + "/tenant-create",
 		HttpMethod:   http.MethodPost,
+		AuthCode:     consts.SAdminAuth,
 	}
 }
 
 // Handle 创建租户
 // @Tags tenant
 // @Summary 创建租户
+// @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
+// @Param Tenant-ID header string true "租户ID"
 // @Param data body vo.TenantCreateReqVO true "创建租户"
 // @Success 200 {object} response.Response{data=vo.TenantCreateRspVO}
 // @Router /tenant-create [post]

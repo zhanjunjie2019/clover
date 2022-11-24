@@ -1,0 +1,33 @@
+@startuml
+
+participant "starter-admin(超管业务服务)"
+participant "starter-auth(权限中心)"
+database "auth数据库"
+queue "NSQ"
+collections "其他涉及租户的服务"
+
+"starter-admin(超管业务服务)" -> "starter-auth(权限中心)" : \
+创建租户接口
+
+"starter-auth(权限中心)" -> "auth数据库" : \
+生成租户密钥，向数据库保存租户信息
+
+"starter-auth(权限中心)" <- "auth数据库" : \
+返回新增的租户ID
+
+"starter-auth(权限中心)" --> "NSQ" : \
+异步通知其他涉及租户的服务，进行租户初始化
+
+"starter-admin(超管业务服务)" <- "starter-auth(权限中心)" : \
+响应：租户ID及密钥信息
+
+"NSQ" --> "其他涉及租户的服务" : \
+异步通知，租户初始化
+
+"starter-auth(权限中心)" <-- "NSQ" : \
+异步通知，租户初始化
+
+"starter-auth(权限中心)" -> "auth数据库" : \
+创建租户下级的相关表，如：用户表，角色表
+
+@enduml

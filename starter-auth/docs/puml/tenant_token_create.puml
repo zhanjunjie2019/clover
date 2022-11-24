@@ -1,0 +1,9 @@
+@startuml
+
+collections "依赖权限的服务"
+participant "starter-auth(权限中心)"
+
+"依赖权限的服务" -> "starter-auth(权限中心)" : 创建租户Token接口
+
+
+@enduml

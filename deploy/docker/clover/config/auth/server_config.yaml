@@ -25,7 +25,7 @@ logConf:
   # 日志级别
   level: "debug"
   # 输出文件夹
-  director: "../deploy/docker/filebeat/logs"
+  director: "../filebeat/logs"
   # 最大天数
   maxAge: 7
   # 是否输出到控制台

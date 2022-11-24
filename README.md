@@ -89,6 +89,14 @@ swag init --pd
 | clover-example  | 8700                      | 示例项目        | 接口文档：[http://127.0.0.1:8700/swagger/index.html](http://127.0.0.1:8700/swagger/index.html) |
 | clover-auth     | 8900                      | 权限中心        | 接口文档：[http://127.0.0.1:8900/swagger/index.html](http://127.0.0.1:8900/swagger/index.html) |
 
+### redis数据库序号分配
+
+| 序号  | 场景                          |
+|-----|-----------------------------|
+| 0   | livego：直播通道凭证               |
+| 1   | starter-example：示例服务        |
+| 2   | starter-auth：权限中心分布式锁+用户授权码 |
+
 ## 开发时本地运行设置
 
 ### hosts文件，添加host配置

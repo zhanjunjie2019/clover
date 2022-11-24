@@ -1,5 +1,5 @@
 superAdmin:
-  tenantID: Clover
+  tenantID: clover
   secretKey: CloverSecretKeyCloverSecretKey
   accessTokenTimeLimit: 7200
   refreshTokenTimeLimit: 86400

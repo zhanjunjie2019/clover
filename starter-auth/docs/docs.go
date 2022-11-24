@@ -18,6 +18,11 @@ const docTemplate = `{
     "paths": {
         "/tenant-create": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -29,6 +34,13 @@ const docTemplate = `{
                 ],
                 "summary": "创建租户",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "租户ID",
+                        "name": "Tenant-ID",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "创建租户",
                         "name": "data",
