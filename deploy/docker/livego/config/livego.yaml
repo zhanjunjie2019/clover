@@ -1,0 +1,32 @@
+# # Logger level
+# level: info
+
+# # FLV Options
+# flv_archive: false
+# flv_dir: "./tmp"
+# httpflv_addr: ":7001"
+
+# # RTMP Options
+# rtmp_noauth: false
+# rtmp_addr: ":1935"
+# enable_rtmps: true
+# rtmps_cert: server.crt
+# rtmps_key: server.key
+# read_timeout: 10
+# write_timeout: 10
+
+redis_addr: "redis:6379"
+redis_pwd: "clover"
+
+# # HLS Options
+# hls_addr: ":7002"
+#use_hls_https: true
+
+# # API Options
+# api_addr: ":8090"
+server:
+- appname: clover
+  live: true
+  hls: true
+  api: true
+  flv: true

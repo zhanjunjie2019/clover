@@ -7,7 +7,7 @@ redisConfig:
   # redis密码
   password: "clover"
   # redis子库
-  db: 2
+  db: 3
 # jwt配置
 jwtConfig:
   # 签名密钥

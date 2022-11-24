@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  livego:
+    image: "gwuhaolin/livego"
+    restart: always
+    container_name: livego
+    volumes:
+      - './config/livego.yaml:/app/livego.yaml'
+    networks:
+      - custom_net
+    ports:
+      - '8090:8090'
+      - '7001:7001'
+      - '7002:7002'
+      - '1935:1935'
+
+networks:
+  custom_net:
+    external:
+      name: app_net

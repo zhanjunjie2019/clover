@@ -8,6 +8,7 @@ import (
 	"github.com/zhanjunjie2019/clover/share/example/protobuf"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/domain/model"
+	"github.com/zhanjunjie2019/clover/starter-example/bc/infr/configs"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/infr/gatewayimpl"
 	"gorm.io/gorm"
 )
@@ -45,7 +46,9 @@ func (e *ExampleApp) ExampleHellowWord(ctx context.Context, firstName, lastName 
 			err = errs.ToUnifiedError(err)
 			return
 		}
-		greetings = "Hello " + firstName + " " + lastName + "!"
+		// 读取动态配置
+		exampleConfig := configs.GetExampleConfig()
+		greetings = "Hello " + firstName + " " + lastName + "!>" + exampleConfig.Aa.Bb
 		err = e.ExampleGateway.PublishEventMessage(ctx, protobuf.ExampleDTO{
 			FirstName: firstName,
 			LastName:  lastName,

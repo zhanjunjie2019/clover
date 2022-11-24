@@ -12,6 +12,7 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/biserrs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/configs"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl"
 	"gorm.io/gorm"
 	"time"
@@ -33,6 +34,11 @@ func (t *TenantApp) SetGormDB(db *gorm.DB) {
 
 func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redirect string, accessTTL, refreshTTL uint64) (tid, secretKey string, err error) {
 	err = t.DB.Transaction(func(tx *gorm.DB) (err error) {
+		auperAdmin := configs.GetAuthConfig().SuperAdmin
+		if tenantID == auperAdmin.TenantID {
+			err = biserrs.TenantAlreadyExistErr
+			return
+		}
 		ctx = uctx.WithValueAppDB(ctx, tx)
 		if len(tenantID) == 0 {
 			tid = utils.UUID()
@@ -82,15 +88,35 @@ func (t *TenantApp) TenantInit(ctx context.Context, tenantID string) (err error)
 
 func (t *TenantApp) TenantTokenCreate(ctx context.Context, tenantID, secretKey string, accessTokenExpTime, refreshTokenExpTime int64) (accessToken, refreshToken string, accessTokenExpirationTime, refreshTokenExpirationTime int64, err error) {
 	err = t.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
-		tenant, exist, err := t.TenantGateway.FindByTenantID(ctx, tenantID)
-		if err != nil {
-			err = errs.ToUnifiedError(err)
-			return
-		}
-		if !exist {
-			err = biserrs.TenantDoesNotExistErr
-			return
+		var (
+			auperAdmin = configs.GetAuthConfig().SuperAdmin
+			tenant     model.Tenant
+			auths      []string
+		)
+		// 判断是否为超管租户
+		if tenantID == auperAdmin.TenantID {
+			tenant = model.NewTenant(0, model.TenantValue{
+				TenantID:              auperAdmin.TenantID,
+				SecretKey:             auperAdmin.SecretKey,
+				AccessTokenTimeLimit:  auperAdmin.AccessTokenTimeLimit,
+				RefreshTokenTimeLimit: auperAdmin.RefreshTokenTimeLimit,
+			})
+			// 拥有超管资源
+			auths = []string{consts.SAdminAuth}
+		} else {
+			ctx = uctx.WithValueAppDB(ctx, tx)
+			var exist bool
+			tenant, exist, err = t.TenantGateway.FindByTenantID(ctx, tenantID)
+			if err != nil {
+				err = errs.ToUnifiedError(err)
+				return
+			}
+			if !exist {
+				err = biserrs.TenantDoesNotExistErr
+				return
+			}
+			// 拥有普通管理员资源
+			auths = []string{consts.AdminAuth}
 		}
 		if !tenant.VerifySecretKey(secretKey) {
 			err = biserrs.TenantValidationFailedErr
@@ -107,7 +133,7 @@ func (t *TenantApp) TenantTokenCreate(ctx context.Context, tenantID, secretKey s
 		}
 		accessJwtClaims := defs.JwtClaims{
 			TenantID: tenantID,
-			Auths:    []string{consts.AdminAuth},
+			Auths:    auths,
 			RegisteredClaims: jwt.RegisteredClaims{
 				ID:        utils.UUID(),
 				ExpiresAt: &accessExp,
