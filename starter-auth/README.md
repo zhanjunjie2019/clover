@@ -36,23 +36,49 @@
 
 #### 前置条件
 
-超管租户Token
+- 超管租户Token
 
 #### 时序图
+
+![创建租户](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/tenant_create.puml)
 
 ### 获得租户Token
 
 #### 前置条件
 
-超管租户的TenantID+SK 或 普通租户的TenantID+SK
+- 超管租户的TenantID+SK 或 普通租户的TenantID+SK
 
 #### 时序图
 
+![获得租户Token](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/tenant_token_create.puml)
+
 ### 创建用户
+
+#### 前置条件
+
+- 普通租户管理员Token
+
+#### 时序图
+
+![创建用户](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/user_create.puml)
 
 ### 登录获得授权码
 
+#### 前置条件
+
+- 租户已创建，并且用户信息已创建
+
+#### 时序图
+
+![登录获得授权码](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/user_authorization_code.puml)
+
 ### 授权码获得用户Token
+
+#### 前置条件
+
+- 已获得用户授权码
+
+#### 时序图
 
 ## 监听消息队列(Topic)
 

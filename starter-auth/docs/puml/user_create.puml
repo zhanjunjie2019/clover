@@ -5,24 +5,25 @@ participant "starter-auth(权限中心)"
 database "auth数据库"
 
 "依赖权限的服务" -> "starter-auth(权限中心)" : \
-创建租户Token接口
-
-"starter-auth(权限中心)" -> "starter-auth(权限中心)" : \
-验证租户密钥1：超管租户验证
+创建用户接口
 
 "starter-auth(权限中心)" -> "auth数据库" : \
-查询普通租户表
+查询用户信息
 
 "starter-auth(权限中心)" <- "auth数据库" : \
-返回普通租户信息
+返回用户信息
 
 "starter-auth(权限中心)" -> "starter-auth(权限中心)" : \
-验证租户密钥2：普通租户管理员验证
+验证用户是否存在\n\
+存在则响应：用户已存在
 
-"starter-auth(权限中心)" -> "starter-auth(权限中心)" : \
-生成Token
+"starter-auth(权限中心)" -> "auth数据库" : \
+新增用户信息
+
+"starter-auth(权限中心)" <- "auth数据库" : \
+返回用户ID
 
 "依赖权限的服务" <- "starter-auth(权限中心)" : \
-响应租户Token
+响应用户ID
 
 @enduml
