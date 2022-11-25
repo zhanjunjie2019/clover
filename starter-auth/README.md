@@ -2,6 +2,10 @@
 
 租户权限中心服务
 
+## 领域图
+
+![领域图](http://assets.processon.com/chart_image/63801d2de0b34d37c4690f61.png)
+
 ## 目录结构
 
 - bc --限界上下文
@@ -28,11 +32,11 @@
 
 ## 接口文档
 
-[http://127.0.0.1:8900/swagger/index.html](http://127.0.0.1:8900/swagger/index.html)
+[http://127.0.0.1:8810/swagger/index.html](http://127.0.0.1:8810/swagger/index.html)
 
 ## 核心业务流程
 
-### 创建租户
+### 1.创建租户
 
 #### 前置条件
 
@@ -42,7 +46,7 @@
 
 ![创建租户](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/tenant_create.puml)
 
-### 获得租户Token
+### 2.获得租户Token
 
 #### 前置条件
 
@@ -52,7 +56,7 @@
 
 ![获得租户Token](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/tenant_token_create.puml)
 
-### 创建用户
+### 3.创建用户
 
 #### 前置条件
 
@@ -62,7 +66,7 @@
 
 ![创建用户](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/user_create.puml)
 
-### 登录获得授权码
+### 4.登录获得授权码
 
 #### 前置条件
 
@@ -72,7 +76,7 @@
 
 ![登录获得授权码](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/user_authorization_code.puml)
 
-### 授权码获得用户Token
+### 5.授权码获得用户Token
 
 #### 前置条件
 

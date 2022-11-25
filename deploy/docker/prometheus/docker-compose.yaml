@@ -9,9 +9,8 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - custom_net
+      - app_net
 
 networks:
-  custom_net:
-    external:
-      name: app_net
+  app_net:
+    external: true

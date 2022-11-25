@@ -259,10 +259,6 @@ const docTemplate = `{
                     "description": "授权码重定向路径，非必要",
                     "type": "string"
                 },
-                "refreshTokenTimeLimit": {
-                    "description": "刷新Token有效时限，非必要，默认86400s",
-                    "type": "integer"
-                },
                 "tenantID": {
                     "description": "租户ID，非必要，不传默认则随机生成",
                     "type": "string"
@@ -297,10 +293,6 @@ const docTemplate = `{
                     "description": "访问Token过期时间戳，非必要，不传则按当前时间+戳追加租户设置有效时限",
                     "type": "integer"
                 },
-                "refreshTokenExpirationTime": {
-                    "description": "刷新Token过期时间戳，非必要，不传则按当前时间+戳追加租户设置有效时限",
-                    "type": "integer"
-                },
                 "secretKey": {
                     "description": "租户密钥",
                     "type": "string"
@@ -320,14 +312,6 @@ const docTemplate = `{
                 },
                 "accessTokenExpirationTime": {
                     "description": "访问Token过期时间戳",
-                    "type": "integer"
-                },
-                "refreshToken": {
-                    "description": "刷新Token",
-                    "type": "string"
-                },
-                "refreshTokenExpirationTime": {
-                    "description": "刷新Token过期时间戳",
                     "type": "integer"
                 }
             }

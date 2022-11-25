@@ -15,9 +15,8 @@ services:
       - "13133:13133" # health_check extension
       - "4317:4317"   # OTLP gRPC receiver
     networks:
-      - custom_net
+      - app_net
 
 networks:
-  custom_net:
-    external:
-      name: app_net
+  app_net:
+    external: true

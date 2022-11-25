@@ -20,7 +20,7 @@ services:
     ports:
       - '9432:5432'
     networks:
-      - custom_net
+      - app_net
     volumes:
       - './master:/bitnami/postgresql'
       - './init:/docker-entrypoint-initdb.d'
@@ -46,11 +46,10 @@ services:
     ports:
       - '9433:5432'
     networks:
-      - custom_net
+      - app_net
     volumes:
       - './slave:/bitnami/postgresql'
 
 networks:
-  custom_net:
-   external:
-      name: app_net
+  app_net:
+    external: true

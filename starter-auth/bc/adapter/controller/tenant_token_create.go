@@ -49,23 +49,16 @@ func (t *TenantTokenCreateController) Handle(c *gin.Context) {
 			err = errs.ReqParamsErr
 			pass = false
 		}
-		// token过期时间，要么为0，要么大于当前时间
-		if tenantTokenCreateReqVO.RefreshTokenExpirationTime > 0 && seconds > tenantTokenCreateReqVO.RefreshTokenExpirationTime {
-			err = errs.ReqParamsErr
-			pass = false
-		}
 		if pass {
 			var (
-				accessToken, refreshToken                             string
-				accessTokenExpirationTime, refreshTokenExpirationTime int64
+				accessToken               string
+				accessTokenExpirationTime int64
 			)
-			accessToken, refreshToken, accessTokenExpirationTime, refreshTokenExpirationTime, err = t.TenantApp.TenantTokenCreate(ctx, tenantTokenCreateReqVO.TenantID, tenantTokenCreateReqVO.SecretKey, tenantTokenCreateReqVO.AccessTokenExpirationTime, tenantTokenCreateReqVO.RefreshTokenExpirationTime)
+			accessToken, accessTokenExpirationTime, err = t.TenantApp.TenantTokenCreate(ctx, tenantTokenCreateReqVO.TenantID, tenantTokenCreateReqVO.SecretKey, tenantTokenCreateReqVO.AccessTokenExpirationTime)
 			if err == nil {
 				response.SuccWithDetailed(c, vo.TenantTokenCreateRspVO{
-					AccessToken:                accessToken,
-					AccessTokenExpirationTime:  accessTokenExpirationTime,
-					RefreshToken:               refreshToken,
-					RefreshTokenExpirationTime: refreshTokenExpirationTime,
+					AccessToken:               accessToken,
+					AccessTokenExpirationTime: accessTokenExpirationTime,
 				})
 				return
 			}

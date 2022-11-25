@@ -12,7 +12,6 @@ import (
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	"github.com/zhanjunjie2019/clover/global/defs"
-	"github.com/zhanjunjie2019/clover/share/auth/protobuf"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
 )
 
@@ -52,7 +51,7 @@ func init() {
 type tenantGateway_ struct {
 	FindByTenantID_            func(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save_                      func(ctx contextx.Context, tenant model.Tenant) (defs.ID, error)
-	PublishInitEvent_          func(ctx contextx.Context, dto protobuf.TenantInitEventDTO) error
+	PublishInitEvent_          func(ctx contextx.Context, tenant model.Tenant) error
 	TenantTablesManualMigrate_ func(ctx contextx.Context) (err error)
 }
 
@@ -64,8 +63,8 @@ func (t *tenantGateway_) Save(ctx contextx.Context, tenant model.Tenant) (defs.I
 	return t.Save_(ctx, tenant)
 }
 
-func (t *tenantGateway_) PublishInitEvent(ctx contextx.Context, dto protobuf.TenantInitEventDTO) error {
-	return t.PublishInitEvent_(ctx, dto)
+func (t *tenantGateway_) PublishInitEvent(ctx contextx.Context, tenant model.Tenant) error {
+	return t.PublishInitEvent_(ctx, tenant)
 }
 
 func (t *tenantGateway_) TenantTablesManualMigrate(ctx contextx.Context) (err error) {
@@ -73,8 +72,9 @@ func (t *tenantGateway_) TenantTablesManualMigrate(ctx contextx.Context) (err er
 }
 
 type userGateway_ struct {
-	Save_           func(ctx contextx.Context, user model.User) (defs.ID, error)
-	FindByUserName_ func(ctx contextx.Context, userName string) (user model.User, exist bool, err error)
+	Save_                           func(ctx contextx.Context, user model.User) (defs.ID, error)
+	FindByUserName_                 func(ctx contextx.Context, userName string) (user model.User, exist bool, err error)
+	SaveToCacheByAuthorizationCode_ func(ctx contextx.Context, user model.User) (authorizationCode string, err error)
 }
 
 func (u *userGateway_) Save(ctx contextx.Context, user model.User) (defs.ID, error) {
@@ -85,16 +85,21 @@ func (u *userGateway_) FindByUserName(ctx contextx.Context, userName string) (us
 	return u.FindByUserName_(ctx, userName)
 }
 
+func (u *userGateway_) SaveToCacheByAuthorizationCode(ctx contextx.Context, user model.User) (authorizationCode string, err error) {
+	return u.SaveToCacheByAuthorizationCode_(ctx, user)
+}
+
 type TenantGatewayIOCInterface interface {
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save(ctx contextx.Context, tenant model.Tenant) (defs.ID, error)
-	PublishInitEvent(ctx contextx.Context, dto protobuf.TenantInitEventDTO) error
+	PublishInitEvent(ctx contextx.Context, tenant model.Tenant) error
 	TenantTablesManualMigrate(ctx contextx.Context) (err error)
 }
 
 type UserGatewayIOCInterface interface {
 	Save(ctx contextx.Context, user model.User) (defs.ID, error)
 	FindByUserName(ctx contextx.Context, userName string) (user model.User, exist bool, err error)
+	SaveToCacheByAuthorizationCode(ctx contextx.Context, user model.User) (authorizationCode string, err error)
 }
 
 var _tenantGatewaySDID string

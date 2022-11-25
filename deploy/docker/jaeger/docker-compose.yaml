@@ -20,9 +20,8 @@ services:
       - "16686:16686"
       - "14250:14250"
     networks:
-      - custom_net
+      - app_net
 
 networks:
-  custom_net:
-   external:
-      name: app_net
+  app_net:
+    external: true

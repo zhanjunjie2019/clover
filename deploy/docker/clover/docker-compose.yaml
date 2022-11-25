@@ -8,16 +8,15 @@ services:
     volumes:
       - './config/auth:/go/server/configs'
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8900/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8810/health" ]
       interval: 3s
       timeout: 5s
       retries: 6
     networks:
-      - custom_net
+      - app_net
     ports:
-      - '8900:8900'
+      - '8810:8810'
 
 networks:
-  custom_net:
-    external:
-      name: app_net
+  app_net:
+    external: true

@@ -46,12 +46,9 @@ func (t *TenantCreateController) Handle(c *gin.Context) {
 		if tenantCreateReqVO.AccessTokenTimeLimit == 0 {
 			tenantCreateReqVO.AccessTokenTimeLimit = 7200
 		}
-		if tenantCreateReqVO.RefreshTokenTimeLimit == 0 {
-			tenantCreateReqVO.RefreshTokenTimeLimit = 86400
-		}
 		tid, secretKey, err = t.TenantApp.TenantCreate(ctx,
 			tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName, tenantCreateReqVO.RedirectUrl,
-			tenantCreateReqVO.AccessTokenTimeLimit, tenantCreateReqVO.RefreshTokenTimeLimit,
+			tenantCreateReqVO.AccessTokenTimeLimit,
 		)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.TenantCreateRspVO{

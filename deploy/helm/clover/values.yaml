@@ -7,7 +7,7 @@ auth:
     tag: latest
   replicas: 1
   service:
-    targetPort: 8900
+    targetPort: 8810
     nodePort:
       enabled: true
       port: 30010

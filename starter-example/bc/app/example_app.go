@@ -5,7 +5,6 @@ import (
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/global/utils"
-	"github.com/zhanjunjie2019/clover/share/example/protobuf"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/domain/model"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/infr/configs"
@@ -32,16 +31,22 @@ func (e *ExampleApp) ExampleHellowWord(ctx context.Context, firstName, lastName 
 	// 开启事务的tx，传到gateway，还可以开启下级子事务，树形嵌套
 	err = e.DB.Transaction(func(tx *gorm.DB) (err error) {
 		ctx = uctx.WithValueAppDB(ctx, tx)
-		entity1 := model.NewExampleEntity(0, model.ExampleEntityValue{
+		entity := model.NewExampleEntity(0, model.ExampleEntityValue{
 			FirstName: firstName,
 			LastName:  lastName,
 		})
-		entity1.SetValueObject(model.ExampleValueObject{
+		entity.SetValueObject(model.ExampleValueObject{
 			RandomValue1: utils.UUID(),
 			RandomValue2: utils.UUID(),
 			RandomValue3: utils.UUID(),
 		})
-		_, err = e.ExampleGateway.SaveExampleEntity(ctx, entity1)
+		_, err = e.ExampleGateway.SaveExampleEntity(ctx, entity)
+		if err != nil {
+			err = errs.ToUnifiedError(err)
+			return
+		}
+		// 发送异步通知
+		err = e.ExampleGateway.PublishEventMessage(ctx, entity)
 		if err != nil {
 			err = errs.ToUnifiedError(err)
 			return
@@ -49,14 +54,6 @@ func (e *ExampleApp) ExampleHellowWord(ctx context.Context, firstName, lastName 
 		// 读取动态配置
 		exampleConfig := configs.GetExampleConfig()
 		greetings = "Hello " + firstName + " " + lastName + "!>" + exampleConfig.Aa.Bb
-		err = e.ExampleGateway.PublishEventMessage(ctx, protobuf.ExampleDTO{
-			FirstName: firstName,
-			LastName:  lastName,
-		})
-		if err != nil {
-			err = errs.ToUnifiedError(err)
-			return
-		}
 		return nil
 	})
 	return

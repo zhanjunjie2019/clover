@@ -5,7 +5,7 @@ svcConf:
   # 服务部署名
   svcName: "clover-auth"
   # 服务端口号
-  svcPort: 8900
+  svcPort: 8810
   # 服务实例序号
   svcNum: 1
   # 服务版本号

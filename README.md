@@ -43,7 +43,7 @@
 | SVC_MODE                | 服务模式,1正式2测试            | 2                              |
 | SVC_NAME                | 服务部署名                  | clover-example                 |
 | SVC_NUM                 | 服务实例序号                 | 1                              |
-| SVC_PORT                | 服务端口号                  | 8900                           |
+| SVC_PORT                | 服务端口号                  | 8800                           |
 | SVC_VERSION             | 服务版本号                  | v1.0.0                         |
 | CONSUL_ADDR             | consul服务配置中心路径         | consul:8500                    |
 | CONSUL_REGISTER_TTL     | consul服务注册时限           | 2                              |
@@ -86,8 +86,8 @@ swag init --pd
 | nsqd            | 4150/4151                 | 消息队列引擎      | 无                                                                                         |
 | nsqadmin        | 4171                      | 消息队列管理中心    | [http://127.0.0.1:4171/](http://127.0.0.1:4171/)                                          |
 | livego          | 1935/8090/7001/7002       | 直播视频推拉流中间服务 | 无                                                                                         |
-| clover-example  | 8700                      | 示例项目        | 接口文档：[http://127.0.0.1:8700/swagger/index.html](http://127.0.0.1:8700/swagger/index.html) |
-| clover-auth     | 8900                      | 权限中心        | 接口文档：[http://127.0.0.1:8900/swagger/index.html](http://127.0.0.1:8900/swagger/index.html) |
+| clover-example  | 8800                      | 示例项目        | 接口文档：[http://127.0.0.1:8800/swagger/index.html](http://127.0.0.1:8800/swagger/index.html) |
+| clover-auth     | 8810                      | 权限中心        | 接口文档：[http://127.0.0.1:8810/swagger/index.html](http://127.0.0.1:8810/swagger/index.html) |
 
 ### redis数据库序号分配
 

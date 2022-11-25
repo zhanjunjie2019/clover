@@ -10,7 +10,7 @@ services:
       - "4160:4160"
       - "4161:4161"
     networks:
-      - custom_net
+      - app_net
 
   nsqd:
     image: "nsqio/nsq"
@@ -23,7 +23,7 @@ services:
       - "4150:4150"
       - "4151:4151"
     networks:
-      - custom_net
+      - app_net
 
   nsqadmin:
     image: "nsqio/nsq"
@@ -35,9 +35,8 @@ services:
     ports:
       - "4171:4171"
     networks:
-      - custom_net
+      - app_net
 
 networks:
-  custom_net:
-    external:
-      name: app_net
+  app_net:
+    external: true

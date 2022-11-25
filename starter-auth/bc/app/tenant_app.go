@@ -8,7 +8,6 @@ import (
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/global/utils"
-	"github.com/zhanjunjie2019/clover/share/auth/protobuf"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/biserrs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
@@ -32,7 +31,7 @@ func (t *TenantApp) SetGormDB(db *gorm.DB) {
 	t.DB = db
 }
 
-func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redirect string, accessTTL, refreshTTL uint64) (tid, secretKey string, err error) {
+func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redirect string, accessTTL uint64) (tid, secretKey string, err error) {
 	err = t.DB.Transaction(func(tx *gorm.DB) (err error) {
 		auperAdmin := configs.GetAuthConfig().SuperAdmin
 		if tenantID == auperAdmin.TenantID {
@@ -55,11 +54,10 @@ func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redi
 			return
 		}
 		tenant := model.NewTenant(0, model.TenantValue{
-			TenantID:              tid,
-			TenantName:            tenantName,
-			RedirectUrl:           redirect,
-			AccessTokenTimeLimit:  accessTTL,
-			RefreshTokenTimeLimit: refreshTTL,
+			TenantID:             tid,
+			TenantName:           tenantName,
+			RedirectUrl:          redirect,
+			AccessTokenTimeLimit: accessTTL,
 		})
 		secretKey = tenant.GenerateSecretKey()
 		_, err = t.TenantGateway.Save(ctx, tenant)
@@ -68,10 +66,7 @@ func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redi
 			return
 		}
 		// 发布广播通知租户初始化
-		err = t.TenantGateway.PublishInitEvent(ctx, protobuf.TenantInitEventDTO{
-			TenantID:   tid,
-			TenantName: tenantName,
-		})
+		err = t.TenantGateway.PublishInitEvent(ctx, tenant)
 		if err != nil {
 			err = errs.ToUnifiedError(err)
 			return
@@ -86,23 +81,21 @@ func (t *TenantApp) TenantInit(ctx context.Context, tenantID string) (err error)
 	return t.TenantGateway.TenantTablesManualMigrate(ctx)
 }
 
-func (t *TenantApp) TenantTokenCreate(ctx context.Context, tenantID, secretKey string, accessTokenExpTime, refreshTokenExpTime int64) (accessToken, refreshToken string, accessTokenExpirationTime, refreshTokenExpirationTime int64, err error) {
+func (t *TenantApp) TenantTokenCreate(ctx context.Context, tenantID, secretKey string, accessTokenExpTime int64) (accessToken string, accessTokenExpirationTime int64, err error) {
 	err = t.DB.Transaction(func(tx *gorm.DB) (err error) {
 		var (
 			auperAdmin = configs.GetAuthConfig().SuperAdmin
 			tenant     model.Tenant
-			auths      []string
 		)
 		// 判断是否为超管租户
 		if tenantID == auperAdmin.TenantID {
 			tenant = model.NewTenant(0, model.TenantValue{
-				TenantID:              auperAdmin.TenantID,
-				SecretKey:             auperAdmin.SecretKey,
-				AccessTokenTimeLimit:  auperAdmin.AccessTokenTimeLimit,
-				RefreshTokenTimeLimit: auperAdmin.RefreshTokenTimeLimit,
+				TenantID:             auperAdmin.TenantID,
+				SecretKey:            auperAdmin.SecretKey,
+				AccessTokenTimeLimit: auperAdmin.AccessTokenTimeLimit,
 			})
-			// 拥有超管资源
-			auths = []string{consts.SAdminAuth}
+			// 设置超管许可
+			tenant.SetPermissions([]string{consts.SAdminAuth})
 		} else {
 			ctx = uctx.WithValueAppDB(ctx, tx)
 			var exist bool
@@ -115,8 +108,8 @@ func (t *TenantApp) TenantTokenCreate(ctx context.Context, tenantID, secretKey s
 				err = biserrs.TenantDoesNotExistErr
 				return
 			}
-			// 拥有普通管理员资源
-			auths = []string{consts.AdminAuth}
+			// 设置普通管理员许可
+			tenant.SetPermissions([]string{consts.AdminAuth})
 		}
 		if !tenant.VerifySecretKey(secretKey) {
 			err = biserrs.TenantValidationFailedErr
@@ -133,35 +126,13 @@ func (t *TenantApp) TenantTokenCreate(ctx context.Context, tenantID, secretKey s
 		}
 		accessJwtClaims := defs.JwtClaims{
 			TenantID: tenantID,
-			Auths:    auths,
+			Auths:    tenant.GetPermissions(),
 			RegisteredClaims: jwt.RegisteredClaims{
 				ID:        utils.UUID(),
 				ExpiresAt: &accessExp,
 			},
 		}
 		accessToken, err = uctx.CreateJwtClaimsToken(accessJwtClaims)
-		if err != nil {
-			err = errs.ToUnifiedError(err)
-			return
-		}
-		// 构建refreshToken
-		refreshExp := jwt.NumericDate{}
-		if refreshTokenExpTime > 0 {
-			refreshExp.Time = time.Unix(refreshTokenExpTime, 0)
-			refreshTokenExpirationTime = refreshTokenExpTime
-		} else {
-			refreshExp.Time = time.Now().Add(time.Second * time.Duration(tenant.FullValue().RefreshTokenTimeLimit))
-			refreshTokenExpirationTime = refreshExp.Time.Unix()
-		}
-		refreshJwtClaims := defs.JwtClaims{
-			TenantID: tenantID,
-			Auths:    []string{consts.RefreshAdminAuth},
-			RegisteredClaims: jwt.RegisteredClaims{
-				ID:        utils.UUID(),
-				ExpiresAt: &refreshExp,
-			},
-		}
-		refreshToken, err = uctx.CreateJwtClaimsToken(refreshJwtClaims)
 		if err != nil {
 			err = errs.ToUnifiedError(err)
 			return

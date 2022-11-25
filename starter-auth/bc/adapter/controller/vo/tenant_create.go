@@ -9,8 +9,6 @@ type TenantCreateReqVO struct {
 	RedirectUrl string `json:"redirectUrl"`
 	// 访问Token有效时限，非必要，默认7200s
 	AccessTokenTimeLimit uint64 `json:"AccessTokenTimeLimit"`
-	// 刷新Token有效时限，非必要，默认86400s
-	RefreshTokenTimeLimit uint64 `json:"refreshTokenTimeLimit"`
 }
 
 type TenantCreateRspVO struct {

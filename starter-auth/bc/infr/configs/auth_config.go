@@ -57,6 +57,4 @@ type AuthSuperAdminConfig struct {
 	SecretKey string `yaml:"secretKey"`
 	// AccessTokenTimeLimit 访问Token有效时限
 	AccessTokenTimeLimit uint64 `yaml:"accessTokenTimeLimit"`
-	// RefreshTokenTimeLimit 刷新Token有效时限
-	RefreshTokenTimeLimit uint64 `yaml:"refreshTokenTimeLimit"`
 }

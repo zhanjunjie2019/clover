@@ -12,9 +12,8 @@ services:
       - './config/filebeat.yml:/usr/share/filebeat/filebeat.yml'
       - './logs:/var/logs'
     networks:
-      - custom_net
-      
+      - app_net
+
 networks:
-  custom_net:
-   external:
-      name: app_net
+  app_net:
+    external: true

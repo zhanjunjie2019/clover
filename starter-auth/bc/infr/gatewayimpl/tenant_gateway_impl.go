@@ -37,7 +37,11 @@ func (t *TenantGateway) Save(ctx context.Context, tenant model.Tenant) (defs.ID,
 	return t.TenantRepo.Save(ctx, convs.TenantDOToPO(tenant))
 }
 
-func (t *TenantGateway) PublishInitEvent(ctx context.Context, dto protobuf.TenantInitEventDTO) error {
+func (t *TenantGateway) PublishInitEvent(ctx context.Context, tenant model.Tenant) error {
+	dto := protobuf.TenantInitEventDTO{
+		TenantID:   tenant.FullValue().TenantID,
+		TenantName: tenant.FullValue().TenantName,
+	}
 	bs, err := proto.Marshal(&dto)
 	if err != nil {
 		return err

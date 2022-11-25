@@ -12,7 +12,6 @@ import (
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	"github.com/zhanjunjie2019/clover/global/defs"
-	"github.com/zhanjunjie2019/clover/share/example/protobuf"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/domain/model"
 )
 
@@ -36,20 +35,20 @@ func init() {
 
 type exampleGateway_ struct {
 	SaveExampleEntity_   func(ctx contextx.Context, entity model.ExampleEntity) (id defs.ID, err error)
-	PublishEventMessage_ func(ctx contextx.Context, dto protobuf.ExampleDTO) error
+	PublishEventMessage_ func(ctx contextx.Context, entity model.ExampleEntity) error
 }
 
 func (e *exampleGateway_) SaveExampleEntity(ctx contextx.Context, entity model.ExampleEntity) (id defs.ID, err error) {
 	return e.SaveExampleEntity_(ctx, entity)
 }
 
-func (e *exampleGateway_) PublishEventMessage(ctx contextx.Context, dto protobuf.ExampleDTO) error {
-	return e.PublishEventMessage_(ctx, dto)
+func (e *exampleGateway_) PublishEventMessage(ctx contextx.Context, entity model.ExampleEntity) error {
+	return e.PublishEventMessage_(ctx, entity)
 }
 
 type ExampleGatewayIOCInterface interface {
 	SaveExampleEntity(ctx contextx.Context, entity model.ExampleEntity) (id defs.ID, err error)
-	PublishEventMessage(ctx contextx.Context, dto protobuf.ExampleDTO) error
+	PublishEventMessage(ctx contextx.Context, entity model.ExampleEntity) error
 }
 
 var _exampleGatewaySDID string

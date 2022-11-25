@@ -23,11 +23,16 @@ type Tenant interface {
 	GenerateSecretKey() string
 	// VerifySecretKey 验证密钥
 	VerifySecretKey(sk string) bool
+	// SetPermissions 设置许可
+	SetPermissions(permissions []string)
+	// GetPermissions 获得许可
+	GetPermissions() []string
 }
 
 type tenant struct {
-	id    defs.ID
-	value TenantValue
+	id          defs.ID
+	value       TenantValue
+	permissions []string
 }
 
 func (t tenant) ID() defs.ID {
@@ -52,6 +57,14 @@ func (t tenant) VerifySecretKey(sk string) bool {
 	return t.value.SecretKey == sk
 }
 
+func (t *tenant) SetPermissions(permissions []string) {
+	t.permissions = permissions
+}
+
+func (t *tenant) GetPermissions() []string {
+	return t.permissions
+}
+
 type TenantValue struct {
 	// TenantID 租户ID
 	TenantID string
@@ -63,6 +76,4 @@ type TenantValue struct {
 	RedirectUrl string
 	// AccessTokenTimeLimit 访问Token有效时限
 	AccessTokenTimeLimit uint64
-	// RefreshTokenTimeLimit 刷新Token有效时限
-	RefreshTokenTimeLimit uint64
 }

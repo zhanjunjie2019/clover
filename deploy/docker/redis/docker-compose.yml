@@ -13,9 +13,8 @@ services:
     ports:
       - '6379:6379'
     networks:
-      - custom_net
+      - app_net
 
 networks:
-  custom_net:
-   external:
-      name: app_net
+  app_net:
+    external: true

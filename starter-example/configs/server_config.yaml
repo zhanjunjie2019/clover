@@ -5,7 +5,7 @@ svcConf:
   # 服务部署名
   svcName: "clover-example"
   # 服务端口号
-  svcPort: 8700
+  svcPort: 8800
   # 服务实例序号
   svcNum: 1
   # 服务版本号
