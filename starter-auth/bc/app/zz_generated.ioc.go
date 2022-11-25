@@ -19,6 +19,28 @@ import (
 func init() {
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &permissionApp_{}
+		},
+	})
+	permissionAppStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &PermissionApp{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IAppDef),
+					},
+				},
+			},
+		},
+	}
+	singleton.RegisterStructDescriptor(permissionAppStructDescriptor)
+	allimpls.RegisterStructDescriptor(permissionAppStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &tenantApp_{}
 		},
 	})
@@ -63,6 +85,19 @@ func init() {
 	allimpls.RegisterStructDescriptor(userAppStructDescriptor)
 }
 
+type permissionApp_ struct {
+	SetGormDB_        func(db *gorm.DB)
+	PermissionCreate_ func(ctx contextx.Context) (id defs.ID, err error)
+}
+
+func (p *permissionApp_) SetGormDB(db *gorm.DB) {
+	p.SetGormDB_(db)
+}
+
+func (p *permissionApp_) PermissionCreate(ctx contextx.Context) (id defs.ID, err error) {
+	return p.PermissionCreate_(ctx)
+}
+
 type tenantApp_ struct {
 	SetGormDB_         func(db *gorm.DB)
 	TenantCreate_      func(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL uint64) (tid, secretKey string, err error)
@@ -104,6 +139,11 @@ func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, userName, passwor
 	return u.UserAuthorizationCode_(ctx, userName, password, redirect)
 }
 
+type PermissionAppIOCInterface interface {
+	SetGormDB(db *gorm.DB)
+	PermissionCreate(ctx contextx.Context) (id defs.ID, err error)
+}
+
 type TenantAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL uint64) (tid, secretKey string, err error)
@@ -115,6 +155,40 @@ type UserAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	UserCreate(ctx contextx.Context, userName, password string) (id defs.ID, err error)
 	UserAuthorizationCode(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error)
+}
+
+var _permissionAppSDID string
+
+func GetPermissionAppSingleton() (*PermissionApp, error) {
+	if _permissionAppSDID == "" {
+		_permissionAppSDID = util.GetSDIDByStructPtr(new(PermissionApp))
+	}
+	i, err := singleton.GetImpl(_permissionAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*PermissionApp)
+	return impl, nil
+}
+
+func GetPermissionAppIOCInterfaceSingleton() (PermissionAppIOCInterface, error) {
+	if _permissionAppSDID == "" {
+		_permissionAppSDID = util.GetSDIDByStructPtr(new(PermissionApp))
+	}
+	i, err := singleton.GetImplWithProxy(_permissionAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(PermissionAppIOCInterface)
+	return impl, nil
+}
+
+type ThisPermissionApp struct {
+}
+
+func (t *ThisPermissionApp) This() PermissionAppIOCInterface {
+	thisPtr, _ := GetPermissionAppIOCInterfaceSingleton()
+	return thisPtr
 }
 
 var _tenantAppSDID string
