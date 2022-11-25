@@ -54,8 +54,14 @@ func init() {
 			return constructFunc(impl)
 		},
 		Metadata: map[string]interface{}{
-			"aop":      map[string]interface{}{},
-			"autowire": map[string]interface{}{},
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IRepo),
+					},
+				},
+			},
 		},
 	}
 	singleton.RegisterStructDescriptor(roleRepoStructDescriptor)
@@ -96,8 +102,14 @@ func init() {
 			return constructFunc(impl)
 		},
 		Metadata: map[string]interface{}{
-			"aop":      map[string]interface{}{},
-			"autowire": map[string]interface{}{},
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IRepo),
+					},
+				},
+			},
 		},
 	}
 	singleton.RegisterStructDescriptor(userRepoStructDescriptor)
@@ -114,11 +126,11 @@ func (p *permissionRepo_) AutoMigrate(ctx contextx.Context) error {
 }
 
 type roleRepo_ struct {
-	ManualMigrate_ func(ctx contextx.Context) error
+	AutoMigrate_ func(ctx contextx.Context) error
 }
 
-func (r *roleRepo_) ManualMigrate(ctx contextx.Context) error {
-	return r.ManualMigrate_(ctx)
+func (r *roleRepo_) AutoMigrate(ctx contextx.Context) error {
+	return r.AutoMigrate_(ctx)
 }
 
 type tenantRepo_ struct {
@@ -140,13 +152,13 @@ func (t *tenantRepo_) Save(ctx contextx.Context, tenantPO po.Tenant) (defs.ID, e
 }
 
 type userRepo_ struct {
-	ManualMigrate_  func(ctx contextx.Context) error
+	AutoMigrate_    func(ctx contextx.Context) error
 	Save_           func(ctx contextx.Context, userPO po.User) (defs.ID, error)
 	FindByUserName_ func(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
 }
 
-func (u *userRepo_) ManualMigrate(ctx contextx.Context) error {
-	return u.ManualMigrate_(ctx)
+func (u *userRepo_) AutoMigrate(ctx contextx.Context) error {
+	return u.AutoMigrate_(ctx)
 }
 
 func (u *userRepo_) Save(ctx contextx.Context, userPO po.User) (defs.ID, error) {
@@ -162,7 +174,7 @@ type PermissionRepoIOCInterface interface {
 }
 
 type RoleRepoIOCInterface interface {
-	ManualMigrate(ctx contextx.Context) error
+	AutoMigrate(ctx contextx.Context) error
 }
 
 type TenantRepoIOCInterface interface {
@@ -172,7 +184,7 @@ type TenantRepoIOCInterface interface {
 }
 
 type UserRepoIOCInterface interface {
-	ManualMigrate(ctx contextx.Context) error
+	AutoMigrate(ctx contextx.Context) error
 	Save(ctx contextx.Context, userPO po.User) (defs.ID, error)
 	FindByUserName(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
 }

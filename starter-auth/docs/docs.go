@@ -16,6 +16,63 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/permission-create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "permission"
+                ],
+                "summary": "创建资源权限许可",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "租户ID",
+                        "name": "Tenant-ID",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "创建资源权限许可",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.PermissionReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.PermissionRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/tenant-create": {
             "post": {
                 "security": [
@@ -245,6 +302,28 @@ const docTemplate = `{
                 }
             }
         },
+        "vo.PermissionReqVO": {
+            "type": "object",
+            "properties": {
+                "authCode": {
+                    "description": "资源编码",
+                    "type": "string"
+                },
+                "permissionName": {
+                    "description": "许可名称",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.PermissionRspVO": {
+            "type": "object",
+            "properties": {
+                "permissionId": {
+                    "description": "许可ID",
+                    "type": "integer"
+                }
+            }
+        },
         "vo.TenantCreateReqVO": {
             "type": "object",
             "required": [
@@ -358,11 +437,11 @@ const docTemplate = `{
             ],
             "properties": {
                 "password": {
-                    "description": "Password 密码",
+                    "description": "密码",
                     "type": "string"
                 },
                 "userName": {
-                    "description": "UserName 用户名",
+                    "description": "用户名",
                     "type": "string"
                 }
             }
@@ -371,7 +450,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "userId": {
-                    "description": "UserId 用户ID",
+                    "description": "用户ID",
                     "type": "integer"
                 }
             }

@@ -15,7 +15,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/swaggo/swag v1.8.8
 	github.com/zhanjunjie2019/clover/core v0.0.0-20221117082526-cf9f91f74a29
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221124070739-8ddcc47a3896
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221125090618-3417abc3a8bf
 	github.com/zhanjunjie2019/clover/share v0.0.0-20221117082526-cf9f91f74a29
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.24.2

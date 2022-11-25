@@ -12,6 +12,6 @@ type JwtClaims struct {
 	UserID uint64 `json:"userID,omitempty"`
 	// Username 用户名
 	Username string `json:"username,omitempty"`
-	// Auths 资源权限
+	// Auths 资源许可
 	Auths []string `json:"auths,omitempty"`
 }

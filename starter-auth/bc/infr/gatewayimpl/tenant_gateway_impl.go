@@ -50,10 +50,10 @@ func (t *TenantGateway) PublishInitEvent(ctx context.Context, tenant model.Tenan
 }
 
 func (t *TenantGateway) TenantTablesManualMigrate(ctx context.Context) (err error) {
-	err = t.UserRepo.ManualMigrate(ctx)
+	err = t.UserRepo.AutoMigrate(ctx)
 	if err != nil {
 		return
 	}
-	err = t.RoleRepo.ManualMigrate(ctx)
+	err = t.RoleRepo.AutoMigrate(ctx)
 	return
 }

@@ -2,8 +2,10 @@ package repo
 
 import (
 	"context"
+	"github.com/zhanjunjie2019/clover/global/consts"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/uctx"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/configs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
 	"gorm.io/gorm"
 )
@@ -11,6 +13,7 @@ import (
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
 // +ioc:autowire:constructFunc=InitUserRepo
+// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IRepo
 
 type UserRepo struct {
 	TablePre string
@@ -21,7 +24,12 @@ func InitUserRepo(u *UserRepo) (*UserRepo, error) {
 	return u, nil
 }
 
-func (u *UserRepo) ManualMigrate(ctx context.Context) error {
+func (u *UserRepo) AutoMigrate(ctx context.Context) error {
+	tenantID := uctx.GetTenantID(ctx)
+	if len(tenantID) == 0 {
+		auperAdmin := configs.GetAuthConfig().SuperAdmin
+		ctx = context.WithValue(ctx, consts.CtxTenantIDVar, auperAdmin.TenantID)
+	}
 	return uctx.GetTenantTableDBWithCtx(ctx, u.TablePre).AutoMigrate(po.User{})
 }
 

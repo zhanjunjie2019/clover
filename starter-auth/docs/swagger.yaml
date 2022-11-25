@@ -11,6 +11,21 @@ definitions:
         description: 详细信息
         type: string
     type: object
+  vo.PermissionReqVO:
+    properties:
+      authCode:
+        description: 资源编码
+        type: string
+      permissionName:
+        description: 许可名称
+        type: string
+    type: object
+  vo.PermissionRspVO:
+    properties:
+      permissionId:
+        description: 许可ID
+        type: integer
+    type: object
   vo.TenantCreateReqVO:
     properties:
       AccessTokenTimeLimit:
@@ -88,10 +103,10 @@ definitions:
   vo.UserCreateReqVO:
     properties:
       password:
-        description: Password 密码
+        description: 密码
         type: string
       userName:
-        description: UserName 用户名
+        description: 用户名
         type: string
     required:
     - password
@@ -100,7 +115,7 @@ definitions:
   vo.UserCreateRspVO:
     properties:
       userId:
-        description: UserId 用户ID
+        description: 用户ID
         type: integer
     type: object
 info:
@@ -109,6 +124,39 @@ info:
   title: clover-auth-api
   version: v1.0.0
 paths:
+  /permission-create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
+      - description: 创建资源权限许可
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.PermissionReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.PermissionRspVO'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 创建资源权限许可
+      tags:
+      - permission
   /tenant-create:
     post:
       consumes:
