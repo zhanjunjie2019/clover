@@ -87,15 +87,15 @@ func init() {
 
 type permissionApp_ struct {
 	SetGormDB_        func(db *gorm.DB)
-	PermissionCreate_ func(ctx contextx.Context) (id defs.ID, err error)
+	PermissionCreate_ func(ctx contextx.Context, permissionName, authCode string) (id defs.ID, err error)
 }
 
 func (p *permissionApp_) SetGormDB(db *gorm.DB) {
 	p.SetGormDB_(db)
 }
 
-func (p *permissionApp_) PermissionCreate(ctx contextx.Context) (id defs.ID, err error) {
-	return p.PermissionCreate_(ctx)
+func (p *permissionApp_) PermissionCreate(ctx contextx.Context, permissionName, authCode string) (id defs.ID, err error) {
+	return p.PermissionCreate_(ctx, permissionName, authCode)
 }
 
 type tenantApp_ struct {
@@ -141,7 +141,7 @@ func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, userName, passwor
 
 type PermissionAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
-	PermissionCreate(ctx contextx.Context) (id defs.ID, err error)
+	PermissionCreate(ctx contextx.Context, permissionName, authCode string) (id defs.ID, err error)
 }
 
 type TenantAppIOCInterface interface {

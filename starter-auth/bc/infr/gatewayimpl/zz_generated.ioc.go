@@ -18,6 +18,21 @@ import (
 func init() {
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &permissionGateway_{}
+		},
+	})
+	permissionGatewayStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &PermissionGateway{}
+		},
+		Metadata: map[string]interface{}{
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
+		},
+	}
+	singleton.RegisterStructDescriptor(permissionGatewayStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &tenantGateway_{}
 		},
 	})
@@ -46,6 +61,19 @@ func init() {
 		},
 	}
 	singleton.RegisterStructDescriptor(userGatewayStructDescriptor)
+}
+
+type permissionGateway_ struct {
+	FindByAuthCode_ func(ctx contextx.Context, authCode string) (permission model.Permission, exist bool, err error)
+	Save_           func(ctx contextx.Context, permission model.Permission) (defs.ID, error)
+}
+
+func (p *permissionGateway_) FindByAuthCode(ctx contextx.Context, authCode string) (permission model.Permission, exist bool, err error) {
+	return p.FindByAuthCode_(ctx, authCode)
+}
+
+func (p *permissionGateway_) Save(ctx contextx.Context, permission model.Permission) (defs.ID, error) {
+	return p.Save_(ctx, permission)
 }
 
 type tenantGateway_ struct {
@@ -89,6 +117,11 @@ func (u *userGateway_) SaveToCacheByAuthorizationCode(ctx contextx.Context, user
 	return u.SaveToCacheByAuthorizationCode_(ctx, user)
 }
 
+type PermissionGatewayIOCInterface interface {
+	FindByAuthCode(ctx contextx.Context, authCode string) (permission model.Permission, exist bool, err error)
+	Save(ctx contextx.Context, permission model.Permission) (defs.ID, error)
+}
+
 type TenantGatewayIOCInterface interface {
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save(ctx contextx.Context, tenant model.Tenant) (defs.ID, error)
@@ -100,6 +133,40 @@ type UserGatewayIOCInterface interface {
 	Save(ctx contextx.Context, user model.User) (defs.ID, error)
 	FindByUserName(ctx contextx.Context, userName string) (user model.User, exist bool, err error)
 	SaveToCacheByAuthorizationCode(ctx contextx.Context, user model.User) (authorizationCode string, err error)
+}
+
+var _permissionGatewaySDID string
+
+func GetPermissionGatewaySingleton() (*PermissionGateway, error) {
+	if _permissionGatewaySDID == "" {
+		_permissionGatewaySDID = util.GetSDIDByStructPtr(new(PermissionGateway))
+	}
+	i, err := singleton.GetImpl(_permissionGatewaySDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*PermissionGateway)
+	return impl, nil
+}
+
+func GetPermissionGatewayIOCInterfaceSingleton() (PermissionGatewayIOCInterface, error) {
+	if _permissionGatewaySDID == "" {
+		_permissionGatewaySDID = util.GetSDIDByStructPtr(new(PermissionGateway))
+	}
+	i, err := singleton.GetImplWithProxy(_permissionGatewaySDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(PermissionGatewayIOCInterface)
+	return impl, nil
+}
+
+type ThisPermissionGateway struct {
+}
+
+func (t *ThisPermissionGateway) This() PermissionGatewayIOCInterface {
+	thisPtr, _ := GetPermissionGatewayIOCInterfaceSingleton()
+	return thisPtr
 }
 
 var _tenantGatewaySDID string

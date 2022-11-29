@@ -61,7 +61,7 @@ func (t *tenant) SetPermissions(permissions []string) {
 	t.permissions = permissions
 }
 
-func (t *tenant) GetPermissions() []string {
+func (t tenant) GetPermissions() []string {
 	return t.permissions
 }
 

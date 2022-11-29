@@ -7,6 +7,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/response"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/adapter/controller/vo"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/app"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/bcconsts"
 	"net/http"
 )
@@ -16,6 +17,7 @@ import (
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IController
 
 type PermissionCreateController struct {
+	PermissionApp app.PermissionAppIOCInterface `singleton:""`
 }
 
 func (p *PermissionCreateController) GetOption() defs.ControllerOption {
@@ -38,9 +40,16 @@ func (p *PermissionCreateController) GetOption() defs.ControllerOption {
 // @Router /permission-create [post]
 func (p *PermissionCreateController) Handle(c *gin.Context) {
 	var permissionReqVO vo.PermissionReqVO
-	_, err := uctx.ShouldBindJSON(c, &permissionReqVO)
+	ctx, err := uctx.ShouldBindJSON(c, &permissionReqVO)
 	if err == nil {
-
+		var id defs.ID
+		id, err = p.PermissionApp.PermissionCreate(ctx, permissionReqVO.PermissionName, permissionReqVO.AuthCode)
+		if err == nil {
+			response.SuccWithDetailed(c, vo.PermissionRspVO{
+				PermissionId: id.UInt64(),
+			})
+			return
+		}
 	}
 	response.FailWithMessage(c, err)
 }

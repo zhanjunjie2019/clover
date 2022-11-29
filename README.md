@@ -63,12 +63,6 @@
 | NSQ_NSQD_ADDR           | 用于生产者使用的nsqd服务地址       | nsqd:4150                      |
 | NSQ_LOOKUPD_ADDR        | 用于消费者使用的nsqlookupd服务地址 | nsqlookupd:4161                |
 
-## 接口文档生成
-
-```shell
-swag init --pd
-```
-
 ## 端口分配
 
 | 服务名             | 端口                        | 说明          | 可视化界面路径                                                                                   |
@@ -89,7 +83,7 @@ swag init --pd
 | clover-example  | 8800                      | 示例项目        | 接口文档：[http://127.0.0.1:8800/swagger/index.html](http://127.0.0.1:8800/swagger/index.html) |
 | clover-auth     | 8810                      | 权限中心        | 接口文档：[http://127.0.0.1:8810/swagger/index.html](http://127.0.0.1:8810/swagger/index.html) |
 
-### redis数据库序号分配
+### redis数据库子库序号分配
 
 | 序号  | 场景                          |
 |-----|-----------------------------|

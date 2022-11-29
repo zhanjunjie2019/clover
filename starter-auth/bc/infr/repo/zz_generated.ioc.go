@@ -118,11 +118,21 @@ func init() {
 type RoleRepoConstructFunc func(impl *RoleRepo) (*RoleRepo, error)
 type UserRepoConstructFunc func(impl *UserRepo) (*UserRepo, error)
 type permissionRepo_ struct {
-	AutoMigrate_ func(ctx contextx.Context) error
+	AutoMigrate_    func(ctx contextx.Context) error
+	FindByAuthCode_ func(ctx contextx.Context, authCode string) (permissionPO po.Permission, exist bool, err error)
+	Save_           func(ctx contextx.Context, permissionPO po.Permission) (defs.ID, error)
 }
 
 func (p *permissionRepo_) AutoMigrate(ctx contextx.Context) error {
 	return p.AutoMigrate_(ctx)
+}
+
+func (p *permissionRepo_) FindByAuthCode(ctx contextx.Context, authCode string) (permissionPO po.Permission, exist bool, err error) {
+	return p.FindByAuthCode_(ctx, authCode)
+}
+
+func (p *permissionRepo_) Save(ctx contextx.Context, permissionPO po.Permission) (defs.ID, error) {
+	return p.Save_(ctx, permissionPO)
 }
 
 type roleRepo_ struct {
@@ -171,6 +181,8 @@ func (u *userRepo_) FindByUserName(ctx contextx.Context, userName string) (userP
 
 type PermissionRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
+	FindByAuthCode(ctx contextx.Context, authCode string) (permissionPO po.Permission, exist bool, err error)
+	Save(ctx contextx.Context, permissionPO po.Permission) (defs.ID, error)
 }
 
 type RoleRepoIOCInterface interface {
