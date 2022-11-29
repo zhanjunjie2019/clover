@@ -41,6 +41,28 @@ func init() {
 	allimpls.RegisterStructDescriptor(permissionAppStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &roleApp_{}
+		},
+	})
+	roleAppStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &RoleApp{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IAppDef),
+					},
+				},
+			},
+		},
+	}
+	singleton.RegisterStructDescriptor(roleAppStructDescriptor)
+	allimpls.RegisterStructDescriptor(roleAppStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &tenantApp_{}
 		},
 	})
@@ -98,6 +120,19 @@ func (p *permissionApp_) PermissionCreate(ctx contextx.Context, permissionName, 
 	return p.PermissionCreate_(ctx, permissionName, authCode)
 }
 
+type roleApp_ struct {
+	SetGormDB_  func(db *gorm.DB)
+	RoleCreate_ func(ctx contextx.Context, roleName, roleCode string) (id defs.ID, err error)
+}
+
+func (r *roleApp_) SetGormDB(db *gorm.DB) {
+	r.SetGormDB_(db)
+}
+
+func (r *roleApp_) RoleCreate(ctx contextx.Context, roleName, roleCode string) (id defs.ID, err error) {
+	return r.RoleCreate_(ctx, roleName, roleCode)
+}
+
 type tenantApp_ struct {
 	SetGormDB_         func(db *gorm.DB)
 	TenantCreate_      func(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL uint64) (tid, secretKey string, err error)
@@ -144,6 +179,11 @@ type PermissionAppIOCInterface interface {
 	PermissionCreate(ctx contextx.Context, permissionName, authCode string) (id defs.ID, err error)
 }
 
+type RoleAppIOCInterface interface {
+	SetGormDB(db *gorm.DB)
+	RoleCreate(ctx contextx.Context, roleName, roleCode string) (id defs.ID, err error)
+}
+
 type TenantAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	TenantCreate(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL uint64) (tid, secretKey string, err error)
@@ -188,6 +228,40 @@ type ThisPermissionApp struct {
 
 func (t *ThisPermissionApp) This() PermissionAppIOCInterface {
 	thisPtr, _ := GetPermissionAppIOCInterfaceSingleton()
+	return thisPtr
+}
+
+var _roleAppSDID string
+
+func GetRoleAppSingleton() (*RoleApp, error) {
+	if _roleAppSDID == "" {
+		_roleAppSDID = util.GetSDIDByStructPtr(new(RoleApp))
+	}
+	i, err := singleton.GetImpl(_roleAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*RoleApp)
+	return impl, nil
+}
+
+func GetRoleAppIOCInterfaceSingleton() (RoleAppIOCInterface, error) {
+	if _roleAppSDID == "" {
+		_roleAppSDID = util.GetSDIDByStructPtr(new(RoleApp))
+	}
+	i, err := singleton.GetImplWithProxy(_roleAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(RoleAppIOCInterface)
+	return impl, nil
+}
+
+type ThisRoleApp struct {
+}
+
+func (t *ThisRoleApp) This() RoleAppIOCInterface {
+	thisPtr, _ := GetRoleAppIOCInterfaceSingleton()
 	return thisPtr
 }
 

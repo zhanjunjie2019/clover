@@ -37,6 +37,27 @@ func init() {
 	allimpls.RegisterStructDescriptor(permissionCreateControllerStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &roleCreateController_{}
+		},
+	})
+	roleCreateControllerStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &RoleCreateController{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IController),
+					},
+				},
+			},
+		},
+	}
+	allimpls.RegisterStructDescriptor(roleCreateControllerStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &tenantCreateController_{}
 		},
 	})
@@ -134,6 +155,19 @@ func (p *permissionCreateController_) Handle(c *gin.Context) {
 	p.Handle_(c)
 }
 
+type roleCreateController_ struct {
+	GetOption_ func() defs.ControllerOption
+	Handle_    func(c *gin.Context)
+}
+
+func (r *roleCreateController_) GetOption() defs.ControllerOption {
+	return r.GetOption_()
+}
+
+func (r *roleCreateController_) Handle(c *gin.Context) {
+	r.Handle_(c)
+}
+
 type tenantCreateController_ struct {
 	GetOption_ func() defs.ControllerOption
 	Handle_    func(c *gin.Context)
@@ -191,6 +225,11 @@ type PermissionCreateControllerIOCInterface interface {
 	Handle(c *gin.Context)
 }
 
+type RoleCreateControllerIOCInterface interface {
+	GetOption() defs.ControllerOption
+	Handle(c *gin.Context)
+}
+
 type TenantCreateControllerIOCInterface interface {
 	GetOption() defs.ControllerOption
 	Handle(c *gin.Context)
@@ -212,6 +251,7 @@ type UserCreateControllerIOCInterface interface {
 }
 
 var _permissionCreateControllerSDID string
+var _roleCreateControllerSDID string
 var _tenantCreateControllerSDID string
 var _tenantTokenCreateControllerSDID string
 var _userAuthorizationCodeControllerSDID string

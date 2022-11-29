@@ -19,11 +19,32 @@ definitions:
       permissionName:
         description: 许可名称
         type: string
+    required:
+    - authCode
+    - permissionName
     type: object
   vo.PermissionRspVO:
     properties:
       permissionId:
         description: 许可ID
+        type: integer
+    type: object
+  vo.RoleCreateReqVO:
+    properties:
+      roleCode:
+        description: 角色编码
+        type: string
+      roleName:
+        description: 角色名
+        type: string
+    required:
+    - roleCode
+    - roleName
+    type: object
+  vo.RoleCreateRspVO:
+    properties:
+      roleId:
+        description: 角色ID
         type: integer
     type: object
   vo.TenantCreateReqVO:
@@ -157,6 +178,39 @@ paths:
       summary: 创建资源权限许可
       tags:
       - permission
+  /role-create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
+      - description: 创建角色
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.RoleCreateReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.RoleCreateRspVO'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 创建角色，需要租户管理员权限
+      tags:
+      - role
   /tenant-create:
     post:
       consumes:

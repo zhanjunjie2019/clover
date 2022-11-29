@@ -73,6 +73,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/role-create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "role"
+                ],
+                "summary": "创建角色，需要租户管理员权限",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "租户ID",
+                        "name": "Tenant-ID",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "创建角色",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.RoleCreateReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.RoleCreateRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/tenant-create": {
             "post": {
                 "security": [
@@ -304,6 +361,10 @@ const docTemplate = `{
         },
         "vo.PermissionReqVO": {
             "type": "object",
+            "required": [
+                "authCode",
+                "permissionName"
+            ],
             "properties": {
                 "authCode": {
                     "description": "资源编码",
@@ -320,6 +381,32 @@ const docTemplate = `{
             "properties": {
                 "permissionId": {
                     "description": "许可ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "vo.RoleCreateReqVO": {
+            "type": "object",
+            "required": [
+                "roleCode",
+                "roleName"
+            ],
+            "properties": {
+                "roleCode": {
+                    "description": "角色编码",
+                    "type": "string"
+                },
+                "roleName": {
+                    "description": "角色名",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.RoleCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "roleId": {
+                    "description": "角色ID",
                     "type": "integer"
                 }
             }

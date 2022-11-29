@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/gogo/protobuf/proto"
 	"github.com/zhanjunjie2019/clover/global/defs"
-	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/redisc"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/global/utils"
@@ -48,17 +47,14 @@ func (u *UserGateway) SaveToCacheByAuthorizationCode(ctx context.Context, user m
 	}
 	client, err := u.RedisClient.GetClient()
 	if err != nil {
-		err = errs.ToUnifiedError(err)
 		return
 	}
 	bytes, err := proto.Marshal(&userAuthorizationCode)
 	if err != nil {
-		err = errs.ToUnifiedError(err)
 		return
 	}
 	err = client.Set(ctx, bcconsts.RedisAuthCodePre+authorizationCode, bytes, time.Minute).Err()
 	if err != nil {
-		err = errs.ToUnifiedError(err)
 		return
 	}
 	return
