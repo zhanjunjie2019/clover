@@ -136,11 +136,21 @@ func (p *permissionRepo_) Save(ctx contextx.Context, permissionPO po.Permission)
 }
 
 type roleRepo_ struct {
-	AutoMigrate_ func(ctx contextx.Context) error
+	AutoMigrate_    func(ctx contextx.Context) error
+	Save_           func(ctx contextx.Context, rolePO po.Role) (defs.ID, error)
+	FindByRoleCode_ func(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error)
 }
 
 func (r *roleRepo_) AutoMigrate(ctx contextx.Context) error {
 	return r.AutoMigrate_(ctx)
+}
+
+func (r *roleRepo_) Save(ctx contextx.Context, rolePO po.Role) (defs.ID, error) {
+	return r.Save_(ctx, rolePO)
+}
+
+func (r *roleRepo_) FindByRoleCode(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error) {
+	return r.FindByRoleCode_(ctx, roleCode)
 }
 
 type tenantRepo_ struct {
@@ -187,6 +197,8 @@ type PermissionRepoIOCInterface interface {
 
 type RoleRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
+	Save(ctx contextx.Context, rolePO po.Role) (defs.ID, error)
+	FindByRoleCode(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error)
 }
 
 type TenantRepoIOCInterface interface {

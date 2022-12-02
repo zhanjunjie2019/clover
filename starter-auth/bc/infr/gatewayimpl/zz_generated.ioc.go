@@ -33,6 +33,21 @@ func init() {
 	singleton.RegisterStructDescriptor(permissionGatewayStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &roleGateway_{}
+		},
+	})
+	roleGatewayStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &RoleGateway{}
+		},
+		Metadata: map[string]interface{}{
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
+		},
+	}
+	singleton.RegisterStructDescriptor(roleGatewayStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &tenantGateway_{}
 		},
 	})
@@ -74,6 +89,19 @@ func (p *permissionGateway_) FindByAuthCode(ctx contextx.Context, authCode strin
 
 func (p *permissionGateway_) Save(ctx contextx.Context, permission model.Permission) (defs.ID, error) {
 	return p.Save_(ctx, permission)
+}
+
+type roleGateway_ struct {
+	Save_           func(ctx contextx.Context, role model.Role) (defs.ID, error)
+	FindByRoleCode_ func(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error)
+}
+
+func (r *roleGateway_) Save(ctx contextx.Context, role model.Role) (defs.ID, error) {
+	return r.Save_(ctx, role)
+}
+
+func (r *roleGateway_) FindByRoleCode(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error) {
+	return r.FindByRoleCode_(ctx, roleCode)
 }
 
 type tenantGateway_ struct {
@@ -122,6 +150,11 @@ type PermissionGatewayIOCInterface interface {
 	Save(ctx contextx.Context, permission model.Permission) (defs.ID, error)
 }
 
+type RoleGatewayIOCInterface interface {
+	Save(ctx contextx.Context, role model.Role) (defs.ID, error)
+	FindByRoleCode(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error)
+}
+
 type TenantGatewayIOCInterface interface {
 	FindByTenantID(ctx contextx.Context, tenantID string) (tenant model.Tenant, exist bool, err error)
 	Save(ctx contextx.Context, tenant model.Tenant) (defs.ID, error)
@@ -166,6 +199,40 @@ type ThisPermissionGateway struct {
 
 func (t *ThisPermissionGateway) This() PermissionGatewayIOCInterface {
 	thisPtr, _ := GetPermissionGatewayIOCInterfaceSingleton()
+	return thisPtr
+}
+
+var _roleGatewaySDID string
+
+func GetRoleGatewaySingleton() (*RoleGateway, error) {
+	if _roleGatewaySDID == "" {
+		_roleGatewaySDID = util.GetSDIDByStructPtr(new(RoleGateway))
+	}
+	i, err := singleton.GetImpl(_roleGatewaySDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*RoleGateway)
+	return impl, nil
+}
+
+func GetRoleGatewayIOCInterfaceSingleton() (RoleGatewayIOCInterface, error) {
+	if _roleGatewaySDID == "" {
+		_roleGatewaySDID = util.GetSDIDByStructPtr(new(RoleGateway))
+	}
+	i, err := singleton.GetImplWithProxy(_roleGatewaySDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(RoleGatewayIOCInterface)
+	return impl, nil
+}
+
+type ThisRoleGateway struct {
+}
+
+func (t *ThisRoleGateway) This() RoleGatewayIOCInterface {
+	thisPtr, _ := GetRoleGatewayIOCInterfaceSingleton()
 	return thisPtr
 }
 

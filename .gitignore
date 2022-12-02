@@ -5,3 +5,4 @@
 /deploy/docker/postgres-cluster/master/
 /deploy/docker/postgres-cluster/slave/
 /deploy/docker/consul/data/
+/deploy/docker/etcd/data/

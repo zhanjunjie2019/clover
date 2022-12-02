@@ -16,6 +16,8 @@ const (
 	UserAlreadyExistsErrorCode
 	// LoginVerifyFailedErrorCode 登录验证失败
 	LoginVerifyFailedErrorCode
+	// RoleAlreadyExistsErrorCode 角色已存在
+	RoleAlreadyExistsErrorCode
 )
 
 var (
@@ -31,4 +33,6 @@ var (
 	UserAlreadyExistsErr = errs.NewUnifiedError(errs.BisLevel, UserAlreadyExistsErrorCode, "user already exist")
 	// LoginVerifyFailedErr 登录验证失败
 	LoginVerifyFailedErr = errs.NewUnifiedError(errs.BisLevel, LoginVerifyFailedErrorCode, "login verification failed")
+	// RoleAlreadyExistsErr 角色已存在
+	RoleAlreadyExistsErr = errs.NewUnifiedError(errs.BisLevel, RoleAlreadyExistsErrorCode, "role already exist")
 )
