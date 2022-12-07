@@ -37,15 +37,15 @@ func (t *TenantTokenCreateController) GetOption() defs.ControllerOption {
 // @Success 200 {object} response.Response{data=vo.TenantTokenCreateRspVO}
 // @Router /tenant-token-create [post]
 func (t *TenantTokenCreateController) Handle(c *gin.Context) {
-	var tenantTokenCreateReqVO vo.TenantTokenCreateReqVO
-	ctx, err := uctx.ShouldBindJSON(c, &tenantTokenCreateReqVO)
+	var reqVO vo.TenantTokenCreateReqVO
+	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		// 参数验证flag
 		pass := true
 		// 当前时间
 		seconds := time.Now().Unix()
 		// token过期时间，要么为0，要么大于当前时间
-		if tenantTokenCreateReqVO.AccessTokenExpirationTime > 0 && seconds > tenantTokenCreateReqVO.AccessTokenExpirationTime {
+		if reqVO.AccessTokenExpirationTime > 0 && seconds > reqVO.AccessTokenExpirationTime {
 			err = errs.ReqParamsErr
 			pass = false
 		}
@@ -54,7 +54,7 @@ func (t *TenantTokenCreateController) Handle(c *gin.Context) {
 				accessToken               string
 				accessTokenExpirationTime int64
 			)
-			accessToken, accessTokenExpirationTime, err = t.TenantApp.TenantTokenCreate(ctx, tenantTokenCreateReqVO.TenantID, tenantTokenCreateReqVO.SecretKey, tenantTokenCreateReqVO.AccessTokenExpirationTime)
+			accessToken, accessTokenExpirationTime, err = t.TenantApp.TenantTokenCreate(ctx, reqVO.TenantID, reqVO.SecretKey, reqVO.AccessTokenExpirationTime)
 			if err == nil {
 				response.SuccWithDetailed(c, vo.TenantTokenCreateRspVO{
 					AccessToken:               accessToken,

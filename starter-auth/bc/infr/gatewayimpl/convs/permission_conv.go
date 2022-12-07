@@ -6,6 +6,13 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
 )
 
+func BatchPermissionPOToDO(pos []po.Permission) (dos []model.Permission) {
+	for i := range pos {
+		dos = append(dos, PermissionPOToDO(pos[i]))
+	}
+	return
+}
+
 func PermissionPOToDO(po po.Permission) model.Permission {
 	return model.NewPermission(po.ID, model.PermissionValue{
 		PermissionName: po.PermissionName,

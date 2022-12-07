@@ -16,37 +16,37 @@ import (
 // +ioc:autowire:type=allimpls
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IController
 
-type PermissionCreateController struct {
-	PermissionApp app.PermissionAppIOCInterface `singleton:""`
+type RolePermissionAssignmentController struct {
+	RoleApp app.RoleAppIOCInterface `singleton:""`
 }
 
-func (p *PermissionCreateController) GetOption() defs.ControllerOption {
+func (r *RolePermissionAssignmentController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/permission-create",
+		RelativePath: bcconsts.ModuleCode + "/role-permission-assignment",
 		HttpMethod:   http.MethodPost,
-		AuthCode:     consts.SAdminAuth,
+		AuthCode:     consts.AdminAuth,
 	}
 }
 
-// Handle 创建资源权限许可
-// @Tags permission
-// @Summary 创建资源权限许可
+// Handle 角色赋予资源许可，需要租户管理员权限
+// @Tags role
+// @Summary 角色赋予资源许可，需要租户管理员权限
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
 // @Param Tenant-ID header string true "租户ID"
-// @Param data body vo.PermissionReqVO true "创建资源权限许可"
-// @Success 200 {object} response.Response{data=vo.PermissionRspVO}
-// @Router /permission-create [post]
-func (p *PermissionCreateController) Handle(c *gin.Context) {
-	var reqVO vo.PermissionReqVO
+// @Param data body vo.RolePermissionAssignmentReqVO true "角色赋予资源许可"
+// @Success 200 {object} response.Response{data=vo.RolePermissionAssignmentRspVO}
+// @Router /role-permission-assignment [post]
+func (r *RolePermissionAssignmentController) Handle(c *gin.Context) {
+	var reqVO vo.RolePermissionAssignmentReqVO
 	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		var id defs.ID
-		id, err = p.PermissionApp.PermissionCreate(ctx, reqVO.PermissionName, reqVO.AuthCode)
+		id, err = r.RoleApp.RolePermissionAssignment(ctx, reqVO.RoleCode, reqVO.AuthCodes)
 		if err == nil {
-			response.SuccWithDetailed(c, vo.PermissionRspVO{
-				PermissionId: id.UInt64(),
+			response.SuccWithDetailed(c, vo.RolePermissionAssignmentRspVO{
+				RoleId: id.UInt64(),
 			})
 			return
 		}

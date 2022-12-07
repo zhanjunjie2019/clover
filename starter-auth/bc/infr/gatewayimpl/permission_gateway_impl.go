@@ -29,3 +29,8 @@ func (p *PermissionGateway) FindByAuthCode(ctx context.Context, authCode string)
 func (p *PermissionGateway) Save(ctx context.Context, permission model.Permission) (defs.ID, error) {
 	return p.PermissionRepo.Save(ctx, convs.PermissionDOToPO(permission))
 }
+
+func (p *PermissionGateway) ListByAuthCodes(ctx context.Context, authCodes []string) (permission []model.Permission, err error) {
+	permissionPOs, err := p.PermissionRepo.ListByAuthCodes(ctx, authCodes)
+	return convs.BatchPermissionPOToDO(permissionPOs), err
+}

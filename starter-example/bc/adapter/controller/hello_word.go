@@ -35,11 +35,11 @@ func (h *HelloWordController) GetOption() defs.ControllerOption {
 // @Success 200 {object} response.Response{data=vo.HelloWordRspVO}
 // @Router /hellow-word [get]
 func (h *HelloWordController) Handle(c *gin.Context) {
-	var helloWordReqVO vo.HelloWordReqVO
-	ctx, err := uctx.ShouldBindQuery(c, &helloWordReqVO)
+	var reqVO vo.HelloWordReqVO
+	ctx, err := uctx.ShouldBindQuery(c, &reqVO)
 	if err == nil {
 		var greetings string
-		greetings, err = h.ExampleApp.ExampleHellowWord(ctx, helloWordReqVO.FirstName, helloWordReqVO.LastName)
+		greetings, err = h.ExampleApp.ExampleHellowWord(ctx, reqVO.FirstName, reqVO.LastName)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.HelloWordRspVO{
 				Greetings: greetings,

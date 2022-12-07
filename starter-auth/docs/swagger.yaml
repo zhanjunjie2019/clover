@@ -47,6 +47,26 @@ definitions:
         description: 角色ID
         type: integer
     type: object
+  vo.RolePermissionAssignmentReqVO:
+    properties:
+      authCodes:
+        description: 资源编码
+        items:
+          type: string
+        type: array
+      roleCode:
+        description: 角色编码
+        type: string
+    required:
+    - authCodes
+    - roleCode
+    type: object
+  vo.RolePermissionAssignmentRspVO:
+    properties:
+      roleId:
+        description: 角色ID
+        type: integer
+    type: object
   vo.TenantCreateReqVO:
     properties:
       AccessTokenTimeLimit:
@@ -209,6 +229,39 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 创建角色，需要租户管理员权限
+      tags:
+      - role
+  /role-permission-assignment:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
+      - description: 角色赋予资源许可
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.RolePermissionAssignmentReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.RolePermissionAssignmentRspVO'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 角色赋予资源许可，需要租户管理员权限
       tags:
       - role
   /tenant-create:

@@ -79,8 +79,9 @@ func init() {
 }
 
 type permissionGateway_ struct {
-	FindByAuthCode_ func(ctx contextx.Context, authCode string) (permission model.Permission, exist bool, err error)
-	Save_           func(ctx contextx.Context, permission model.Permission) (defs.ID, error)
+	FindByAuthCode_  func(ctx contextx.Context, authCode string) (permission model.Permission, exist bool, err error)
+	Save_            func(ctx contextx.Context, permission model.Permission) (defs.ID, error)
+	ListByAuthCodes_ func(ctx contextx.Context, authCodes []string) (permission []model.Permission, err error)
 }
 
 func (p *permissionGateway_) FindByAuthCode(ctx contextx.Context, authCode string) (permission model.Permission, exist bool, err error) {
@@ -91,17 +92,26 @@ func (p *permissionGateway_) Save(ctx contextx.Context, permission model.Permiss
 	return p.Save_(ctx, permission)
 }
 
-type roleGateway_ struct {
-	Save_           func(ctx contextx.Context, role model.Role) (defs.ID, error)
-	FindByRoleCode_ func(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error)
+func (p *permissionGateway_) ListByAuthCodes(ctx contextx.Context, authCodes []string) (permission []model.Permission, err error) {
+	return p.ListByAuthCodes_(ctx, authCodes)
 }
 
-func (r *roleGateway_) Save(ctx contextx.Context, role model.Role) (defs.ID, error) {
-	return r.Save_(ctx, role)
+type roleGateway_ struct {
+	SaveSingle_         func(ctx contextx.Context, role model.Role) (defs.ID, error)
+	FindByRoleCode_     func(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error)
+	SaveWithPermission_ func(ctx contextx.Context, role model.Role) (id defs.ID, err error)
+}
+
+func (r *roleGateway_) SaveSingle(ctx contextx.Context, role model.Role) (defs.ID, error) {
+	return r.SaveSingle_(ctx, role)
 }
 
 func (r *roleGateway_) FindByRoleCode(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error) {
 	return r.FindByRoleCode_(ctx, roleCode)
+}
+
+func (r *roleGateway_) SaveWithPermission(ctx contextx.Context, role model.Role) (id defs.ID, err error) {
+	return r.SaveWithPermission_(ctx, role)
 }
 
 type tenantGateway_ struct {
@@ -148,11 +158,13 @@ func (u *userGateway_) SaveToCacheByAuthorizationCode(ctx contextx.Context, user
 type PermissionGatewayIOCInterface interface {
 	FindByAuthCode(ctx contextx.Context, authCode string) (permission model.Permission, exist bool, err error)
 	Save(ctx contextx.Context, permission model.Permission) (defs.ID, error)
+	ListByAuthCodes(ctx contextx.Context, authCodes []string) (permission []model.Permission, err error)
 }
 
 type RoleGatewayIOCInterface interface {
-	Save(ctx contextx.Context, role model.Role) (defs.ID, error)
+	SaveSingle(ctx contextx.Context, role model.Role) (defs.ID, error)
 	FindByRoleCode(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error)
+	SaveWithPermission(ctx contextx.Context, role model.Role) (id defs.ID, err error)
 }
 
 type TenantGatewayIOCInterface interface {

@@ -8,6 +8,7 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/biserrs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/domain/model"
+	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl"
 	"gorm.io/gorm"
 )
 
@@ -34,7 +35,7 @@ func (p *PermissionApp) PermissionCreate(ctx context.Context, permissionName, au
 			return
 		}
 		if exist {
-			err = biserrs.PermissionAlreadyExistErr
+			err = biserrs.PermissionAlreadyExistErr(authCode)
 			return
 		}
 		permission := model.NewPermission(0, model.PermissionValue{

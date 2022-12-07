@@ -39,16 +39,16 @@ func (t *TenantCreateController) GetOption() defs.ControllerOption {
 // @Success 200 {object} response.Response{data=vo.TenantCreateRspVO}
 // @Router /tenant-create [post]
 func (t *TenantCreateController) Handle(c *gin.Context) {
-	var tenantCreateReqVO vo.TenantCreateReqVO
-	ctx, err := uctx.ShouldBindJSON(c, &tenantCreateReqVO)
+	var reqVO vo.TenantCreateReqVO
+	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		var tid, secretKey string
-		if tenantCreateReqVO.AccessTokenTimeLimit == 0 {
-			tenantCreateReqVO.AccessTokenTimeLimit = 7200
+		if reqVO.AccessTokenTimeLimit == 0 {
+			reqVO.AccessTokenTimeLimit = 7200
 		}
 		tid, secretKey, err = t.TenantApp.TenantCreate(ctx,
-			tenantCreateReqVO.TenantID, tenantCreateReqVO.TenantName, tenantCreateReqVO.RedirectUrl,
-			tenantCreateReqVO.AccessTokenTimeLimit,
+			reqVO.TenantID, reqVO.TenantName, reqVO.RedirectUrl,
+			reqVO.AccessTokenTimeLimit,
 		)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.TenantCreateRspVO{

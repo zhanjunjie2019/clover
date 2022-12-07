@@ -35,7 +35,7 @@ func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redi
 	err = t.DB.Transaction(func(tx *gorm.DB) (err error) {
 		auperAdmin := configs.GetAuthConfig().SuperAdmin
 		if tenantID == auperAdmin.TenantID {
-			err = biserrs.TenantAlreadyExistErr
+			err = biserrs.TenantAlreadyExistErr(tenantID)
 			return
 		}
 		ctx = uctx.WithValueAppDB(ctx, tx)
@@ -50,7 +50,7 @@ func (t *TenantApp) TenantCreate(ctx context.Context, tenantID, tenantName, redi
 			return
 		}
 		if exist {
-			err = biserrs.TenantAlreadyExistErr
+			err = biserrs.TenantAlreadyExistErr(tenantID)
 			return
 		}
 		tenant := model.NewTenant(0, model.TenantValue{
@@ -105,7 +105,7 @@ func (t *TenantApp) TenantTokenCreate(ctx context.Context, tenantID, secretKey s
 				return
 			}
 			if !exist {
-				err = biserrs.TenantDoesNotExistErr
+				err = biserrs.TenantDoesNotExistErr(tenantID)
 				return
 			}
 			// 设置普通管理员许可

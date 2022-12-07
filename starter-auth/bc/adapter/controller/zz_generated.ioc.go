@@ -58,6 +58,27 @@ func init() {
 	allimpls.RegisterStructDescriptor(roleCreateControllerStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &rolePermissionAssignmentController_{}
+		},
+	})
+	rolePermissionAssignmentControllerStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &RolePermissionAssignmentController{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IController),
+					},
+				},
+			},
+		},
+	}
+	allimpls.RegisterStructDescriptor(rolePermissionAssignmentControllerStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &tenantCreateController_{}
 		},
 	})
@@ -168,6 +189,19 @@ func (r *roleCreateController_) Handle(c *gin.Context) {
 	r.Handle_(c)
 }
 
+type rolePermissionAssignmentController_ struct {
+	GetOption_ func() defs.ControllerOption
+	Handle_    func(c *gin.Context)
+}
+
+func (r *rolePermissionAssignmentController_) GetOption() defs.ControllerOption {
+	return r.GetOption_()
+}
+
+func (r *rolePermissionAssignmentController_) Handle(c *gin.Context) {
+	r.Handle_(c)
+}
+
 type tenantCreateController_ struct {
 	GetOption_ func() defs.ControllerOption
 	Handle_    func(c *gin.Context)
@@ -230,6 +264,11 @@ type RoleCreateControllerIOCInterface interface {
 	Handle(c *gin.Context)
 }
 
+type RolePermissionAssignmentControllerIOCInterface interface {
+	GetOption() defs.ControllerOption
+	Handle(c *gin.Context)
+}
+
 type TenantCreateControllerIOCInterface interface {
 	GetOption() defs.ControllerOption
 	Handle(c *gin.Context)
@@ -252,6 +291,7 @@ type UserCreateControllerIOCInterface interface {
 
 var _permissionCreateControllerSDID string
 var _roleCreateControllerSDID string
+var _rolePermissionAssignmentControllerSDID string
 var _tenantCreateControllerSDID string
 var _tenantTokenCreateControllerSDID string
 var _userAuthorizationCodeControllerSDID string

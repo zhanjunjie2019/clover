@@ -36,14 +36,11 @@ func (u *UserAuthorizationCodeController) GetOption() defs.ControllerOption {
 // @Success 200 {object} response.Response{data=vo.UserAuthorizationCodeRspVO}
 // @Router /user-authorization-code [post]
 func (u *UserAuthorizationCodeController) Handle(c *gin.Context) {
-	var userAuthorizationCodeReqVO vo.UserAuthorizationCodeReqVO
-	ctx, err := uctx.ShouldBindJSON(c, &userAuthorizationCodeReqVO)
+	var reqVO vo.UserAuthorizationCodeReqVO
+	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		var code, url string
-		code, url, err = u.UserApp.UserAuthorizationCode(ctx,
-			userAuthorizationCodeReqVO.UserName,
-			userAuthorizationCodeReqVO.Password,
-			userAuthorizationCodeReqVO.RedirectUrl)
+		code, url, err = u.UserApp.UserAuthorizationCode(ctx, reqVO.UserName, reqVO.Password, reqVO.RedirectUrl)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.UserAuthorizationCodeRspVO{
 				AuthorizationCode: code,

@@ -39,11 +39,11 @@ func (r *RoleCreateController) GetOption() defs.ControllerOption {
 // @Success 200 {object} response.Response{data=vo.RoleCreateRspVO}
 // @Router /role-create [post]
 func (r *RoleCreateController) Handle(c *gin.Context) {
-	var roleCreateReqVO vo.RoleCreateReqVO
-	ctx, err := uctx.ShouldBindJSON(c, &roleCreateReqVO)
+	var reqVO vo.RoleCreateReqVO
+	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		var id defs.ID
-		id, err = r.RoleApp.RoleCreate(ctx, roleCreateReqVO.RoleName, roleCreateReqVO.RoleCode)
+		id, err = r.RoleApp.RoleCreate(ctx, reqVO.RoleName, reqVO.RoleCode)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.RoleCreateRspVO{
 				RoleId: id.UInt64(),

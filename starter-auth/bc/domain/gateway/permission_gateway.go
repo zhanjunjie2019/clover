@@ -9,4 +9,5 @@ import (
 type IPermissionGateway interface {
 	FindByAuthCode(ctx context.Context, authCode string) (permission model.Permission, exist bool, err error)
 	Save(ctx context.Context, permission model.Permission) (defs.ID, error)
+	ListByAuthCodes(ctx context.Context, authCodes []string) (permission []model.Permission, err error)
 }

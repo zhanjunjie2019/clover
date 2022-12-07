@@ -16,10 +16,11 @@ import (
 // +ioc:autowire:type=singleton
 
 type TenantGateway struct {
-	TenantRepo  repo.TenantRepoIOCInterface  `singleton:""`
-	UserRepo    repo.UserRepoIOCInterface    `singleton:""`
-	RoleRepo    repo.RoleRepoIOCInterface    `singleton:""`
-	NsqProducer nsqd.NsqProducerIOCInterface `singleton:""`
+	TenantRepo            repo.TenantRepoIOCInterface            `singleton:""`
+	UserRepo              repo.UserRepoIOCInterface              `singleton:""`
+	RoleRepo              repo.RoleRepoIOCInterface              `singleton:""`
+	RolePermissionRelRepo repo.RolePermissionRelRepoIOCInterface `singleton:""`
+	NsqProducer           nsqd.NsqProducerIOCInterface           `singleton:""`
 }
 
 func (t *TenantGateway) FindByTenantID(ctx context.Context, tenantID string) (tenant model.Tenant, exist bool, err error) {
@@ -55,5 +56,12 @@ func (t *TenantGateway) TenantTablesManualMigrate(ctx context.Context) (err erro
 		return
 	}
 	err = t.RoleRepo.AutoMigrate(ctx)
+	if err != nil {
+		return
+	}
+	err = t.RolePermissionRelRepo.AutoMigrate(ctx)
+	if err != nil {
+		return
+	}
 	return
 }

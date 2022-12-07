@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	consulReg "github.com/go-micro/plugins/v4/registry/consul"
 	swaggerfiles "github.com/swaggo/files"
@@ -34,11 +35,7 @@ func (s *Server) RunServer() error {
 	// 初始化gin
 	engine := gin.New()
 	// 最外层panic捕获，响应500代码
-	engine.Use(
-		gin.Recovery(),
-		s.SentinelMiddleware.MiddlewareHandlerFunc(nil),
-		s.TraceMiddleware.MiddlewareHandlerFunc(nil),
-	)
+	engine.Use(gin.Recovery())
 	// 服务配置
 	serverConfig := confs.GetServerConfig()
 	// 服务模式
@@ -55,6 +52,9 @@ func (s *Server) RunServer() error {
 	reg := consulReg.NewRegistry(
 		registry.Addrs(serverConfig.ConsulConf.ConsulAddr),
 	)
+
+	// 注册pprof
+	pprof.Register(engine)
 
 	errs.Panic(s.registRoute(engine))
 
@@ -81,6 +81,8 @@ func (s Server) registRoute(engine *gin.Engine) error {
 		option := c.GetOption()
 		// 动态中间件
 		handlerFuncs := []gin.HandlerFunc{
+			s.SentinelMiddleware.MiddlewareHandlerFunc(nil),
+			s.TraceMiddleware.MiddlewareHandlerFunc(nil),
 			s.LoggerMiddleware.MiddlewareHandlerFunc(&option),
 		}
 		// 如果属于限权接口

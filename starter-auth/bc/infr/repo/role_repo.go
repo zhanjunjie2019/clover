@@ -12,6 +12,7 @@ import (
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
+// +ioc:autowire:type=allimpls
 // +ioc:autowire:constructFunc=InitRoleRepo
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IRepo
 

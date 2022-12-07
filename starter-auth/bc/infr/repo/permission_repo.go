@@ -34,3 +34,8 @@ func (p *PermissionRepo) Save(ctx context.Context, permissionPO po.Permission) (
 	err := uctx.GetAppDBWithCtx(ctx).Save(&permissionPO).Error
 	return permissionPO.ID, err
 }
+
+func (p *PermissionRepo) ListByAuthCodes(ctx context.Context, authCodes []string) (permissionPOs []po.Permission, err error) {
+	err = uctx.GetAppDBWithCtx(ctx).Where("auth_code IN ?", authCodes).Find(&permissionPOs).Error
+	return
+}

@@ -39,11 +39,11 @@ func (u *UserCreateController) GetOption() defs.ControllerOption {
 // @Success 200 {object} response.Response{data=vo.UserCreateRspVO}
 // @Router /user-create [post]
 func (u *UserCreateController) Handle(c *gin.Context) {
-	var userCreateReqVO vo.UserCreateReqVO
-	ctx, err := uctx.ShouldBindJSON(c, &userCreateReqVO)
+	var reqVO vo.UserCreateReqVO
+	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		var id defs.ID
-		id, err = u.UserApp.UserCreate(ctx, userCreateReqVO.UserName, userCreateReqVO.Password)
+		id, err = u.UserApp.UserCreate(ctx, reqVO.UserName, reqVO.Password)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.UserCreateRspVO{
 				UserId: id.UInt64(),

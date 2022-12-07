@@ -37,7 +37,7 @@ func (u *UserApp) UserCreate(ctx context.Context, userName, password string) (id
 			return
 		}
 		if exist {
-			err = biserrs.UserAlreadyExistsErr
+			err = biserrs.UserAlreadyExistsErr(userName)
 			return
 		}
 		user := model.NewUser(0, model.UserValue{

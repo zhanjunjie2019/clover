@@ -23,3 +23,16 @@ func RoleDOToPO(do model.Role) po.Role {
 		RoleCode: value.RoleCode,
 	}
 }
+
+func RolePermissionDOToPOs(do model.Role) (rels []po.RolePermissionRel) {
+	value := do.FullValue()
+	for _, val := range do.GetPermissionValues() {
+		rels = append(rels, po.RolePermissionRel{
+			RoleId:         do.ID(),
+			RoleCode:       value.RoleCode,
+			PermissionName: val.PermissionName,
+			AuthCode:       val.AuthCode,
+		})
+	}
+	return
+}

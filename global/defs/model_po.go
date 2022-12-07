@@ -32,7 +32,7 @@ type ModelPO struct {
 	// 主键，默认自增长
 	ID ID `gorm:"primarykey"`
 	// 乐观锁
-	Revision uint64 `gorm:"column:revision;comment:乐观锁;size:64;"`
+	Revision uint64 `gorm:"column:revision;comment:乐观锁"`
 	// 创建时间戳
 	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
 	// 修改时间戳
