@@ -21,6 +21,17 @@ func (r *RoleGateway) SaveSingle(ctx context.Context, role model.Role) (defs.ID,
 	return r.RoleRepo.Save(ctx, convs.RoleDOToPO(role))
 }
 
+func (r *RoleGateway) FindByID(ctx context.Context, id defs.ID) (role model.Role, exist bool, err error) {
+	rolePO, exist, err := r.RoleRepo.FindByID(ctx, id)
+	if err != nil {
+		return nil, false, err
+	}
+	if exist {
+		role = convs.RolePOToDO(rolePO)
+	}
+	return
+}
+
 func (r *RoleGateway) FindByRoleCode(ctx context.Context, roleCode string) (role model.Role, exist bool, err error) {
 	rolePO, exist, err := r.RoleRepo.FindByRoleCode(ctx, roleCode)
 	if err != nil {

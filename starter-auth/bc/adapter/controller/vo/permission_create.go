@@ -9,5 +9,5 @@ type PermissionReqVO struct {
 
 type PermissionRspVO struct {
 	// 许可ID
-	PermissionId uint64 `json:"permissionId"`
+	PermissionID uint64 `json:"permissionID"`
 }

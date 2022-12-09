@@ -98,12 +98,17 @@ func (p *permissionGateway_) ListByAuthCodes(ctx contextx.Context, authCodes []s
 
 type roleGateway_ struct {
 	SaveSingle_         func(ctx contextx.Context, role model.Role) (defs.ID, error)
+	FindByID_           func(ctx contextx.Context, id defs.ID) (role model.Role, exist bool, err error)
 	FindByRoleCode_     func(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error)
 	SaveWithPermission_ func(ctx contextx.Context, role model.Role) (id defs.ID, err error)
 }
 
 func (r *roleGateway_) SaveSingle(ctx contextx.Context, role model.Role) (defs.ID, error) {
 	return r.SaveSingle_(ctx, role)
+}
+
+func (r *roleGateway_) FindByID(ctx contextx.Context, id defs.ID) (role model.Role, exist bool, err error) {
+	return r.FindByID_(ctx, id)
 }
 
 func (r *roleGateway_) FindByRoleCode(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error) {
@@ -163,6 +168,7 @@ type PermissionGatewayIOCInterface interface {
 
 type RoleGatewayIOCInterface interface {
 	SaveSingle(ctx contextx.Context, role model.Role) (defs.ID, error)
+	FindByID(ctx contextx.Context, id defs.ID) (role model.Role, exist bool, err error)
 	FindByRoleCode(ctx contextx.Context, roleCode string) (role model.Role, exist bool, err error)
 	SaveWithPermission(ctx contextx.Context, role model.Role) (id defs.ID, err error)
 }

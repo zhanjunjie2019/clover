@@ -123,7 +123,7 @@ func (p *permissionApp_) PermissionCreate(ctx contextx.Context, permissionName, 
 type roleApp_ struct {
 	SetGormDB_                func(db *gorm.DB)
 	RoleCreate_               func(ctx contextx.Context, roleName, roleCode string) (id defs.ID, err error)
-	RolePermissionAssignment_ func(ctx contextx.Context, roleCode string, authCodes []string) (id defs.ID, err error)
+	RolePermissionAssignment_ func(ctx contextx.Context, roleID defs.ID, roleCode string, authCodes []string) (id defs.ID, err error)
 }
 
 func (r *roleApp_) SetGormDB(db *gorm.DB) {
@@ -134,8 +134,8 @@ func (r *roleApp_) RoleCreate(ctx contextx.Context, roleName, roleCode string) (
 	return r.RoleCreate_(ctx, roleName, roleCode)
 }
 
-func (r *roleApp_) RolePermissionAssignment(ctx contextx.Context, roleCode string, authCodes []string) (id defs.ID, err error) {
-	return r.RolePermissionAssignment_(ctx, roleCode, authCodes)
+func (r *roleApp_) RolePermissionAssignment(ctx contextx.Context, roleID defs.ID, roleCode string, authCodes []string) (id defs.ID, err error) {
+	return r.RolePermissionAssignment_(ctx, roleID, roleCode, authCodes)
 }
 
 type tenantApp_ struct {
@@ -187,7 +187,7 @@ type PermissionAppIOCInterface interface {
 type RoleAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	RoleCreate(ctx contextx.Context, roleName, roleCode string) (id defs.ID, err error)
-	RolePermissionAssignment(ctx contextx.Context, roleCode string, authCodes []string) (id defs.ID, err error)
+	RolePermissionAssignment(ctx contextx.Context, roleID defs.ID, roleCode string, authCodes []string) (id defs.ID, err error)
 }
 
 type TenantAppIOCInterface interface {

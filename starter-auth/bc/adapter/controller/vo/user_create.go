@@ -9,5 +9,5 @@ type UserCreateReqVO struct {
 
 type UserCreateRspVO struct {
 	// 用户ID
-	UserId uint64 `json:"userId"`
+	UserID uint64 `json:"userID"`
 }

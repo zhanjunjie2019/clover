@@ -9,5 +9,5 @@ type RoleCreateReqVO struct {
 
 type RoleCreateRspVO struct {
 	// 角色ID
-	RoleId uint64 `json:"roleId"`
+	RoleID uint64 `json:"roleID"`
 }

@@ -300,7 +300,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "登录验证用户账号密码，验证通过后在Redis保存一个授权码60秒有效，关联用户信息。用以可以用授权码接口换取登录Token。",
+                "summary": "登录验证用户账号密码，验证通过后授权码60秒有效，关联用户信息。可以用授权码接口换取登录Token。",
                 "parameters": [
                     {
                         "type": "string",
@@ -389,6 +389,63 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/vo.UserCreateRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/user-role-assignment": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "用户赋予角色，需要租户管理员权限",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "租户ID",
+                        "name": "Tenant-ID",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "用户赋予角色",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.UserRoleAssignmentReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.UserRoleAssignmentRspVO"
                                         }
                                     }
                                 }
@@ -627,6 +684,12 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
+        },
+        "vo.UserRoleAssignmentReqVO": {
+            "type": "object"
+        },
+        "vo.UserRoleAssignmentRspVO": {
+            "type": "object"
         }
     },
     "securityDefinitions": {

@@ -44,11 +44,11 @@ func (r *RolePermissionAssignmentController) Handle(c *gin.Context) {
 	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		reqVO.AuthCodes = lo.Uniq(reqVO.AuthCodes)
-		var id defs.ID
-		id, err = r.RoleApp.RolePermissionAssignment(ctx, reqVO.RoleCode, reqVO.AuthCodes)
+		var id = defs.ID(reqVO.RoleID)
+		id, err = r.RoleApp.RolePermissionAssignment(ctx, id, reqVO.RoleCode, reqVO.AuthCodes)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.RolePermissionAssignmentRspVO{
-				RoleId: id.UInt64(),
+				RoleID: id.UInt64(),
 			})
 			return
 		}

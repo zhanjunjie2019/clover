@@ -159,6 +159,10 @@ definitions:
         description: 用户ID
         type: integer
     type: object
+  vo.UserRoleAssignmentReqVO:
+    type: object
+  vo.UserRoleAssignmentRspVO:
+    type: object
 info:
   contact: {}
   description: clover-auth接口文档
@@ -351,7 +355,7 @@ paths:
                 data:
                   $ref: '#/definitions/vo.UserAuthorizationCodeRspVO'
               type: object
-      summary: 登录验证用户账号密码，验证通过后在Redis保存一个授权码60秒有效，关联用户信息。用以可以用授权码接口换取登录Token。
+      summary: 登录验证用户账号密码，验证通过后授权码60秒有效，关联用户信息。可以用授权码接口换取登录Token。
       tags:
       - user
   /user-create:
@@ -385,6 +389,39 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 创建用户，需要租户管理员权限
+      tags:
+      - user
+  /user-role-assignment:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
+      - description: 用户赋予角色
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.UserRoleAssignmentReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.UserRoleAssignmentRspVO'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 用户赋予角色，需要租户管理员权限
       tags:
       - user
 securityDefinitions:

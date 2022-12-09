@@ -46,7 +46,7 @@ func (u *UserCreateController) Handle(c *gin.Context) {
 		id, err = u.UserApp.UserCreate(ctx, reqVO.UserName, reqVO.Password)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.UserCreateRspVO{
-				UserId: id.UInt64(),
+				UserID: id.UInt64(),
 			})
 			return
 		}

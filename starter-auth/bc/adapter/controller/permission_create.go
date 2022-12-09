@@ -46,7 +46,7 @@ func (p *PermissionCreateController) Handle(c *gin.Context) {
 		id, err = p.PermissionApp.PermissionCreate(ctx, reqVO.PermissionName, reqVO.AuthCode)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.PermissionRspVO{
-				PermissionId: id.UInt64(),
+				PermissionID: id.UInt64(),
 			})
 			return
 		}

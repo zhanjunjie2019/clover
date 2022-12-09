@@ -7,7 +7,6 @@ import (
 	"github.com/zhanjunjie2019/clover/global/response"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/adapter/controller/vo"
-	"github.com/zhanjunjie2019/clover/starter-auth/bc/app"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/bcconsts"
 	"net/http"
 )
@@ -16,37 +15,36 @@ import (
 // +ioc:autowire:type=allimpls
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IController
 
-type RoleCreateController struct {
-	RoleApp app.RoleAppIOCInterface `singleton:""`
+type UserRoleAssignmentController struct {
 }
 
-func (r *RoleCreateController) GetOption() defs.ControllerOption {
+func (u *UserRoleAssignmentController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/role-create",
+		RelativePath: bcconsts.ModuleCode + "/user-role-assignment",
 		HttpMethod:   http.MethodPost,
 		AuthCode:     consts.AdminAuth,
 	}
 }
 
-// Handle 创建角色，需要租户管理员权限
-// @Tags role
-// @Summary 创建角色，需要租户管理员权限
+// Handle 用户赋予角色，需要租户管理员权限
+// @Tags user
+// @Summary 用户赋予角色，需要租户管理员权限
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
 // @Param Tenant-ID header string true "租户ID"
-// @Param data body vo.RoleCreateReqVO true "创建角色"
-// @Success 200 {object} response.Response{data=vo.RoleCreateRspVO}
-// @Router /role-create [post]
-func (r *RoleCreateController) Handle(c *gin.Context) {
-	var reqVO vo.RoleCreateReqVO
-	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
+// @Param data body vo.UserRoleAssignmentReqVO true "用户赋予角色"
+// @Success 200 {object} response.Response{data=vo.UserRoleAssignmentRspVO}
+// @Router /user-role-assignment [post]
+func (u *UserRoleAssignmentController) Handle(c *gin.Context) {
+	var reqVO vo.UserRoleAssignmentReqVO
+	_, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
 		var id defs.ID
-		id, err = r.RoleApp.RoleCreate(ctx, reqVO.RoleName, reqVO.RoleCode)
+		// TODO 应用层代码
 		if err == nil {
-			response.SuccWithDetailed(c, vo.RoleCreateRspVO{
-				RoleID: id.UInt64(),
+			response.SuccWithDetailed(c, vo.UserRoleAssignmentRspVO{
+				UserID: id.UInt64(),
 			})
 			return
 		}

@@ -53,11 +53,19 @@ func (r *RoleApp) RoleCreate(ctx context.Context, roleName, roleCode string) (id
 	return
 }
 
-func (r *RoleApp) RolePermissionAssignment(ctx context.Context, roleCode string, authCodes []string) (id defs.ID, err error) {
+func (r *RoleApp) RolePermissionAssignment(ctx context.Context, roleID defs.ID, roleCode string, authCodes []string) (id defs.ID, err error) {
 	err = r.DB.Transaction(func(tx *gorm.DB) (err error) {
 		ctx = uctx.WithValueAppDB(ctx, tx)
 		// 验证角色有效性
-		role, exist, err := r.RoleGateway.FindByRoleCode(ctx, roleCode)
+		var (
+			role  model.Role
+			exist bool
+		)
+		if roleID == 0 {
+			role, exist, err = r.RoleGateway.FindByRoleCode(ctx, roleCode)
+		} else {
+			role, exist, err = r.RoleGateway.FindByID(ctx, roleID)
+		}
 		if err != nil {
 			err = errs.ToUnifiedError(err)
 			return

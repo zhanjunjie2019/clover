@@ -201,6 +201,7 @@ func (r *rolePermissionRelRepo_) BatchDelete(ctx contextx.Context, pos []po.Role
 type roleRepo_ struct {
 	AutoMigrate_    func(ctx contextx.Context) error
 	Save_           func(ctx contextx.Context, rolePO po.Role) (defs.ID, error)
+	FindByID_       func(ctx contextx.Context, id defs.ID) (rolePO po.Role, exist bool, err error)
 	FindByRoleCode_ func(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error)
 }
 
@@ -210,6 +211,10 @@ func (r *roleRepo_) AutoMigrate(ctx contextx.Context) error {
 
 func (r *roleRepo_) Save(ctx contextx.Context, rolePO po.Role) (defs.ID, error) {
 	return r.Save_(ctx, rolePO)
+}
+
+func (r *roleRepo_) FindByID(ctx contextx.Context, id defs.ID) (rolePO po.Role, exist bool, err error) {
+	return r.FindByID_(ctx, id)
 }
 
 func (r *roleRepo_) FindByRoleCode(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error) {
@@ -270,6 +275,7 @@ type RolePermissionRelRepoIOCInterface interface {
 type RoleRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
 	Save(ctx contextx.Context, rolePO po.Role) (defs.ID, error)
+	FindByID(ctx contextx.Context, id defs.ID) (rolePO po.Role, exist bool, err error)
 	FindByRoleCode(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error)
 }
 
