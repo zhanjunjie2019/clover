@@ -13,6 +13,7 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang-jwt/jwt/v4 v4.4.3
+	github.com/samber/lo v1.36.0
 	github.com/swaggo/swag v1.8.8
 	github.com/zhanjunjie2019/clover/core v0.0.0-20221117082526-cf9f91f74a29
 	github.com/zhanjunjie2019/clover/global v0.0.0-20221202082417-3c5a0ec0fd8c
@@ -243,6 +244,7 @@ require (
 	go.uber.org/multierr v1.8.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
 	golang.org/x/crypto v0.3.0 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.3.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect

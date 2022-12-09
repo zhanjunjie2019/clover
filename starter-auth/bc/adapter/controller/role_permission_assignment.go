@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/samber/lo"
 	"github.com/zhanjunjie2019/clover/global/consts"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/response"
@@ -42,6 +43,7 @@ func (r *RolePermissionAssignmentController) Handle(c *gin.Context) {
 	var reqVO vo.RolePermissionAssignmentReqVO
 	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
+		reqVO.AuthCodes = lo.Uniq(reqVO.AuthCodes)
 		var id defs.ID
 		id, err = r.RoleApp.RolePermissionAssignment(ctx, reqVO.RoleCode, reqVO.AuthCodes)
 		if err == nil {

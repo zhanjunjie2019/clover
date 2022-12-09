@@ -34,7 +34,7 @@ type ModelPO struct {
 	// 乐观锁
 	Revision uint64 `gorm:"column:revision;comment:乐观锁"`
 	// 创建时间戳
-	CreatedAt uint64 `gorm:"autoCreateTime:milli"`
+	CreatedAt uint64 `gorm:"<-:create;autoCreateTime:milli"`
 	// 修改时间戳
 	UpdatedAt uint64 `gorm:"autoUpdateTime:milli"`
 	// 删除标识符
