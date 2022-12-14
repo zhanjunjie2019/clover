@@ -23,3 +23,16 @@ func UserDOToPO(do model.User) po.User {
 		Password: value.Password,
 	}
 }
+
+func UserRoleDOToPO(do model.User) (rels []po.UserRoleRel) {
+	value := do.FullValue()
+	for _, val := range do.GetRoleValues() {
+		rels = append(rels, po.UserRoleRel{
+			UserID:   do.ID(),
+			UserName: value.UserName,
+			RoleName: val.RoleName,
+			RoleCode: val.RoleCode,
+		})
+	}
+	return
+}

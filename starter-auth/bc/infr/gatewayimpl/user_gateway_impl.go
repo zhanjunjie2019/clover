@@ -12,6 +12,7 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/bcconsts"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/gatewayimpl/convs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
 	"time"
 )
 
@@ -19,12 +20,58 @@ import (
 // +ioc:autowire:type=singleton
 
 type UserGateway struct {
-	UserRepo    repo.UserRepoIOCInterface      `singleton:""`
-	RedisClient redisc.RedisClientIOCInterface `singleton:""`
+	UserRepo        repo.UserRepoIOCInterface        `singleton:""`
+	UserRoleRelRepo repo.UserRoleRelRepoIOCInterface `singleton:""`
+	RedisClient     redisc.RedisClientIOCInterface   `singleton:""`
 }
 
-func (u *UserGateway) Save(ctx context.Context, user model.User) (defs.ID, error) {
+func (u *UserGateway) SaveSingle(ctx context.Context, user model.User) (defs.ID, error) {
 	return u.UserRepo.Save(ctx, convs.UserDOToPO(user))
+}
+
+func (u *UserGateway) SaveWithRole(ctx context.Context, user model.User) (defs.ID, error) {
+	oldrels, err := u.UserRoleRelRepo.ListByUserID(ctx, user.ID())
+	if err != nil {
+		return 0, err
+	}
+	newrels := convs.UserRoleDOToPO(user)
+	inserts, updates, deletes := utils.LoadChangeByArrays(newrels, oldrels, func(newObject, oldObject *po.UserRoleRel) bool {
+		if newObject.RoleCode == oldObject.RoleCode {
+			newObject.ID = oldObject.ID
+			return true
+		}
+		return false
+	})
+	if len(inserts) > 0 {
+		err = u.UserRoleRelRepo.BatchInsert(ctx, inserts)
+		if err != nil {
+			return 0, err
+		}
+	}
+	if len(updates) > 0 {
+		err = u.UserRoleRelRepo.BatchUpdate(ctx, updates)
+		if err != nil {
+			return 0, err
+		}
+	}
+	if len(deletes) > 0 {
+		err = u.UserRoleRelRepo.BatchDelete(ctx, deletes)
+		if err != nil {
+			return 0, err
+		}
+	}
+	return u.UserRepo.Save(ctx, convs.UserDOToPO(user))
+}
+
+func (u *UserGateway) FindByID(ctx context.Context, id defs.ID) (user model.User, exist bool, err error) {
+	userPO, exist, err := u.UserRepo.FindByID(ctx, id)
+	if err != nil {
+		return nil, false, err
+	}
+	if exist {
+		user = convs.UserPOToDO(userPO)
+	}
+	return
 }
 
 func (u *UserGateway) FindByUserName(ctx context.Context, userName string) (user model.User, exist bool, err error) {
@@ -38,7 +85,7 @@ func (u *UserGateway) FindByUserName(ctx context.Context, userName string) (user
 	return
 }
 
-func (u *UserGateway) SaveToCacheByAuthorizationCode(ctx context.Context, user model.User) (authorizationCode string, err error) {
+func (u *UserGateway) SaveAuthorizationCodeToCache(ctx context.Context, user model.User) (authorizationCode string, err error) {
 	authorizationCode = utils.UUID()
 	userAuthorizationCode := protobuf.UserAuthorizationCode{
 		TenantID: uctx.GetTenantID(ctx),

@@ -7,6 +7,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/response"
 	"github.com/zhanjunjie2019/clover/global/uctx"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/adapter/controller/vo"
+	"github.com/zhanjunjie2019/clover/starter-auth/bc/app"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/bcconsts"
 	"net/http"
 )
@@ -16,6 +17,7 @@ import (
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IController
 
 type UserRoleAssignmentController struct {
+	UserApp app.UserAppIOCInterface `singleton:""`
 }
 
 func (u *UserRoleAssignmentController) GetOption() defs.ControllerOption {
@@ -38,10 +40,10 @@ func (u *UserRoleAssignmentController) GetOption() defs.ControllerOption {
 // @Router /user-role-assignment [post]
 func (u *UserRoleAssignmentController) Handle(c *gin.Context) {
 	var reqVO vo.UserRoleAssignmentReqVO
-	_, err := uctx.ShouldBindJSON(c, &reqVO)
+	ctx, err := uctx.ShouldBindJSON(c, &reqVO)
 	if err == nil {
-		var id defs.ID
-		// TODO 应用层代码
+		var id = defs.ID(reqVO.UserID)
+		id, err = u.UserApp.UserRoleAssignment(ctx, id, reqVO.UserName, reqVO.RoleCodes)
 		if err == nil {
 			response.SuccWithDetailed(c, vo.UserRoleAssignmentRspVO{
 				UserID: id.UInt64(),

@@ -30,7 +30,7 @@ func (p *PermissionGateway) Save(ctx context.Context, permission model.Permissio
 	return p.PermissionRepo.Save(ctx, convs.PermissionDOToPO(permission))
 }
 
-func (p *PermissionGateway) ListByAuthCodes(ctx context.Context, authCodes []string) (permission []model.Permission, err error) {
+func (p *PermissionGateway) ListByAuthCodes(ctx context.Context, authCodes []string) ([]model.Permission, error) {
 	permissionPOs, err := p.PermissionRepo.ListByAuthCodes(ctx, authCodes)
 	return convs.BatchPermissionPOToDO(permissionPOs), err
 }

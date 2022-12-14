@@ -40,7 +40,7 @@ func FailWithMessage(c *gin.Context, err error) {
 }
 
 func FailWithDetailed(c *gin.Context, err error, data any) {
-	uctx.Error(c, err.Error(), zap.Error(err))
+	uctx.Warn(c, err.Error(), zap.Error(err))
 	if unifiedErr, ok := err.(*errs.UnifiedError); ok {
 		Result(c, unifiedErr.Code(), data, unifiedErr.ShowError())
 	} else {

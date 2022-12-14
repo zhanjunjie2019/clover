@@ -22,18 +22,25 @@ func (a *AuthMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gi
 				c.Abort()
 				return
 			}
-			auths := token.Auths
-			var hasAuth = false
-			for _, v := range auths {
-				if v == option.AuthCode {
-					hasAuth = true
-					break
+			if len(token.TenantID) > 0 {
+				if token.TenantID != uctx.GetTenantID(c) {
+					response.FailWithMessage(c, errs.PermissionDeniedErr)
+					c.Abort()
+					return
 				}
-			}
-			if !hasAuth {
-				response.FailWithMessage(c, errs.PermissionDeniedErr)
-				c.Abort()
-				return
+				auths := token.Auths
+				var hasAuth = false
+				for _, v := range auths {
+					if v == option.AuthCode {
+						hasAuth = true
+						break
+					}
+				}
+				if !hasAuth {
+					response.FailWithMessage(c, errs.PermissionDeniedErr)
+					c.Abort()
+					return
+				}
 			}
 		}
 		c.Next()

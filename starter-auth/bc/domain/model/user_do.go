@@ -16,6 +16,10 @@ type User interface {
 	ID() defs.ID
 	// FullValue 核心数据
 	FullValue() UserValue
+	// GetRoleValues 获得角色列表
+	GetRoleValues() []RoleValue
+	// SetRoleValues 赋值角色列表
+	SetRoleValues(rvs []RoleValue)
 	// VerifyPassword 验证密码
 	VerifyPassword(pwd, salt string) bool
 	// EncodePassword 密码加密
@@ -23,8 +27,9 @@ type User interface {
 }
 
 type user struct {
-	id    defs.ID
-	value UserValue
+	id         defs.ID
+	value      UserValue
+	roleValues []RoleValue
 }
 
 func (u user) ID() defs.ID {
@@ -33,6 +38,14 @@ func (u user) ID() defs.ID {
 
 func (u user) FullValue() UserValue {
 	return u.value
+}
+
+func (u user) GetRoleValues() []RoleValue {
+	return u.roleValues
+}
+
+func (u *user) SetRoleValues(rvs []RoleValue) {
+	u.roleValues = rvs
 }
 
 func (u user) VerifyPassword(pwd, salt string) bool {

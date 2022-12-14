@@ -43,6 +43,12 @@ func (l *LogLayout) Error(msg string, logFields ...zap.Field) {
 	l.logFields = append(l.logFields, logFields...)
 }
 
+func (l *LogLayout) Warn(msg string, logFields ...zap.Field) {
+	l.level = zapcore.WarnLevel
+	l.msg = msg
+	l.logFields = append(l.logFields, logFields...)
+}
+
 func (l *LogLayout) Info(msg string, logFields ...zap.Field) {
 	l.level = zapcore.InfoLevel
 	l.msg = msg

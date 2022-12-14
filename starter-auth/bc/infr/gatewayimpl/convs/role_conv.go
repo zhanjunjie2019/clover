@@ -6,6 +6,13 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/infr/repo/po"
 )
 
+func BatchRolePOToDO(pos []po.Role) (dos []model.Role) {
+	for i := range pos {
+		dos = append(dos, RolePOToDO(pos[i]))
+	}
+	return
+}
+
 func RolePOToDO(po po.Role) model.Role {
 	return model.NewRole(po.ID, model.RoleValue{
 		RoleName: po.RoleName,

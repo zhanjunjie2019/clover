@@ -8,7 +8,8 @@ import (
 
 type IRoleGateway interface {
 	SaveSingle(ctx context.Context, role model.Role) (defs.ID, error)
+	SaveWithPermission(ctx context.Context, role model.Role) (id defs.ID, err error)
 	FindByID(ctx context.Context, id defs.ID) (role model.Role, exist bool, err error)
 	FindByRoleCode(ctx context.Context, roleCode string) (role model.Role, exist bool, err error)
-	SaveWithPermission(ctx context.Context, role model.Role) (id defs.ID, err error)
+	ListByRoleCodes(ctx context.Context, roleCodes []string) (roles []model.Role, err error)
 }

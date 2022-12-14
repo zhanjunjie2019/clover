@@ -6,3 +6,7 @@ const (
 	TokenHeaderKey       = "C-Token"
 	TenantIDHeaderKey    = "Tenant-ID"
 )
+
+const (
+	TenantIDParamKey = "TenantId"
+)

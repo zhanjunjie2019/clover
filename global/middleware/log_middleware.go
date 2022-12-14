@@ -58,7 +58,6 @@ func (l *LoggerMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) 
 			zap.String("reqBody", string(body)),
 			zap.String("reqHeader", string(headerJson)),
 			zap.String("traceID", uctx.GetTraceID(c)),
-			zap.String("authCode", option.AuthCode),
 			zap.String("rUri", option.RelativePath),
 			zap.String("tenantID", uctx.GetTenantID(c)),
 		)

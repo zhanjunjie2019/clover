@@ -22,7 +22,7 @@ func GetTenantID(ctx context.Context) string {
 		}
 		tenantID := c.GetHeader(consts.TenantIDHeaderKey)
 		if len(tenantID) == 0 {
-			tenantID = c.Param("TenantId")
+			tenantID = c.Param(consts.TenantIDParamKey)
 		}
 		if len(tenantID) > 0 {
 			c.Set(consts.CtxTenantIDVar, tenantID)

@@ -34,7 +34,6 @@ func (t *TenantCreateController) GetOption() defs.ControllerOption {
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param Tenant-ID header string true "租户ID"
 // @Param data body vo.TenantCreateReqVO true "创建租户"
 // @Success 200 {object} response.Response{data=vo.TenantCreateRspVO}
 // @Router /tenant-create [post]

@@ -36,7 +36,7 @@ func (r *RoleApp) RoleCreate(ctx context.Context, roleName, roleCode string) (id
 			return
 		}
 		if exist {
-			err = biserrs.RoleAlreadyExistsErr(roleCode)
+			err = biserrs.RoleAlreadyExistsErrWithRoleCode(roleCode)
 			return
 		}
 		role := model.NewRole(0, model.RoleValue{
@@ -71,7 +71,7 @@ func (r *RoleApp) RolePermissionAssignment(ctx context.Context, roleID defs.ID, 
 			return
 		}
 		if !exist {
-			err = biserrs.RoleDoesNotExistErr(roleCode)
+			err = biserrs.RoleDoesNotExistErr
 			return
 		}
 		// 获取资源许可列表
@@ -80,7 +80,7 @@ func (r *RoleApp) RolePermissionAssignment(ctx context.Context, roleID defs.ID, 
 			err = errs.ToUnifiedError(err)
 			return
 		}
-		var pers []model.PermissionValue
+		var pvs []model.PermissionValue
 		// 对比数据库资源与参数的，进行有效性校验
 		for i := range authCodes {
 			authCode := authCodes[i]
@@ -93,13 +93,13 @@ func (r *RoleApp) RolePermissionAssignment(ctx context.Context, roleID defs.ID, 
 				}
 			}
 			if pv == nil {
-				err = biserrs.PermissionDoesNotExistErr(authCode)
+				err = biserrs.PermissionDoesNotExistErrWithAuthCode(authCode)
 				return
 			}
-			pers = append(pers, *pv)
+			pvs = append(pvs, *pv)
 		}
 		// 校验完成后赋值
-		role.SetPermissionValues(pers)
+		role.SetPermissionValues(pvs)
 		// 保存聚合根
 		id, err = r.RoleGateway.SaveWithPermission(ctx, role)
 		if err != nil {

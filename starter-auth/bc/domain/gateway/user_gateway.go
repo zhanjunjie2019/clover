@@ -7,7 +7,9 @@ import (
 )
 
 type IUserGateway interface {
-	Save(ctx context.Context, user model.User) (defs.ID, error)
+	SaveSingle(ctx context.Context, user model.User) (defs.ID, error)
+	SaveWithRole(ctx context.Context, user model.User) (defs.ID, error)
+	FindByID(ctx context.Context, id defs.ID) (user model.User, exist bool, err error)
 	FindByUserName(ctx context.Context, userName string) (user model.User, exist bool, err error)
-	SaveToCacheByAuthorizationCode(ctx context.Context, user model.User) (authorizationCode string, err error)
+	SaveAuthorizationCodeToCache(ctx context.Context, user model.User) (authorizationCode string, err error)
 }

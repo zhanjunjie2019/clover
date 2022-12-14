@@ -15,7 +15,7 @@ type Role interface {
 	FullValue() RoleValue
 	// GetPermissionValues 获得角色资源许可
 	GetPermissionValues() []PermissionValue
-	// SetPermissionValues 复制角色资源许可
+	// SetPermissionValues 赋值角色资源许可
 	SetPermissionValues([]PermissionValue)
 }
 
@@ -37,8 +37,8 @@ func (r role) GetPermissionValues() []PermissionValue {
 	return r.permissionValues
 }
 
-func (r *role) SetPermissionValues(pers []PermissionValue) {
-	r.permissionValues = pers
+func (r *role) SetPermissionValues(pvs []PermissionValue) {
+	r.permissionValues = pvs
 }
 
 type RoleValue struct {

@@ -51,8 +51,6 @@ type AuthConfig struct {
 }
 
 type AuthSuperAdminConfig struct {
-	// TenantID 租户ID
-	TenantID string `yaml:"tenantID"`
 	// SecretKey 租户密钥
 	SecretKey string `yaml:"secretKey"`
 	// AccessTokenTimeLimit 访问Token有效时限

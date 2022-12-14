@@ -51,3 +51,10 @@ func Error(ctx context.Context, msg string, fields ...zap.Field) {
 		layout.Error(msg, fields...)
 	}
 }
+
+func Warn(ctx context.Context, msg string, fields ...zap.Field) {
+	layout := GetLogLayout(ctx)
+	if layout != nil {
+		layout.Warn(msg, fields...)
+	}
+}

@@ -187,6 +187,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/sadmin-token-create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tenant"
+                ],
+                "summary": "获得超管Token",
+                "parameters": [
+                    {
+                        "description": "获得超管Token",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.SadminTokenCreateReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.SadminTokenCreateRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/tenant-create": {
             "post": {
                 "security": [
@@ -493,7 +538,7 @@ const docTemplate = `{
         "vo.PermissionRspVO": {
             "type": "object",
             "properties": {
-                "permissionId": {
+                "permissionID": {
                     "description": "许可ID",
                     "type": "integer"
                 }
@@ -519,7 +564,7 @@ const docTemplate = `{
         "vo.RoleCreateRspVO": {
             "type": "object",
             "properties": {
-                "roleId": {
+                "roleID": {
                     "description": "角色ID",
                     "type": "integer"
                 }
@@ -528,8 +573,7 @@ const docTemplate = `{
         "vo.RolePermissionAssignmentReqVO": {
             "type": "object",
             "required": [
-                "authCodes",
-                "roleCode"
+                "authCodes"
             ],
             "properties": {
                 "authCodes": {
@@ -540,16 +584,45 @@ const docTemplate = `{
                     }
                 },
                 "roleCode": {
-                    "description": "角色编码",
+                    "description": "角色编码，与角色ID二选一",
                     "type": "string"
+                },
+                "roleID": {
+                    "description": "角色ID，与角色编码二选一",
+                    "type": "integer"
                 }
             }
         },
         "vo.RolePermissionAssignmentRspVO": {
             "type": "object",
             "properties": {
-                "roleId": {
+                "roleID": {
                     "description": "角色ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "vo.SadminTokenCreateReqVO": {
+            "type": "object",
+            "required": [
+                "secretKey"
+            ],
+            "properties": {
+                "secretKey": {
+                    "description": "租户密钥",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.SadminTokenCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "description": "访问Token",
+                    "type": "string"
+                },
+                "accessTokenExpirationTime": {
+                    "description": "访问Token过期时间戳",
                     "type": "integer"
                 }
             }
@@ -679,17 +752,43 @@ const docTemplate = `{
         "vo.UserCreateRspVO": {
             "type": "object",
             "properties": {
-                "userId": {
+                "userID": {
                     "description": "用户ID",
                     "type": "integer"
                 }
             }
         },
         "vo.UserRoleAssignmentReqVO": {
-            "type": "object"
+            "type": "object",
+            "required": [
+                "roleCodes"
+            ],
+            "properties": {
+                "roleCodes": {
+                    "description": "角色编码",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "userID": {
+                    "description": "用户ID，与用户名二选一",
+                    "type": "integer"
+                },
+                "userName": {
+                    "description": "用户名，与用户ID二选一",
+                    "type": "string"
+                }
+            }
         },
         "vo.UserRoleAssignmentRspVO": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "userID": {
+                    "description": "用户ID",
+                    "type": "integer"
+                }
+            }
         }
     },
     "securityDefinitions": {

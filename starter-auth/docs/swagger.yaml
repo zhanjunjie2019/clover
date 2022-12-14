@@ -25,7 +25,7 @@ definitions:
     type: object
   vo.PermissionRspVO:
     properties:
-      permissionId:
+      permissionID:
         description: 许可ID
         type: integer
     type: object
@@ -43,7 +43,7 @@ definitions:
     type: object
   vo.RoleCreateRspVO:
     properties:
-      roleId:
+      roleID:
         description: 角色ID
         type: integer
     type: object
@@ -55,16 +55,35 @@ definitions:
           type: string
         type: array
       roleCode:
-        description: 角色编码
+        description: 角色编码，与角色ID二选一
         type: string
+      roleID:
+        description: 角色ID，与角色编码二选一
+        type: integer
     required:
     - authCodes
-    - roleCode
     type: object
   vo.RolePermissionAssignmentRspVO:
     properties:
-      roleId:
+      roleID:
         description: 角色ID
+        type: integer
+    type: object
+  vo.SadminTokenCreateReqVO:
+    properties:
+      secretKey:
+        description: 租户密钥
+        type: string
+    required:
+    - secretKey
+    type: object
+  vo.SadminTokenCreateRspVO:
+    properties:
+      accessToken:
+        description: 访问Token
+        type: string
+      accessTokenExpirationTime:
+        description: 访问Token过期时间戳
         type: integer
     type: object
   vo.TenantCreateReqVO:
@@ -155,13 +174,31 @@ definitions:
     type: object
   vo.UserCreateRspVO:
     properties:
-      userId:
+      userID:
         description: 用户ID
         type: integer
     type: object
   vo.UserRoleAssignmentReqVO:
+    properties:
+      roleCodes:
+        description: 角色编码
+        items:
+          type: string
+        type: array
+      userID:
+        description: 用户ID，与用户名二选一
+        type: integer
+      userName:
+        description: 用户名，与用户ID二选一
+        type: string
+    required:
+    - roleCodes
     type: object
   vo.UserRoleAssignmentRspVO:
+    properties:
+      userID:
+        description: 用户ID
+        type: integer
     type: object
 info:
   contact: {}
@@ -268,6 +305,32 @@ paths:
       summary: 角色赋予资源许可，需要租户管理员权限
       tags:
       - role
+  /sadmin-token-create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 获得超管Token
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.SadminTokenCreateReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.SadminTokenCreateRspVO'
+              type: object
+      summary: 获得超管Token
+      tags:
+      - tenant
   /tenant-create:
     post:
       consumes:

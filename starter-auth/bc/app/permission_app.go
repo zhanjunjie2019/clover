@@ -35,7 +35,7 @@ func (p *PermissionApp) PermissionCreate(ctx context.Context, permissionName, au
 			return
 		}
 		if exist {
-			err = biserrs.PermissionAlreadyExistErr(authCode)
+			err = biserrs.PermissionAlreadyExistErrWithAuthCode(authCode)
 			return
 		}
 		permission := model.NewPermission(0, model.PermissionValue{

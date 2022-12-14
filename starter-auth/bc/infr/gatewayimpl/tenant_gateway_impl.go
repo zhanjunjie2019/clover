@@ -18,6 +18,7 @@ import (
 type TenantGateway struct {
 	TenantRepo            repo.TenantRepoIOCInterface            `singleton:""`
 	UserRepo              repo.UserRepoIOCInterface              `singleton:""`
+	UserRoleRelRepo       repo.UserRoleRelRepoIOCInterface       `singleton:""`
 	RoleRepo              repo.RoleRepoIOCInterface              `singleton:""`
 	RolePermissionRelRepo repo.RolePermissionRelRepoIOCInterface `singleton:""`
 	NsqProducer           nsqd.NsqProducerIOCInterface           `singleton:""`
@@ -52,6 +53,10 @@ func (t *TenantGateway) PublishInitEvent(ctx context.Context, tenant model.Tenan
 
 func (t *TenantGateway) TenantTablesManualMigrate(ctx context.Context) (err error) {
 	err = t.UserRepo.AutoMigrate(ctx)
+	if err != nil {
+		return
+	}
+	err = t.UserRoleRelRepo.AutoMigrate(ctx)
 	if err != nil {
 		return
 	}

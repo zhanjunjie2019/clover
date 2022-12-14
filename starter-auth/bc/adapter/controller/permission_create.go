@@ -34,7 +34,6 @@ func (p *PermissionCreateController) GetOption() defs.ControllerOption {
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param Tenant-ID header string true "租户ID"
 // @Param data body vo.PermissionReqVO true "创建资源权限许可"
 // @Success 200 {object} response.Response{data=vo.PermissionRspVO}
 // @Router /permission-create [post]

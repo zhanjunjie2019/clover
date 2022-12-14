@@ -63,6 +63,21 @@ func init() {
 	allimpls.RegisterStructDescriptor(roleAppStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
+			return &sadminApp_{}
+		},
+	})
+	sadminAppStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &SadminApp{}
+		},
+		Metadata: map[string]interface{}{
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
+		},
+	}
+	singleton.RegisterStructDescriptor(sadminAppStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
 			return &tenantApp_{}
 		},
 	})
@@ -138,6 +153,14 @@ func (r *roleApp_) RolePermissionAssignment(ctx contextx.Context, roleID defs.ID
 	return r.RolePermissionAssignment_(ctx, roleID, roleCode, authCodes)
 }
 
+type sadminApp_ struct {
+	SadminTokenCreate_ func(ctx contextx.Context, secretKey string) (accessToken string, accessTokenExpirationTime int64, err error)
+}
+
+func (s *sadminApp_) SadminTokenCreate(ctx contextx.Context, secretKey string) (accessToken string, accessTokenExpirationTime int64, err error) {
+	return s.SadminTokenCreate_(ctx, secretKey)
+}
+
 type tenantApp_ struct {
 	SetGormDB_         func(db *gorm.DB)
 	TenantCreate_      func(ctx contextx.Context, tenantID, tenantName, redirect string, accessTTL uint64) (tid, secretKey string, err error)
@@ -165,6 +188,7 @@ type userApp_ struct {
 	SetGormDB_             func(db *gorm.DB)
 	UserCreate_            func(ctx contextx.Context, userName, password string) (id defs.ID, err error)
 	UserAuthorizationCode_ func(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error)
+	UserRoleAssignment_    func(ctx contextx.Context, userID defs.ID, userCode string, roleCodes []string) (id defs.ID, err error)
 }
 
 func (u *userApp_) SetGormDB(db *gorm.DB) {
@@ -179,6 +203,10 @@ func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, userName, passwor
 	return u.UserAuthorizationCode_(ctx, userName, password, redirect)
 }
 
+func (u *userApp_) UserRoleAssignment(ctx contextx.Context, userID defs.ID, userCode string, roleCodes []string) (id defs.ID, err error) {
+	return u.UserRoleAssignment_(ctx, userID, userCode, roleCodes)
+}
+
 type PermissionAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	PermissionCreate(ctx contextx.Context, permissionName, authCode string) (id defs.ID, err error)
@@ -188,6 +216,10 @@ type RoleAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	RoleCreate(ctx contextx.Context, roleName, roleCode string) (id defs.ID, err error)
 	RolePermissionAssignment(ctx contextx.Context, roleID defs.ID, roleCode string, authCodes []string) (id defs.ID, err error)
+}
+
+type SadminAppIOCInterface interface {
+	SadminTokenCreate(ctx contextx.Context, secretKey string) (accessToken string, accessTokenExpirationTime int64, err error)
 }
 
 type TenantAppIOCInterface interface {
@@ -201,6 +233,7 @@ type UserAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	UserCreate(ctx contextx.Context, userName, password string) (id defs.ID, err error)
 	UserAuthorizationCode(ctx contextx.Context, userName, password, redirect string) (authorizationCode, redirectUrl string, err error)
+	UserRoleAssignment(ctx contextx.Context, userID defs.ID, userCode string, roleCodes []string) (id defs.ID, err error)
 }
 
 var _permissionAppSDID string
@@ -268,6 +301,40 @@ type ThisRoleApp struct {
 
 func (t *ThisRoleApp) This() RoleAppIOCInterface {
 	thisPtr, _ := GetRoleAppIOCInterfaceSingleton()
+	return thisPtr
+}
+
+var _sadminAppSDID string
+
+func GetSadminAppSingleton() (*SadminApp, error) {
+	if _sadminAppSDID == "" {
+		_sadminAppSDID = util.GetSDIDByStructPtr(new(SadminApp))
+	}
+	i, err := singleton.GetImpl(_sadminAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*SadminApp)
+	return impl, nil
+}
+
+func GetSadminAppIOCInterfaceSingleton() (SadminAppIOCInterface, error) {
+	if _sadminAppSDID == "" {
+		_sadminAppSDID = util.GetSDIDByStructPtr(new(SadminApp))
+	}
+	i, err := singleton.GetImplWithProxy(_sadminAppSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(SadminAppIOCInterface)
+	return impl, nil
+}
+
+type ThisSadminApp struct {
+}
+
+func (t *ThisSadminApp) This() SadminAppIOCInterface {
+	thisPtr, _ := GetSadminAppIOCInterfaceSingleton()
 	return thisPtr
 }
 

@@ -54,18 +54,11 @@ func init() {
 			return constructFunc(impl)
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IRepo),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(rolePermissionRelRepoStructDescriptor)
-	allimpls.RegisterStructDescriptor(rolePermissionRelRepoStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &roleRepo_{}
@@ -81,18 +74,11 @@ func init() {
 			return constructFunc(impl)
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IRepo),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(roleRepoStructDescriptor)
-	allimpls.RegisterStructDescriptor(roleRepoStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &tenantRepo_{}
@@ -130,23 +116,37 @@ func init() {
 			return constructFunc(impl)
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IRepo),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(userRepoStructDescriptor)
-	allimpls.RegisterStructDescriptor(userRepoStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &userRoleRelRepo_{}
+		},
+	})
+	userRoleRelRepoStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &UserRoleRelRepo{}
+		},
+		ConstructFunc: func(i interface{}, _ interface{}) (interface{}, error) {
+			impl := i.(*UserRoleRelRepo)
+			var constructFunc UserRoleRelRepoConstructFunc = InitUserRoleRelRepo
+			return constructFunc(impl)
+		},
+		Metadata: map[string]interface{}{
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
+		},
+	}
+	singleton.RegisterStructDescriptor(userRoleRelRepoStructDescriptor)
 }
 
 type RolePermissionRelRepoConstructFunc func(impl *RolePermissionRelRepo) (*RolePermissionRelRepo, error)
 type RoleRepoConstructFunc func(impl *RoleRepo) (*RoleRepo, error)
 type UserRepoConstructFunc func(impl *UserRepo) (*UserRepo, error)
+type UserRoleRelRepoConstructFunc func(impl *UserRoleRelRepo) (*UserRoleRelRepo, error)
 type permissionRepo_ struct {
 	AutoMigrate_     func(ctx contextx.Context) error
 	FindByAuthCode_  func(ctx contextx.Context, authCode string) (permissionPO po.Permission, exist bool, err error)
@@ -199,10 +199,11 @@ func (r *rolePermissionRelRepo_) BatchDelete(ctx contextx.Context, pos []po.Role
 }
 
 type roleRepo_ struct {
-	AutoMigrate_    func(ctx contextx.Context) error
-	Save_           func(ctx contextx.Context, rolePO po.Role) (defs.ID, error)
-	FindByID_       func(ctx contextx.Context, id defs.ID) (rolePO po.Role, exist bool, err error)
-	FindByRoleCode_ func(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error)
+	AutoMigrate_     func(ctx contextx.Context) error
+	Save_            func(ctx contextx.Context, rolePO po.Role) (defs.ID, error)
+	FindByID_        func(ctx contextx.Context, id defs.ID) (rolePO po.Role, exist bool, err error)
+	FindByRoleCode_  func(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error)
+	ListByRoleCodes_ func(ctx contextx.Context, roleCodes []string) (rolePOs []po.Role, err error)
 }
 
 func (r *roleRepo_) AutoMigrate(ctx contextx.Context) error {
@@ -219,6 +220,10 @@ func (r *roleRepo_) FindByID(ctx contextx.Context, id defs.ID) (rolePO po.Role, 
 
 func (r *roleRepo_) FindByRoleCode(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error) {
 	return r.FindByRoleCode_(ctx, roleCode)
+}
+
+func (r *roleRepo_) ListByRoleCodes(ctx contextx.Context, roleCodes []string) (rolePOs []po.Role, err error) {
+	return r.ListByRoleCodes_(ctx, roleCodes)
 }
 
 type tenantRepo_ struct {
@@ -242,6 +247,7 @@ func (t *tenantRepo_) Save(ctx contextx.Context, tenantPO po.Tenant) (defs.ID, e
 type userRepo_ struct {
 	AutoMigrate_    func(ctx contextx.Context) error
 	Save_           func(ctx contextx.Context, userPO po.User) (defs.ID, error)
+	FindByID_       func(ctx contextx.Context, id defs.ID) (userPO po.User, exist bool, err error)
 	FindByUserName_ func(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
 }
 
@@ -253,8 +259,40 @@ func (u *userRepo_) Save(ctx contextx.Context, userPO po.User) (defs.ID, error) 
 	return u.Save_(ctx, userPO)
 }
 
+func (u *userRepo_) FindByID(ctx contextx.Context, id defs.ID) (userPO po.User, exist bool, err error) {
+	return u.FindByID_(ctx, id)
+}
+
 func (u *userRepo_) FindByUserName(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error) {
 	return u.FindByUserName_(ctx, userName)
+}
+
+type userRoleRelRepo_ struct {
+	AutoMigrate_  func(ctx contextx.Context) error
+	ListByUserID_ func(ctx contextx.Context, userID defs.ID) (rels []po.UserRoleRel, err error)
+	BatchInsert_  func(ctx contextx.Context, pos []po.UserRoleRel) (err error)
+	BatchUpdate_  func(ctx contextx.Context, pos []po.UserRoleRel) (err error)
+	BatchDelete_  func(ctx contextx.Context, pos []po.UserRoleRel) (err error)
+}
+
+func (u *userRoleRelRepo_) AutoMigrate(ctx contextx.Context) error {
+	return u.AutoMigrate_(ctx)
+}
+
+func (u *userRoleRelRepo_) ListByUserID(ctx contextx.Context, userID defs.ID) (rels []po.UserRoleRel, err error) {
+	return u.ListByUserID_(ctx, userID)
+}
+
+func (u *userRoleRelRepo_) BatchInsert(ctx contextx.Context, pos []po.UserRoleRel) (err error) {
+	return u.BatchInsert_(ctx, pos)
+}
+
+func (u *userRoleRelRepo_) BatchUpdate(ctx contextx.Context, pos []po.UserRoleRel) (err error) {
+	return u.BatchUpdate_(ctx, pos)
+}
+
+func (u *userRoleRelRepo_) BatchDelete(ctx contextx.Context, pos []po.UserRoleRel) (err error) {
+	return u.BatchDelete_(ctx, pos)
 }
 
 type PermissionRepoIOCInterface interface {
@@ -277,6 +315,7 @@ type RoleRepoIOCInterface interface {
 	Save(ctx contextx.Context, rolePO po.Role) (defs.ID, error)
 	FindByID(ctx contextx.Context, id defs.ID) (rolePO po.Role, exist bool, err error)
 	FindByRoleCode(ctx contextx.Context, roleCode string) (rolePO po.Role, exist bool, err error)
+	ListByRoleCodes(ctx contextx.Context, roleCodes []string) (rolePOs []po.Role, err error)
 }
 
 type TenantRepoIOCInterface interface {
@@ -288,7 +327,16 @@ type TenantRepoIOCInterface interface {
 type UserRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
 	Save(ctx contextx.Context, userPO po.User) (defs.ID, error)
+	FindByID(ctx contextx.Context, id defs.ID) (userPO po.User, exist bool, err error)
 	FindByUserName(ctx contextx.Context, userName string) (userPO po.User, exist bool, err error)
+}
+
+type UserRoleRelRepoIOCInterface interface {
+	AutoMigrate(ctx contextx.Context) error
+	ListByUserID(ctx contextx.Context, userID defs.ID) (rels []po.UserRoleRel, err error)
+	BatchInsert(ctx contextx.Context, pos []po.UserRoleRel) (err error)
+	BatchUpdate(ctx contextx.Context, pos []po.UserRoleRel) (err error)
+	BatchDelete(ctx contextx.Context, pos []po.UserRoleRel) (err error)
 }
 
 var _permissionRepoSDID string
@@ -458,5 +506,39 @@ type ThisUserRepo struct {
 
 func (t *ThisUserRepo) This() UserRepoIOCInterface {
 	thisPtr, _ := GetUserRepoIOCInterfaceSingleton()
+	return thisPtr
+}
+
+var _userRoleRelRepoSDID string
+
+func GetUserRoleRelRepoSingleton() (*UserRoleRelRepo, error) {
+	if _userRoleRelRepoSDID == "" {
+		_userRoleRelRepoSDID = util.GetSDIDByStructPtr(new(UserRoleRelRepo))
+	}
+	i, err := singleton.GetImpl(_userRoleRelRepoSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(*UserRoleRelRepo)
+	return impl, nil
+}
+
+func GetUserRoleRelRepoIOCInterfaceSingleton() (UserRoleRelRepoIOCInterface, error) {
+	if _userRoleRelRepoSDID == "" {
+		_userRoleRelRepoSDID = util.GetSDIDByStructPtr(new(UserRoleRelRepo))
+	}
+	i, err := singleton.GetImplWithProxy(_userRoleRelRepoSDID, nil)
+	if err != nil {
+		return nil, err
+	}
+	impl := i.(UserRoleRelRepoIOCInterface)
+	return impl, nil
+}
+
+type ThisUserRoleRelRepo struct {
+}
+
+func (t *ThisUserRoleRelRepo) This() UserRoleRelRepoIOCInterface {
+	thisPtr, _ := GetUserRoleRelRepoIOCInterfaceSingleton()
 	return thisPtr
 }
