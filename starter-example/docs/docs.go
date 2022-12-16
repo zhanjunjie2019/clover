@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/hellow-word": {
+        "/example/hellow-word": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -107,7 +107,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "v1.0.0",
 	Host:             "",
-	BasePath:         "/example",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "clover-example-api",
 	Description:      "clover-example接口文档",

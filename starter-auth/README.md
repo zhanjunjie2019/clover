@@ -4,8 +4,6 @@
 
 ## 领域图
 
-![领域图](http://assets.processon.com/chart_image/63801d2de0b34d37c4690f61.png)
-
 ## 目录结构
 
 - bc --限界上下文

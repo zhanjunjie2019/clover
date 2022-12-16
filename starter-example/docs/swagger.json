@@ -6,9 +6,8 @@
         "contact": {},
         "version": "v1.0.0"
     },
-    "basePath": "/example",
     "paths": {
-        "/hellow-word": {
+        "/example/hellow-word": {
             "get": {
                 "consumes": [
                     "application/json"

@@ -9,8 +9,8 @@ import (
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/logs"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
-	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/adapter/consumer"
-	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/adapter/controller"
+	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/adapter/consumer"
+	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/adapter/controller"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/docs"
 )
 
@@ -22,7 +22,6 @@ import (
 // @Title       clover-auth-api
 // @Version     v1.0.0
 // @Description clover-auth接口文档
-// @BasePath    /auth
 // @SecurityDefinitions.Apikey ApiKeyAuth
 // @In header
 // @Name C-Token

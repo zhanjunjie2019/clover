@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/permission-create": {
+        "/auth/permission-create": {
             "post": {
                 "security": [
                     {
@@ -34,13 +34,6 @@ const docTemplate = `{
                 ],
                 "summary": "创建资源权限许可",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "租户ID",
-                        "name": "Tenant-ID",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "创建资源权限许可",
                         "name": "data",
@@ -73,7 +66,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role-create": {
+        "/auth/role-create": {
             "post": {
                 "security": [
                     {
@@ -130,7 +123,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/role-permission-assignment": {
+        "/auth/role-permission-assignment": {
             "post": {
                 "security": [
                     {
@@ -187,7 +180,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/sadmin-token-create": {
+        "/auth/sadmin-token-create": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -232,7 +225,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tenant-create": {
+        "/auth/tenant-create": {
             "post": {
                 "security": [
                     {
@@ -250,13 +243,6 @@ const docTemplate = `{
                 ],
                 "summary": "创建租户",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "租户ID",
-                        "name": "Tenant-ID",
-                        "in": "header",
-                        "required": true
-                    },
                     {
                         "description": "创建租户",
                         "name": "data",
@@ -289,7 +275,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tenant-token-create": {
+        "/auth/tenant-token-create": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -334,7 +320,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-authorization-code": {
+        "/auth/user-authorization-code": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -386,7 +372,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-create": {
+        "/auth/user-create": {
             "post": {
                 "security": [
                     {
@@ -443,7 +429,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user-role-assignment": {
+        "/auth/user-role-assignment": {
             "post": {
                 "security": [
                     {
@@ -518,7 +504,7 @@ const docTemplate = `{
                 }
             }
         },
-        "vo.PermissionReqVO": {
+        "vo.PermissionInfoVO": {
             "type": "object",
             "required": [
                 "authCode",
@@ -535,16 +521,56 @@ const docTemplate = `{
                 }
             }
         },
+        "vo.PermissionReqVO": {
+            "type": "object",
+            "required": [
+                "permissions"
+            ],
+            "properties": {
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.PermissionInfoVO"
+                    }
+                }
+            }
+        },
         "vo.PermissionRspVO": {
             "type": "object",
             "properties": {
-                "permissionID": {
+                "permissionIDs": {
                     "description": "许可ID",
-                    "type": "integer"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },
         "vo.RoleCreateReqVO": {
+            "type": "object",
+            "properties": {
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.RoleInfoVO"
+                    }
+                }
+            }
+        },
+        "vo.RoleCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "roleIDs": {
+                    "description": "角色ID",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "vo.RoleInfoVO": {
             "type": "object",
             "required": [
                 "roleCode",
@@ -558,15 +584,6 @@ const docTemplate = `{
                 "roleName": {
                     "description": "角色名",
                     "type": "string"
-                }
-            }
-        },
-        "vo.RoleCreateRspVO": {
-            "type": "object",
-            "properties": {
-                "roleID": {
-                    "description": "角色ID",
-                    "type": "integer"
                 }
             }
         },
@@ -629,6 +646,28 @@ const docTemplate = `{
         },
         "vo.TenantCreateReqVO": {
             "type": "object",
+            "properties": {
+                "tenants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.TenantInfoVO"
+                    }
+                }
+            }
+        },
+        "vo.TenantCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "secretKeys": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.TenantSecretKeyVO"
+                    }
+                }
+            }
+        },
+        "vo.TenantInfoVO": {
+            "type": "object",
             "required": [
                 "tenantName"
             ],
@@ -651,7 +690,7 @@ const docTemplate = `{
                 }
             }
         },
-        "vo.TenantCreateRspVO": {
+        "vo.TenantSecretKeyVO": {
             "type": "object",
             "properties": {
                 "secretKey": {
@@ -709,10 +748,6 @@ const docTemplate = `{
                     "description": "密码",
                     "type": "string"
                 },
-                "redirectUrl": {
-                    "description": "重定向路径，非必要，不传则按租户设置",
-                    "type": "string"
-                },
                 "userName": {
                     "description": "账户名",
                     "type": "string"
@@ -735,6 +770,32 @@ const docTemplate = `{
         "vo.UserCreateReqVO": {
             "type": "object",
             "required": [
+                "users"
+            ],
+            "properties": {
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.UserInfoVO"
+                    }
+                }
+            }
+        },
+        "vo.UserCreateRspVO": {
+            "type": "object",
+            "properties": {
+                "userIDs": {
+                    "description": "用户ID",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "vo.UserInfoVO": {
+            "type": "object",
+            "required": [
                 "password",
                 "userName"
             ],
@@ -746,15 +807,6 @@ const docTemplate = `{
                 "userName": {
                     "description": "用户名",
                     "type": "string"
-                }
-            }
-        },
-        "vo.UserCreateRspVO": {
-            "type": "object",
-            "properties": {
-                "userID": {
-                    "description": "用户ID",
-                    "type": "integer"
                 }
             }
         },
@@ -804,7 +856,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "v1.0.0",
 	Host:             "",
-	BasePath:         "/auth",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "clover-auth-api",
 	Description:      "clover-auth接口文档",

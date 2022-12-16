@@ -10,9 +10,9 @@ import (
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/logs"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
-	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/consumer"
-	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/controller"
-	_ "github.com/zhanjunjie2019/clover/starter-example/bc/adapter/scheduler"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/consumer"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/controller"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/scheduler"
 	_ "github.com/zhanjunjie2019/clover/starter-example/docs"
 )
 
@@ -24,7 +24,6 @@ import (
 // @Title       clover-example-api
 // @Version     v1.0.0
 // @Description clover-example接口文档
-// @BasePath    /example
 // @SecurityDefinitions.Apikey ApiKeyAuth
 // @In header
 // @Name C-Token

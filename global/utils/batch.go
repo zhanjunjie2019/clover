@@ -1,5 +1,15 @@
 package utils
 
+import "github.com/zhanjunjie2019/clover/global/defs"
+
+// ConvIDsToUint64 批量将id转为uint64类型
+func ConvIDsToUint64(ids []defs.ID) (rs []uint64) {
+	for i := range ids {
+		rs = append(rs, ids[i].UInt64())
+	}
+	return
+}
+
 // LoadChangeByArrays 传入2个集合进行比较，最后对比出集合变更项，顺序不敏感。
 // newArray:新结果集合;oldArray:原集合;compare:比较方法
 func LoadChangeByArrays[T any](newArray, oldArray []T, compare func(newObject, oldObject *T) bool) (inserts, updates, deletes []T) {

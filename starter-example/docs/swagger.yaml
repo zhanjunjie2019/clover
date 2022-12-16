@@ -1,4 +1,3 @@
-basePath: /example
 definitions:
   response.Response:
     properties:
@@ -23,7 +22,7 @@ info:
   title: clover-example-api
   version: v1.0.0
 paths:
-  /hellow-word:
+  /example/hellow-word:
     get:
       consumes:
       - application/json

@@ -1,4 +1,3 @@
-basePath: /auth
 definitions:
   response.Response:
     properties:
@@ -11,7 +10,7 @@ definitions:
         description: 详细信息
         type: string
     type: object
-  vo.PermissionReqVO:
+  vo.PermissionInfoVO:
     properties:
       authCode:
         description: 资源编码
@@ -23,13 +22,39 @@ definitions:
     - authCode
     - permissionName
     type: object
+  vo.PermissionReqVO:
+    properties:
+      permissions:
+        items:
+          $ref: '#/definitions/vo.PermissionInfoVO'
+        type: array
+    required:
+    - permissions
+    type: object
   vo.PermissionRspVO:
     properties:
-      permissionID:
+      permissionIDs:
         description: 许可ID
-        type: integer
+        items:
+          type: integer
+        type: array
     type: object
   vo.RoleCreateReqVO:
+    properties:
+      roles:
+        items:
+          $ref: '#/definitions/vo.RoleInfoVO'
+        type: array
+    type: object
+  vo.RoleCreateRspVO:
+    properties:
+      roleIDs:
+        description: 角色ID
+        items:
+          type: integer
+        type: array
+    type: object
+  vo.RoleInfoVO:
     properties:
       roleCode:
         description: 角色编码
@@ -40,12 +65,6 @@ definitions:
     required:
     - roleCode
     - roleName
-    type: object
-  vo.RoleCreateRspVO:
-    properties:
-      roleID:
-        description: 角色ID
-        type: integer
     type: object
   vo.RolePermissionAssignmentReqVO:
     properties:
@@ -88,6 +107,20 @@ definitions:
     type: object
   vo.TenantCreateReqVO:
     properties:
+      tenants:
+        items:
+          $ref: '#/definitions/vo.TenantInfoVO'
+        type: array
+    type: object
+  vo.TenantCreateRspVO:
+    properties:
+      secretKeys:
+        items:
+          $ref: '#/definitions/vo.TenantSecretKeyVO'
+        type: array
+    type: object
+  vo.TenantInfoVO:
+    properties:
       AccessTokenTimeLimit:
         description: 访问Token有效时限，非必要，默认7200s
         type: integer
@@ -103,7 +136,7 @@ definitions:
     required:
     - tenantName
     type: object
-  vo.TenantCreateRspVO:
+  vo.TenantSecretKeyVO:
     properties:
       secretKey:
         description: 租户密钥
@@ -141,9 +174,6 @@ definitions:
       password:
         description: 密码
         type: string
-      redirectUrl:
-        description: 重定向路径，非必要，不传则按租户设置
-        type: string
       userName:
         description: 账户名
         type: string
@@ -162,6 +192,23 @@ definitions:
     type: object
   vo.UserCreateReqVO:
     properties:
+      users:
+        items:
+          $ref: '#/definitions/vo.UserInfoVO'
+        type: array
+    required:
+    - users
+    type: object
+  vo.UserCreateRspVO:
+    properties:
+      userIDs:
+        description: 用户ID
+        items:
+          type: integer
+        type: array
+    type: object
+  vo.UserInfoVO:
+    properties:
       password:
         description: 密码
         type: string
@@ -171,12 +218,6 @@ definitions:
     required:
     - password
     - userName
-    type: object
-  vo.UserCreateRspVO:
-    properties:
-      userID:
-        description: 用户ID
-        type: integer
     type: object
   vo.UserRoleAssignmentReqVO:
     properties:
@@ -206,16 +247,11 @@ info:
   title: clover-auth-api
   version: v1.0.0
 paths:
-  /permission-create:
+  /auth/permission-create:
     post:
       consumes:
       - application/json
       parameters:
-      - description: 租户ID
-        in: header
-        name: Tenant-ID
-        required: true
-        type: string
       - description: 创建资源权限许可
         in: body
         name: data
@@ -239,7 +275,7 @@ paths:
       summary: 创建资源权限许可
       tags:
       - permission
-  /role-create:
+  /auth/role-create:
     post:
       consumes:
       - application/json
@@ -272,7 +308,7 @@ paths:
       summary: 创建角色，需要租户管理员权限
       tags:
       - role
-  /role-permission-assignment:
+  /auth/role-permission-assignment:
     post:
       consumes:
       - application/json
@@ -305,7 +341,7 @@ paths:
       summary: 角色赋予资源许可，需要租户管理员权限
       tags:
       - role
-  /sadmin-token-create:
+  /auth/sadmin-token-create:
     post:
       consumes:
       - application/json
@@ -331,16 +367,11 @@ paths:
       summary: 获得超管Token
       tags:
       - tenant
-  /tenant-create:
+  /auth/tenant-create:
     post:
       consumes:
       - application/json
       parameters:
-      - description: 租户ID
-        in: header
-        name: Tenant-ID
-        required: true
-        type: string
       - description: 创建租户
         in: body
         name: data
@@ -364,7 +395,7 @@ paths:
       summary: 创建租户
       tags:
       - tenant
-  /tenant-token-create:
+  /auth/tenant-token-create:
     post:
       consumes:
       - application/json
@@ -390,7 +421,7 @@ paths:
       summary: 创建租户Token
       tags:
       - tenant
-  /user-authorization-code:
+  /auth/user-authorization-code:
     post:
       consumes:
       - application/json
@@ -421,7 +452,7 @@ paths:
       summary: 登录验证用户账号密码，验证通过后授权码60秒有效，关联用户信息。可以用授权码接口换取登录Token。
       tags:
       - user
-  /user-create:
+  /auth/user-create:
     post:
       consumes:
       - application/json
@@ -454,7 +485,7 @@ paths:
       summary: 创建用户，需要租户管理员权限
       tags:
       - user
-  /user-role-assignment:
+  /auth/user-role-assignment:
     post:
       consumes:
       - application/json

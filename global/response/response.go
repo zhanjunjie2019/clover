@@ -21,9 +21,9 @@ type Response struct {
 
 func Result(c *gin.Context, code int, data any, msg string) {
 	jbs, _ := json.Marshal(Response{
-		code,
-		data,
-		msg,
+		Code: code,
+		Data: data,
+		Msg:  msg,
 	})
 	rs := string(jbs)
 	uctx.AppendLogsFields(c, zap.String("rspBody", rs))
