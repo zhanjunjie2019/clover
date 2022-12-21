@@ -241,6 +241,23 @@ definitions:
         description: 用户ID
         type: integer
     type: object
+  vo.UserTokenByAuthcodeReqVO:
+    properties:
+      authorizationCode:
+        description: 授权码
+        type: string
+    required:
+    - authorizationCode
+    type: object
+  vo.UserTokenByAuthcodeRspVO:
+    properties:
+      accessToken:
+        description: 访问Token
+        type: string
+      accessTokenExpirationTime:
+        description: 访问Token过期时间戳
+        type: integer
+    type: object
 info:
   contact: {}
   description: clover-auth接口文档
@@ -516,6 +533,37 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 用户赋予角色，需要租户管理员权限
+      tags:
+      - user
+  /auth/user-token-by-authcode:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 租户ID
+        in: header
+        name: Tenant-ID
+        required: true
+        type: string
+      - description: 使用授权码获取用户token信息
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.UserTokenByAuthcodeReqVO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/vo.UserTokenByAuthcodeRspVO'
+              type: object
+      summary: 使用授权码获取用户token信息
       tags:
       - user
 securityDefinitions:

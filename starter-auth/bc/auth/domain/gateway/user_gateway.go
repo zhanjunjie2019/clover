@@ -13,4 +13,5 @@ type IUserGateway interface {
 	FindByUserName(ctx context.Context, userName string) (user model.User, exist bool, err error)
 	ListByByUserNames(ctx context.Context, userNames []string) (users []model.User, err error)
 	SaveAuthorizationCodeToCache(ctx context.Context, user model.User) (authorizationCode string, err error)
+	FindByAuthcode(ctx context.Context, authcode string) (user model.User, exist bool, err error)
 }

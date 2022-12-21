@@ -19,6 +19,7 @@ require (
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/nsqio/go-nsq v1.1.0
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/samber/lo v1.37.0
 	github.com/uptrace/opentelemetry-go-extra/otelgorm v0.1.17
 	go-micro.dev/v4 v4.9.0
 	go.opentelemetry.io/otel v1.11.2
@@ -110,6 +111,7 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.4.0 // indirect
+	golang.org/x/exp v0.0.0-20221217163422-3c43f8badb15 // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect

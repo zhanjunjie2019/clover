@@ -23,4 +23,5 @@ const (
 	UserCreateApiUrl               = "/auth/user-create"
 	UserRoleAssignmentApiUrl       = "/auth/user-role-assignment"
 	UserAuthorizationCodeApiUrl    = "/auth/user-authorization-code"
+	UserTokenByAuthCodeApiUrl      = "/auth/user-token-by-authcode"
 )

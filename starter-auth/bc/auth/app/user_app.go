@@ -12,6 +12,7 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl"
 	"gorm.io/gorm"
+	"time"
 )
 
 // +ioc:autowire=true
@@ -70,41 +71,68 @@ func (u *UserApp) UserCreate(ctx context.Context, c cmd.UserCreateCmd) (rs cmd.U
 
 // UserAuthorizationCode 登录验证用户账号密码，验证通过后在Redis保存一个授权码60秒有效，关联用户信息。用以可以用授权码接口换取登录Token。
 func (u *UserApp) UserAuthorizationCode(ctx context.Context, c cmd.UserAuthorizationCodeCmd) (rs cmd.UserAuthorizationCodeResult, err error) {
-	err = u.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
-		tenantID := uctx.GetTenantID(ctx)
-		user, exist, err := u.UserGateway.FindByUserName(ctx, c.UserName)
-		if err != nil {
-			err = errs.ToUnifiedError(err)
-			return
-		}
-		if !exist {
-			err = biserrs.LoginVerifyFailedErr
-			return
-		}
-		verifyPassword := user.VerifyPassword(c.Password, tenantID+"@"+c.UserName)
-		if !verifyPassword {
-			err = biserrs.LoginVerifyFailedErr
-			return
-		}
-		var tenant model.Tenant
-		tenant, exist, err = u.TenantGateway.FindByTenantID(ctx, tenantID)
-		if err != nil {
-			err = errs.ToUnifiedError(err)
-			return
-		}
-		if !exist {
-			err = biserrs.LoginVerifyFailedErr
-			return
-		}
-		rs.RedirectUrl = tenant.FullValue().RedirectUrl
-		rs.AuthorizationCode, err = u.UserGateway.SaveAuthorizationCodeToCache(ctx, user)
-		if err != nil {
-			err = errs.ToUnifiedError(err)
-			return
-		}
-		return nil
-	})
+	ctx = uctx.WithValueAppDB(ctx, u.DB)
+	tenantID := uctx.GetTenantID(ctx)
+	user, exist, err := u.UserGateway.FindByUserName(ctx, c.UserName)
+	if err != nil {
+		err = errs.ToUnifiedError(err)
+		return
+	}
+	if !exist {
+		err = biserrs.LoginVerifyFailedErr
+		return
+	}
+	verifyPassword := user.VerifyPassword(c.Password, tenantID+"@"+c.UserName)
+	if !verifyPassword {
+		err = biserrs.LoginVerifyFailedErr
+		return
+	}
+	var tenant model.Tenant
+	tenant, exist, err = u.TenantGateway.FindByTenantID(ctx, tenantID)
+	if err != nil {
+		err = errs.ToUnifiedError(err)
+		return
+	}
+	if !exist {
+		err = biserrs.LoginVerifyFailedErr
+		return
+	}
+	rs.RedirectUrl = tenant.FullValue().RedirectUrl
+	rs.AuthorizationCode, err = u.UserGateway.SaveAuthorizationCodeToCache(ctx, user)
+	if err != nil {
+		err = errs.ToUnifiedError(err)
+		return
+	}
+	return
+}
+
+func (u *UserApp) UserTokenByAuthcode(ctx context.Context, c cmd.UserTokenByAuthcodeCmd) (rs cmd.UserTokenByAuthcodeResult, err error) {
+	ctx = uctx.WithValueAppDB(ctx, u.DB)
+	tenantID := uctx.GetTenantID(ctx)
+	tenant, exist, err := u.TenantGateway.FindByTenantID(ctx, tenantID)
+	if err != nil {
+		err = errs.ToUnifiedError(err)
+		return
+	}
+	if !exist {
+		err = biserrs.TenantDoesNotExistErrWithTenantID(tenantID)
+		return
+	}
+	user, exist, err := u.UserGateway.FindByAuthcode(ctx, c.AuthorizationCode)
+	if err != nil {
+		err = errs.ToUnifiedError(err)
+		return
+	}
+	if !exist {
+		err = biserrs.LoginVerifyFailedErr
+		return
+	}
+	rs.AccessTokenExpirationTime = time.Now().Add(time.Second * time.Duration(tenant.FullValue().AccessTokenTimeLimit)).Unix()
+	rs.AccessToken, err = uctx.NewJwtClaimsToken(tenantID, user.ID().UInt64(), user.FullValue().UserName, user.GetAuthCodes(), rs.AccessTokenExpirationTime)
+	if err != nil {
+		err = errs.ToUnifiedError(err)
+		return
+	}
 	return
 }
 

@@ -203,6 +203,27 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(userRoleAssignmentControllerStructDescriptor)
+	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &userTokenByAuthcodeController_{}
+		},
+	})
+	userTokenByAuthcodeControllerStructDescriptor := &autowire.StructDescriptor{
+		Factory: func() interface{} {
+			return &UserTokenByAuthcodeController{}
+		},
+		Metadata: map[string]interface{}{
+			"aop": map[string]interface{}{},
+			"autowire": map[string]interface{}{
+				"common": map[string]interface{}{
+					"implements": []interface{}{
+						new(defs.IController),
+					},
+				},
+			},
+		},
+	}
+	allimpls.RegisterStructDescriptor(userTokenByAuthcodeControllerStructDescriptor)
 }
 
 type permissionCreateController_ struct {
@@ -322,6 +343,19 @@ func (u *userRoleAssignmentController_) Handle(c *gin.Context) {
 	u.Handle_(c)
 }
 
+type userTokenByAuthcodeController_ struct {
+	GetOption_ func() defs.ControllerOption
+	Handle_    func(c *gin.Context)
+}
+
+func (u *userTokenByAuthcodeController_) GetOption() defs.ControllerOption {
+	return u.GetOption_()
+}
+
+func (u *userTokenByAuthcodeController_) Handle(c *gin.Context) {
+	u.Handle_(c)
+}
+
 type PermissionCreateControllerIOCInterface interface {
 	GetOption() defs.ControllerOption
 	Handle(c *gin.Context)
@@ -367,6 +401,11 @@ type UserRoleAssignmentControllerIOCInterface interface {
 	Handle(c *gin.Context)
 }
 
+type UserTokenByAuthcodeControllerIOCInterface interface {
+	GetOption() defs.ControllerOption
+	Handle(c *gin.Context)
+}
+
 var _permissionCreateControllerSDID string
 var _roleCreateControllerSDID string
 var _rolePermissionAssignmentControllerSDID string
@@ -376,3 +415,4 @@ var _tenantTokenCreateControllerSDID string
 var _userAuthorizationCodeControllerSDID string
 var _userCreateControllerSDID string
 var _userRoleAssignmentControllerSDID string
+var _userTokenByAuthcodeControllerSDID string

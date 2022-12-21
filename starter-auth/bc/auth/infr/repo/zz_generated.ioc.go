@@ -171,11 +171,13 @@ func (p *permissionRepo_) Save(ctx contextx.Context, permissionPO po.Permission)
 }
 
 type rolePermissionRelRepo_ struct {
-	AutoMigrate_  func(ctx contextx.Context) error
-	ListByRoleID_ func(ctx contextx.Context, roleID defs.ID) (rels []po.RolePermissionRel, err error)
-	BatchInsert_  func(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
-	BatchUpdate_  func(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
-	BatchDelete_  func(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
+	AutoMigrate_     func(ctx contextx.Context) error
+	ListByRoleID_    func(ctx contextx.Context, roleID defs.ID) (rels []po.RolePermissionRel, err error)
+	ListByRoleCode_  func(ctx contextx.Context, roleCode string) (rels []po.RolePermissionRel, err error)
+	ListByRoleCodes_ func(ctx contextx.Context, roleCodes []string) (rels []po.RolePermissionRel, err error)
+	BatchInsert_     func(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
+	BatchUpdate_     func(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
+	BatchDelete_     func(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
 }
 
 func (r *rolePermissionRelRepo_) AutoMigrate(ctx contextx.Context) error {
@@ -184,6 +186,14 @@ func (r *rolePermissionRelRepo_) AutoMigrate(ctx contextx.Context) error {
 
 func (r *rolePermissionRelRepo_) ListByRoleID(ctx contextx.Context, roleID defs.ID) (rels []po.RolePermissionRel, err error) {
 	return r.ListByRoleID_(ctx, roleID)
+}
+
+func (r *rolePermissionRelRepo_) ListByRoleCode(ctx contextx.Context, roleCode string) (rels []po.RolePermissionRel, err error) {
+	return r.ListByRoleCode_(ctx, roleCode)
+}
+
+func (r *rolePermissionRelRepo_) ListByRoleCodes(ctx contextx.Context, roleCodes []string) (rels []po.RolePermissionRel, err error) {
+	return r.ListByRoleCodes_(ctx, roleCodes)
 }
 
 func (r *rolePermissionRelRepo_) BatchInsert(ctx contextx.Context, pos []po.RolePermissionRel) (err error) {
@@ -315,6 +325,8 @@ type PermissionRepoIOCInterface interface {
 type RolePermissionRelRepoIOCInterface interface {
 	AutoMigrate(ctx contextx.Context) error
 	ListByRoleID(ctx contextx.Context, roleID defs.ID) (rels []po.RolePermissionRel, err error)
+	ListByRoleCode(ctx contextx.Context, roleCode string) (rels []po.RolePermissionRel, err error)
+	ListByRoleCodes(ctx contextx.Context, roleCodes []string) (rels []po.RolePermissionRel, err error)
 	BatchInsert(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
 	BatchUpdate(ctx contextx.Context, pos []po.RolePermissionRel) (err error)
 	BatchDelete(ctx contextx.Context, pos []po.RolePermissionRel) (err error)

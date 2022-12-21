@@ -1,13 +1,15 @@
 package utils
 
-import "github.com/zhanjunjie2019/clover/global/defs"
+import (
+	"github.com/samber/lo"
+	"github.com/zhanjunjie2019/clover/global/defs"
+)
 
 // ConvIDsToUint64 批量将id转为uint64类型
-func ConvIDsToUint64(ids []defs.ID) (rs []uint64) {
-	for i := range ids {
-		rs = append(rs, ids[i].UInt64())
-	}
-	return
+func ConvIDsToUint64(ids []defs.ID) []uint64 {
+	return lo.Map(ids, func(item defs.ID, index int) uint64 {
+		return item.UInt64()
+	})
 }
 
 // LoadChangeByArrays 传入2个集合进行比较，最后对比出集合变更项，顺序不敏感。

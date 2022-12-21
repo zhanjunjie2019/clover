@@ -13,7 +13,7 @@ require (
 	github.com/nsqio/go-nsq v1.1.0
 	github.com/swaggo/files v1.0.0
 	github.com/swaggo/gin-swagger v1.5.3
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221216091656-c51e087a03cd
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221221062822-e081f598f89f
 	go-micro.dev/v4 v4.9.0
 	go.uber.org/zap v1.24.0
 	gopkg.in/yaml.v3 v3.0.1

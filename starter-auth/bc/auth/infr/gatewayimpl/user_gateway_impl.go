@@ -3,6 +3,7 @@ package gatewayimpl
 import (
 	"context"
 	"github.com/gogo/protobuf/proto"
+	"github.com/samber/lo"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/redisc"
 	"github.com/zhanjunjie2019/clover/global/uctx"
@@ -20,9 +21,12 @@ import (
 // +ioc:autowire:type=singleton
 
 type UserGateway struct {
-	UserRepo        repo.UserRepoIOCInterface        `singleton:""`
-	UserRoleRelRepo repo.UserRoleRelRepoIOCInterface `singleton:""`
-	RedisClient     redisc.RedisClientIOCInterface   `singleton:""`
+	UserRepo              repo.UserRepoIOCInterface              `singleton:""`
+	UserRoleRelRepo       repo.UserRoleRelRepoIOCInterface       `singleton:""`
+	RoleRepo              repo.RoleRepoIOCInterface              `singleton:""`
+	RolePermissionRelRepo repo.RolePermissionRelRepoIOCInterface `singleton:""`
+	PermissionRepo        repo.PermissionRepoIOCInterface        `singleton:""`
+	RedisClient           redisc.RedisClientIOCInterface         `singleton:""`
 }
 
 func (u *UserGateway) SaveSingle(ctx context.Context, user model.User) (defs.ID, error) {
@@ -90,8 +94,8 @@ func (u *UserGateway) ListByByUserNames(ctx context.Context, userNames []string)
 	return convs.BathUserPOToDO(userPOs), err
 }
 
-func (u *UserGateway) SaveAuthorizationCodeToCache(ctx context.Context, user model.User) (authorizationCode string, err error) {
-	authorizationCode = utils.UUID()
+func (u *UserGateway) SaveAuthorizationCodeToCache(ctx context.Context, user model.User) (authcode string, err error) {
+	authcode = utils.TinyUUID()
 	userAuthorizationCode := protobuf.UserAuthorizationCode{
 		TenantID: uctx.GetTenantID(ctx),
 		UserID:   user.ID().UInt64(),
@@ -105,9 +109,79 @@ func (u *UserGateway) SaveAuthorizationCodeToCache(ctx context.Context, user mod
 	if err != nil {
 		return
 	}
-	err = client.Set(ctx, bcconsts.RedisAuthCodePre+authorizationCode, bytes, time.Minute).Err()
+	err = client.Set(ctx, bcconsts.RedisAuthCodePre+authcode, bytes, time.Minute).Err()
 	if err != nil {
 		return
+	}
+	return
+}
+
+func (u *UserGateway) FindByAuthcode(ctx context.Context, authcode string) (user model.User, exist bool, err error) {
+	// 链接redis获取用户缓存信息
+	client, err := u.RedisClient.GetClient()
+	if err != nil {
+		return
+	}
+	bytes, err := client.Get(ctx, bcconsts.RedisAuthCodePre+authcode).Bytes()
+	if err != nil {
+		return
+	}
+	var userAuthcode protobuf.UserAuthorizationCode
+	err = proto.Unmarshal(bytes, &userAuthcode)
+	if err != nil {
+		return
+	}
+	// 验证租户ID是否一直
+	tenantID := uctx.GetTenantID(ctx)
+	if tenantID != userAuthcode.TenantID {
+		return
+	}
+	// 查询数据库用户信息
+	userPO, exist, err := u.UserRepo.FindByID(ctx, defs.ID(userAuthcode.UserID))
+	if err != nil {
+		return
+	}
+	if !exist {
+		return
+	}
+	user = convs.UserPOToDO(userPO)
+	// 查询数据库角色信息
+	roleVals, err := u.ListRoleValsByUserID(ctx, user.ID())
+	if err != nil {
+		return
+	}
+	user.SetRoleValues(roleVals)
+	roleCodes := lo.Map(roleVals, func(item model.RoleValue, index int) string {
+		return item.RoleCode
+	})
+	permissionVals, err := u.ListPermissionValsByRoleCodes(ctx, roleCodes)
+	if err != nil {
+		return
+	}
+	user.SetPermissionValues(permissionVals)
+	return
+}
+
+// ListRoleValsByUserID 根据用户ID查询角色值对象
+func (u *UserGateway) ListRoleValsByUserID(ctx context.Context, userID defs.ID) (roleVals []model.RoleValue, err error) {
+	roleRels, err := u.UserRoleRelRepo.ListByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	for _, roleRel := range roleRels {
+		roleVals = append(roleVals, convs.UserRolePOToValue(roleRel))
+	}
+	return
+}
+
+// ListPermissionValsByRoleCodes 根据角色编码查询资源权限值对象
+func (u *UserGateway) ListPermissionValsByRoleCodes(ctx context.Context, roleCodes []string) (permissionVals []model.PermissionValue, err error) {
+	permissionRels, err := u.RolePermissionRelRepo.ListByRoleCodes(ctx, roleCodes)
+	if err != nil {
+		return nil, err
+	}
+	for _, permissionRel := range permissionRels {
+		permissionVals = append(permissionVals, convs.RolePermissionPOToValue(permissionRel))
 	}
 	return
 }

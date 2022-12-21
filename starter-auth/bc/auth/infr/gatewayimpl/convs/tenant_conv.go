@@ -1,16 +1,16 @@
 package convs
 
 import (
+	"github.com/samber/lo"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/repo/po"
 )
 
-func BatchTenantPOToDO(pos []po.Tenant) (dos []model.Tenant) {
-	for i := range pos {
-		dos = append(dos, TenantPOToDO(pos[i]))
-	}
-	return
+func BatchTenantPOToDO(pos []po.Tenant) []model.Tenant {
+	return lo.Map(pos, func(item po.Tenant, index int) model.Tenant {
+		return TenantPOToDO(item)
+	})
 }
 
 func TenantPOToDO(po po.Tenant) model.Tenant {

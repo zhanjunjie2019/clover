@@ -20,9 +20,8 @@ type Role interface {
 }
 
 type role struct {
-	id               defs.ID
-	value            RoleValue
-	permissionValues []PermissionValue
+	id    defs.ID
+	value RoleValue
 }
 
 func (r role) ID() defs.ID {
@@ -34,11 +33,11 @@ func (r role) FullValue() RoleValue {
 }
 
 func (r role) GetPermissionValues() []PermissionValue {
-	return r.permissionValues
+	return r.value.PermissionValues
 }
 
 func (r *role) SetPermissionValues(pvs []PermissionValue) {
-	r.permissionValues = pvs
+	r.value.PermissionValues = pvs
 }
 
 type RoleValue struct {
@@ -46,4 +45,6 @@ type RoleValue struct {
 	RoleName string
 	// RoleCode 角色编码
 	RoleCode string
+	// PermissionValues 资源许可列表
+	PermissionValues []PermissionValue
 }

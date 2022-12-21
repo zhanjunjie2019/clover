@@ -485,6 +485,58 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/auth/user-token-by-authcode": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "使用授权码获取用户token信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "租户ID",
+                        "name": "Tenant-ID",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "使用授权码获取用户token信息",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.UserTokenByAuthcodeReqVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.UserTokenByAuthcodeRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -838,6 +890,31 @@ const docTemplate = `{
             "properties": {
                 "userID": {
                     "description": "用户ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "vo.UserTokenByAuthcodeReqVO": {
+            "type": "object",
+            "required": [
+                "authorizationCode"
+            ],
+            "properties": {
+                "authorizationCode": {
+                    "description": "授权码",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.UserTokenByAuthcodeRspVO": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "description": "访问Token",
+                    "type": "string"
+                },
+                "accessTokenExpirationTime": {
+                    "description": "访问Token过期时间戳",
                     "type": "integer"
                 }
             }

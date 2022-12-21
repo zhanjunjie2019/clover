@@ -1,16 +1,16 @@
 package convs
 
 import (
+	"github.com/samber/lo"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/repo/po"
 )
 
 func BathUserPOToDO(pos []po.User) (dos []model.User) {
-	for i := range pos {
-		dos = append(dos, UserPOToDO(pos[i]))
-	}
-	return
+	return lo.Map(pos, func(item po.User, index int) model.User {
+		return UserPOToDO(item)
+	})
 }
 
 func UserPOToDO(po po.User) model.User {
@@ -28,6 +28,13 @@ func UserDOToPO(do model.User) po.User {
 		},
 		UserName: value.UserName,
 		Password: value.Password,
+	}
+}
+
+func UserRolePOToValue(po po.UserRoleRel) model.RoleValue {
+	return model.RoleValue{
+		RoleName: po.RoleName,
+		RoleCode: po.RoleCode,
 	}
 }
 

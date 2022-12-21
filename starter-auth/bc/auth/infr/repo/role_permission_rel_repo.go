@@ -29,6 +29,16 @@ func (r *RolePermissionRelRepo) ListByRoleID(ctx context.Context, roleID defs.ID
 	return
 }
 
+func (r *RolePermissionRelRepo) ListByRoleCode(ctx context.Context, roleCode string) (rels []po.RolePermissionRel, err error) {
+	err = uctx.GetTenantTableDBWithCtx(ctx, r.TablePre).Where("role_code=?", roleCode).Find(&rels).Error
+	return
+}
+
+func (r *RolePermissionRelRepo) ListByRoleCodes(ctx context.Context, roleCodes []string) (rels []po.RolePermissionRel, err error) {
+	err = uctx.GetTenantTableDBWithCtx(ctx, r.TablePre).Where("role_code IN ?", roleCodes).Find(&rels).Error
+	return
+}
+
 func (r *RolePermissionRelRepo) BatchInsert(ctx context.Context, pos []po.RolePermissionRel) (err error) {
 	err = uctx.GetTenantTableDBWithCtx(ctx, r.TablePre).CreateInBatches(pos, 128).Error
 	return

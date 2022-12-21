@@ -189,6 +189,7 @@ type userApp_ struct {
 	SetGormDB_             func(db *gorm.DB)
 	UserCreate_            func(ctx contextx.Context, c cmd.UserCreateCmd) (rs cmd.UserCreateResult, err error)
 	UserAuthorizationCode_ func(ctx contextx.Context, c cmd.UserAuthorizationCodeCmd) (rs cmd.UserAuthorizationCodeResult, err error)
+	UserTokenByAuthcode_   func(ctx contextx.Context, c cmd.UserTokenByAuthcodeCmd) (rs cmd.UserTokenByAuthcodeResult, err error)
 	UserRoleAssignment_    func(ctx contextx.Context, c cmd.UserRoleAssignmentCmd) (rs cmd.UserRoleAssignmentResult, err error)
 }
 
@@ -202,6 +203,10 @@ func (u *userApp_) UserCreate(ctx contextx.Context, c cmd.UserCreateCmd) (rs cmd
 
 func (u *userApp_) UserAuthorizationCode(ctx contextx.Context, c cmd.UserAuthorizationCodeCmd) (rs cmd.UserAuthorizationCodeResult, err error) {
 	return u.UserAuthorizationCode_(ctx, c)
+}
+
+func (u *userApp_) UserTokenByAuthcode(ctx contextx.Context, c cmd.UserTokenByAuthcodeCmd) (rs cmd.UserTokenByAuthcodeResult, err error) {
+	return u.UserTokenByAuthcode_(ctx, c)
 }
 
 func (u *userApp_) UserRoleAssignment(ctx contextx.Context, c cmd.UserRoleAssignmentCmd) (rs cmd.UserRoleAssignmentResult, err error) {
@@ -234,6 +239,7 @@ type UserAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
 	UserCreate(ctx contextx.Context, c cmd.UserCreateCmd) (rs cmd.UserCreateResult, err error)
 	UserAuthorizationCode(ctx contextx.Context, c cmd.UserAuthorizationCodeCmd) (rs cmd.UserAuthorizationCodeResult, err error)
+	UserTokenByAuthcode(ctx contextx.Context, c cmd.UserTokenByAuthcodeCmd) (rs cmd.UserTokenByAuthcodeResult, err error)
 	UserRoleAssignment(ctx contextx.Context, c cmd.UserRoleAssignmentCmd) (rs cmd.UserRoleAssignmentResult, err error)
 }
 

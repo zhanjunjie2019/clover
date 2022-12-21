@@ -15,7 +15,7 @@ require (
 	github.com/samber/lo v1.37.0
 	github.com/swaggo/swag v1.8.9
 	github.com/zhanjunjie2019/clover/core v0.0.0-20221117082526-cf9f91f74a29
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221216091656-c51e087a03cd
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221221062822-e081f598f89f
 	github.com/zhanjunjie2019/clover/share v0.0.0-20221117082526-cf9f91f74a29
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.24.2

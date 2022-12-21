@@ -1,16 +1,16 @@
 package convs
 
 import (
+	"github.com/samber/lo"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/repo/po"
 )
 
-func BatchRolePOToDO(pos []po.Role) (dos []model.Role) {
-	for i := range pos {
-		dos = append(dos, RolePOToDO(pos[i]))
-	}
-	return
+func BatchRolePOToDO(pos []po.Role) []model.Role {
+	return lo.Map(pos, func(item po.Role, index int) model.Role {
+		return RolePOToDO(item)
+	})
 }
 
 func RolePOToDO(po po.Role) model.Role {
@@ -28,6 +28,13 @@ func RoleDOToPO(do model.Role) po.Role {
 		},
 		RoleName: value.RoleName,
 		RoleCode: value.RoleCode,
+	}
+}
+
+func RolePermissionPOToValue(po po.RolePermissionRel) model.PermissionValue {
+	return model.PermissionValue{
+		PermissionName: po.PermissionName,
+		AuthCode:       po.AuthCode,
 	}
 }
 
