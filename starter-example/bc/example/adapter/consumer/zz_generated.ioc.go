@@ -16,12 +16,12 @@ import (
 func init() {
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &helloWordConsumer_{}
+			return &helloWorldConsumer_{}
 		},
 	})
-	helloWordConsumerStructDescriptor := &autowire.StructDescriptor{
+	helloWorldConsumerStructDescriptor := &autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &HelloWordConsumer{}
+			return &HelloWorldConsumer{}
 		},
 		Metadata: map[string]interface{}{
 			"aop": map[string]interface{}{},
@@ -34,25 +34,25 @@ func init() {
 			},
 		},
 	}
-	allimpls.RegisterStructDescriptor(helloWordConsumerStructDescriptor)
+	allimpls.RegisterStructDescriptor(helloWorldConsumerStructDescriptor)
 }
 
-type helloWordConsumer_ struct {
+type helloWorldConsumer_ struct {
 	GetTopic_      func() string
 	HandleMessage_ func(ctx contextx.Context, bytes []byte) error
 }
 
-func (h *helloWordConsumer_) GetTopic() string {
+func (h *helloWorldConsumer_) GetTopic() string {
 	return h.GetTopic_()
 }
 
-func (h *helloWordConsumer_) HandleMessage(ctx contextx.Context, bytes []byte) error {
+func (h *helloWorldConsumer_) HandleMessage(ctx contextx.Context, bytes []byte) error {
 	return h.HandleMessage_(ctx, bytes)
 }
 
-type HelloWordConsumerIOCInterface interface {
+type HelloWorldConsumerIOCInterface interface {
 	GetTopic() string
 	HandleMessage(ctx contextx.Context, bytes []byte) error
 }
 
-var _helloWordConsumerSDID string
+var _helloWorldConsumerSDID string

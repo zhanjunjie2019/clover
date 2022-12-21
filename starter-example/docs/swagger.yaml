@@ -10,7 +10,7 @@ definitions:
         description: 详细信息
         type: string
     type: object
-  vo.HelloWordRspVO:
+  vo.HelloWorldRspVO:
     properties:
       greetings:
         description: 问候语
@@ -22,7 +22,7 @@ info:
   title: clover-example-api
   version: v1.0.0
 paths:
-  /example/hellow-word:
+  /example/hellow-world:
     get:
       consumes:
       - application/json
@@ -47,7 +47,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/vo.HelloWordRspVO'
+                  $ref: '#/definitions/vo.HelloWorldRspVO'
               type: object
       summary: 接口描述
       tags:

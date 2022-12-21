@@ -27,7 +27,7 @@ func (e *ExampleApp) SetGormDB(db *gorm.DB) {
 	e.DB = db
 }
 
-func (e *ExampleApp) ExampleHellowWord(ctx context.Context, c cmd.HelloWordCmd) (rs cmd.HelloWordResult, err error) {
+func (e *ExampleApp) ExampleHellowWorld(ctx context.Context, c cmd.HelloWorldCmd) (rs cmd.HelloWorldResult, err error) {
 	// 本服务的数据库事务方式,不需要的话：直接使用`ctx = uctx.WithValueAppDB(ctx, e.DB)`就可以了
 	// 开启事务的tx，传到gateway，还可以开启下级子事务，树形嵌套
 	err = e.DB.Transaction(func(tx *gorm.DB) (err error) {

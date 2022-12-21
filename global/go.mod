@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/MrAlias/flow v0.1.5
-	github.com/alibaba/ioc-golang v1.0.2
+	github.com/alibaba/ioc-golang v1.0.3
 	github.com/alibaba/sentinel-golang v1.0.4
 	github.com/asim/go-micro/plugins/config/source/consul/v4 v4.7.0
 	github.com/gin-gonic/gin v1.8.1

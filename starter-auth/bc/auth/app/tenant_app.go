@@ -60,7 +60,7 @@ func (t *TenantApp) TenantCreate(ctx context.Context, c cmd.TenantCreateCmd) (rs
 				secretKey string
 			)
 			if len(tenantInfo.TenantID) == 0 {
-				tid = utils.UUID()
+				tid = utils.TinyUUID()
 			} else {
 				tid = tenantInfo.TenantID
 			}

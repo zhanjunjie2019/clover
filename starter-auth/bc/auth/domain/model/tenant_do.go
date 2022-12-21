@@ -6,9 +6,6 @@ import (
 )
 
 func NewTenant(id defs.ID, value TenantValue) Tenant {
-	if len(value.TenantID) == 0 {
-		value.TenantID = utils.UUID()
-	}
 	return &tenant{
 		id:    id,
 		value: value,

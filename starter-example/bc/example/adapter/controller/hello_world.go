@@ -17,13 +17,13 @@ import (
 // +ioc:autowire:type=allimpls
 // +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IController
 
-type HelloWordController struct {
+type HelloWorldController struct {
 	ExampleApp app.ExampleAppIOCInterface `singleton:""`
 }
 
-func (h *HelloWordController) GetOption() defs.ControllerOption {
+func (h *HelloWorldController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/hellow-word",
+		RelativePath: bcconsts.ModuleCode + "/hellow-world",
 		HttpMethod:   http.MethodGet,
 	}
 }
@@ -33,19 +33,19 @@ func (h *HelloWordController) GetOption() defs.ControllerOption {
 // @Summary 接口描述
 // @accept application/json
 // @Produce application/json
-// @Param data query vo.HelloWordReqVO true "参数描述"
-// @Success 200 {object} response.Response{data=vo.HelloWordRspVO}
-// @Router /example/hellow-word [get]
-func (h *HelloWordController) Handle(c *gin.Context) {
+// @Param data query vo.HelloWorldReqVO true "参数描述"
+// @Success 200 {object} response.Response{data=vo.HelloWorldRspVO}
+// @Router /example/hellow-world [get]
+func (h *HelloWorldController) Handle(c *gin.Context) {
 	var (
-		command cmd.HelloWordCmd
-		result  cmd.HelloWordResult
+		command cmd.HelloWorldCmd
+		result  cmd.HelloWorldResult
 	)
-	ctx, err := uctx.ShouldBindQuery(c, &vo.HelloWordReqVO{}, nil, &command)
+	ctx, err := uctx.ShouldBindQuery(c, &vo.HelloWorldReqVO{}, nil, &command)
 	if err == nil {
-		result, err = h.ExampleApp.ExampleHellowWord(ctx, command)
+		result, err = h.ExampleApp.ExampleHellowWorld(ctx, command)
 		if err == nil {
-			var rspVO vo.HelloWordRspVO
+			var rspVO vo.HelloWorldRspVO
 			err = utils.CopyObject(&result, &rspVO)
 			if err == nil {
 				response.SuccWithDetailed(c, rspVO)

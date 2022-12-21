@@ -7,7 +7,7 @@
         "version": "v1.0.0"
     },
     "paths": {
-        "/example/hellow-word": {
+        "/example/hellow-world": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -47,7 +47,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/vo.HelloWordRspVO"
+                                            "$ref": "#/definitions/vo.HelloWorldRspVO"
                                         }
                                     }
                                 }
@@ -75,7 +75,7 @@
                 }
             }
         },
-        "vo.HelloWordRspVO": {
+        "vo.HelloWorldRspVO": {
             "type": "object",
             "properties": {
                 "greetings": {

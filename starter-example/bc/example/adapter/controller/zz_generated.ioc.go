@@ -16,12 +16,12 @@ import (
 func init() {
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &helloWordController_{}
+			return &helloWorldController_{}
 		},
 	})
-	helloWordControllerStructDescriptor := &autowire.StructDescriptor{
+	helloWorldControllerStructDescriptor := &autowire.StructDescriptor{
 		Factory: func() interface{} {
-			return &HelloWordController{}
+			return &HelloWorldController{}
 		},
 		Metadata: map[string]interface{}{
 			"aop": map[string]interface{}{},
@@ -34,25 +34,25 @@ func init() {
 			},
 		},
 	}
-	allimpls.RegisterStructDescriptor(helloWordControllerStructDescriptor)
+	allimpls.RegisterStructDescriptor(helloWorldControllerStructDescriptor)
 }
 
-type helloWordController_ struct {
+type helloWorldController_ struct {
 	GetOption_ func() defs.ControllerOption
 	Handle_    func(c *gin.Context)
 }
 
-func (h *helloWordController_) GetOption() defs.ControllerOption {
+func (h *helloWorldController_) GetOption() defs.ControllerOption {
 	return h.GetOption_()
 }
 
-func (h *helloWordController_) Handle(c *gin.Context) {
+func (h *helloWorldController_) Handle(c *gin.Context) {
 	h.Handle_(c)
 }
 
-type HelloWordControllerIOCInterface interface {
+type HelloWorldControllerIOCInterface interface {
 	GetOption() defs.ControllerOption
 	Handle(c *gin.Context)
 }
 
-var _helloWordControllerSDID string
+var _helloWorldControllerSDID string

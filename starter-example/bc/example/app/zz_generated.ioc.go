@@ -43,21 +43,21 @@ func init() {
 }
 
 type exampleApp_ struct {
-	SetGormDB_         func(db *gorm.DB)
-	ExampleHellowWord_ func(ctx contextx.Context, c cmd.HelloWordCmd) (rs cmd.HelloWordResult, err error)
+	SetGormDB_          func(db *gorm.DB)
+	ExampleHellowWorld_ func(ctx contextx.Context, c cmd.HelloWorldCmd) (rs cmd.HelloWorldResult, err error)
 }
 
 func (e *exampleApp_) SetGormDB(db *gorm.DB) {
 	e.SetGormDB_(db)
 }
 
-func (e *exampleApp_) ExampleHellowWord(ctx contextx.Context, c cmd.HelloWordCmd) (rs cmd.HelloWordResult, err error) {
-	return e.ExampleHellowWord_(ctx, c)
+func (e *exampleApp_) ExampleHellowWorld(ctx contextx.Context, c cmd.HelloWorldCmd) (rs cmd.HelloWorldResult, err error) {
+	return e.ExampleHellowWorld_(ctx, c)
 }
 
 type ExampleAppIOCInterface interface {
 	SetGormDB(db *gorm.DB)
-	ExampleHellowWord(ctx contextx.Context, c cmd.HelloWordCmd) (rs cmd.HelloWordResult, err error)
+	ExampleHellowWorld(ctx contextx.Context, c cmd.HelloWorldCmd) (rs cmd.HelloWorldResult, err error)
 }
 
 var _exampleAppSDID string

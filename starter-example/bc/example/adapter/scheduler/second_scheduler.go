@@ -17,7 +17,7 @@ func (s *SecondScheduler) GetTaskTypeCode() string {
 }
 
 func (s *SecondScheduler) GetSpec() string {
-	return "*/2 * * * * ?"
+	return "0 * * * * ?"
 }
 
 func (s *SecondScheduler) GetLockDuration() time.Duration {

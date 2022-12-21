@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/example/hellow-word": {
+        "/example/hellow-world": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -56,7 +56,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/vo.HelloWordRspVO"
+                                            "$ref": "#/definitions/vo.HelloWorldRspVO"
                                         }
                                     }
                                 }
@@ -84,7 +84,7 @@ const docTemplate = `{
                 }
             }
         },
-        "vo.HelloWordRspVO": {
+        "vo.HelloWorldRspVO": {
             "type": "object",
             "properties": {
                 "greetings": {

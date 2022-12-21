@@ -9,13 +9,13 @@ replace (
 )
 
 require (
-	github.com/alibaba/ioc-golang v1.0.2
+	github.com/alibaba/ioc-golang v1.0.3
 	github.com/gin-gonic/gin v1.8.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/samber/lo v1.37.0
 	github.com/swaggo/swag v1.8.9
 	github.com/zhanjunjie2019/clover/core v0.0.0-20221117082526-cf9f91f74a29
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221214101550-ab54fedf1b3a
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221216091656-c51e087a03cd
 	github.com/zhanjunjie2019/clover/share v0.0.0-20221117082526-cf9f91f74a29
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.24.2
@@ -42,7 +42,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/cloudflare/circl v1.3.0 // indirect
+	github.com/cloudflare/circl v1.3.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgraph-io/badger/v3 v3.2103.5 // indirect
@@ -228,7 +228,7 @@ require (
 	go.opentelemetry.io/collector/confmap v0.67.0 // indirect
 	go.opentelemetry.io/collector/consumer v0.67.0 // indirect
 	go.opentelemetry.io/collector/featuregate v0.67.0 // indirect
-	go.opentelemetry.io/collector/pdata v1.0.0-rc1 // indirect
+	go.opentelemetry.io/collector/pdata v1.0.0-rc2 // indirect
 	go.opentelemetry.io/collector/receiver/otlpreceiver v0.67.0 // indirect
 	go.opentelemetry.io/collector/semconv v0.67.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.37.0 // indirect
@@ -245,7 +245,7 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
 	golang.org/x/crypto v0.4.0 // indirect
-	golang.org/x/exp v0.0.0-20221215174704-0915cd710c24 // indirect
+	golang.org/x/exp v0.0.0-20221217163422-3c43f8badb15 // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
