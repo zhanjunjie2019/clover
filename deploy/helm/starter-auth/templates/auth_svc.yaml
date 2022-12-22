@@ -1,21 +1,21 @@
-{{- if .Values.auth.enabled }}
+{{- if .Values.enabled }}
   {{- $superName := print .Release.Name "-auth" }}
 apiVersion: v1
 kind: Service
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ include "auth.service.fullname" . }}
+  name: {{ print $superName "-svc" | quote }}
   labels:
     app: {{ print $superName "-svc" | quote }}
 spec:
-  {{- if .Values.auth.service.nodePort.enabled }}
+  {{- if .Values.service.nodePort.enabled }}
   type: NodePort
   {{- end }}
   ports:
     - name: http
-      port: {{ .Values.auth.service.targetPort }}
-      {{- if .Values.auth.service.nodePort.enabled }}
-      nodePort: {{ .Values.auth.service.nodePort.port }}
+      port: {{ .Values.service.targetPort }}
+      {{- if .Values.service.nodePort.enabled }}
+      nodePort: {{ .Values.service.nodePort.port }}
       {{- end }}
       protocol: TCP
       targetPort: http

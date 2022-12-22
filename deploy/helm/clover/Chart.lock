@@ -1,0 +1,6 @@
+dependencies:
+- name: starter-auth
+  repository: file://../starter-auth
+  version: 0.1.0
+digest: sha256:2df42824b4526185d10e262158ec06cc4d085cbb75265d0f29b8b90c57fff84d
+generated: "2022-12-22T09:10:04.7516116+08:00"

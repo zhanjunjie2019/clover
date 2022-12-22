@@ -1,20 +1,12 @@
-{{- define "auth.service.fullname" -}}
-{{- if .Values.auth.fullnameOverride -}}
-{{- .Values.auth.fullnameOverride | trunc 63 | trimSuffix "-" | quote -}}
-{{- else -}}
-{{- print .Release.Name "-auth" | quote -}}
-{{- end }}
-{{- end }}
-
 {{- define "auth.server.config" }}
 # 服务配置
 svcConf:
   # 服务模式,1正式2测试
   svcMode: 2
   # 服务部署名
-  svcName: "{{- print .Release.Name "-auth" -}}"
+  svcName: {{ print .Release.Name "-auth" | quote }}
   # 服务端口号
-  svcPort: {{ .Values.auth.service.targetPort }}
+  svcPort: {{ .Values.service.targetPort }}
   # 服务实例序号
   svcNum: 1
   # 服务版本号
@@ -115,4 +107,10 @@ postgres:
   password: 123456
   maxIdleConns: 10
   maxOpenConns: 50
+{{ end }}
+
+{{- define "auth.auth.config" }}
+superAdmin:
+  secretKey: CloverSecretKeyCloverSecretKey
+  accessTokenTimeLimit: 7200
 {{ end }}

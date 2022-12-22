@@ -1,4 +1,4 @@
-{{- if .Values.auth.enabled }}
+{{- if .Values.enabled }}
   {{- $superName := print .Release.Name "-auth" }}
 apiVersion: v1
 kind: ConfigMap
@@ -16,4 +16,6 @@ data:
     {{- include "auth.global.config" . | indent 4 }}
   db: |
     {{- include "auth.db.config" . | indent 4 }}
+  auth: |
+    {{- include "auth.auth.config" . | indent 4 }}
 {{- end }}

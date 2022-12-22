@@ -1,0 +1,14 @@
+# helm install starter-auth ./starter-auth --dry-run --debug
+enabled: true
+image:
+  repository: clover-auth
+  tag: latest
+replicas: 1
+service:
+  targetPort: 8810
+  nodePort:
+    enabled: true
+    port: 30010
+waitFor:
+env:
+  tz: Asia/Shanghai

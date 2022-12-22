@@ -1,4 +1,4 @@
-{{- if .Values.auth.enabled }}
+{{- if .Values.enabled }}
   {{- $superName := print .Release.Name "-auth" }}
 apiVersion: apps/v1
 kind: Deployment
@@ -8,7 +8,7 @@ metadata:
   labels:
     app: {{ $superName | quote }}
 spec:
-  replicas: {{ .Values.auth.replicas | default 1 }}
+  replicas: {{ .Values.replicas | default 1 }}
   selector:
     matchLabels:
       app: {{ $superName | quote }}
@@ -23,50 +23,56 @@ spec:
             name: {{ print $superName "-config" | quote }}
             items:
               - key: server
-                path: {{ print "path/" $superName "/server" | quote }}
+                path: {{ print "configs/" $superName "/server.yaml" | quote }}
               - key: sentinel
-                path: {{ print "path/" $superName "/sentinel" | quote }}
+                path: {{ print "configs/" $superName "/sentinel.yaml" | quote }}
               - key: global
-                path: {{ print "path/" $superName "/global" | quote }}
+                path: {{ print "configs/" $superName "/global.yaml" | quote }}
               - key: db
-                path: {{ print "path/" $superName "/db" | quote }}
+                path: {{ print "configs/" $superName "/db.yaml" | quote }}
+              - key: auth
+                path: {{ print "configs/" $superName "/auth.yaml" | quote }}
       initContainers:
-        {{- range $wait := .Values.auth.waitFor }}
+        {{- range $wait := .Values.waitFor }}
         - name: {{ print $wait "-check" }}
           image: busybox
           command: [ 'sh', '-c', 'until nslookup {{ $wait }}; do echo waiting for {{ $wait }}; sleep 2; done;' ]
         {{- end }}
       restartPolicy: Always
       containers:
-        - image: {{ print .Values.auth.image.repository ":" .Values.auth.image.tag | quote }}
+        - image: {{ print .Values.image.repository ":" .Values.image.tag | quote }}
           imagePullPolicy: Always
           name: {{ $superName | quote }}
           volumeMounts:
             - name: {{ print $superName "-volumes" | quote }}
-              mountPath: "/go/server/configs/server"
-              subPath: {{ print "path/" $superName "/server" | quote }}
+              mountPath: "/go/server/configs/server.yaml"
+              subPath: {{ print "configs/" $superName "/server.yaml" | quote }}
               readOnly: true
             - name: {{ print $superName "-volumes" | quote }}
-              mountPath: "/go/server/configs/sentinel"
-              subPath: {{ print "path/" $superName "/sentinel" | quote }}
+              mountPath: "/go/server/configs/sentinel.yaml"
+              subPath: {{ print "configs/" $superName "/sentinel.yaml" | quote }}
               readOnly: true
             - name: {{ print $superName "-volumes" | quote }}
-              mountPath: "/go/server/configs/global"
-              subPath: {{ print "path/" $superName "/global" | quote }}
+              mountPath: "/go/server/configs/global.yaml"
+              subPath: {{ print "configs/" $superName "/global.yaml" | quote }}
               readOnly: true
             - name: {{ print $superName "-volumes" | quote }}
-              mountPath: "/go/server/configs/db"
-              subPath: {{ print "path/" $superName "/db" | quote }}
+              mountPath: "/go/server/configs/db.yaml"
+              subPath: {{ print "configs/" $superName "/db.yaml" | quote }}
+              readOnly: true
+            - name: {{ print $superName "-volumes" | quote }}
+              mountPath: "/go/server/configs/auth.yaml"
+              subPath: {{ print "configs/" $superName "/auth.yaml" | quote }}
               readOnly: true
           env:
-            {{- range $key, $value := .Values.auth.env }}
+            {{- range $key, $value := .Values.env }}
             {{- $upKey := upper $key }}
             - name: {{ $upKey | quote }}
               value: {{ $value | quote }}
             {{- end }}
           readinessProbe:
             exec:
-              command: ["curl","http://127.0.0.1:{{ .Values.auth.service.targetPort }}/health"]
+              command: ["curl","http://127.0.0.1:{{ .Values.service.targetPort }}/health"]
             initialDelaySeconds: 10
             periodSeconds: 5
 {{- end }}
