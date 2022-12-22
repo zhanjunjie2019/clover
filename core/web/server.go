@@ -93,7 +93,7 @@ func (s Server) registRoute(engine *gin.Engine) error {
 			s.LoggerMiddleware.MiddlewareHandlerFunc(&option),
 		}
 		// 如果属于限权接口
-		if len(option.AuthCode) > 0 {
+		if len(option.AuthCodes) > 0 {
 			// 资源级限流中间件
 			handlerFuncs = append(handlerFuncs, s.AuthMiddleware.MiddlewareHandlerFunc(&option))
 		}
