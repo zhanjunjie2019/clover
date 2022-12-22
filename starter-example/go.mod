@@ -14,7 +14,7 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/swaggo/swag v1.8.9
 	github.com/zhanjunjie2019/clover/core v0.0.0-20221122093237-46a09eeb2fe6
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221221062822-e081f598f89f
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221222024513-8769741fa629
 	github.com/zhanjunjie2019/clover/share v0.0.0-20221122093237-46a09eeb2fe6
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.24.2
@@ -100,7 +100,7 @@ require (
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.14.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0 // indirect
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645 // indirect
 	github.com/hailocab/go-hostpool v0.0.0-20160125115350-e80d13ce29ed // indirect
 	github.com/hashicorp/consul/api v1.18.0 // indirect
