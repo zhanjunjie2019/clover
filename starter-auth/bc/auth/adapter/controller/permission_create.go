@@ -26,7 +26,7 @@ func (p *PermissionCreateController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
 		RelativePath: bcconsts.ModuleCode + "/permission-create",
 		HttpMethod:   http.MethodPost,
-		AuthCode:     consts.SAdminAuth,
+		AuthCodes:    []string{consts.SAdminAuth},
 	}
 }
 

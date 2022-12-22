@@ -1,7 +1,7 @@
 package vo
 
 type TenantCreateReqVO struct {
-	Tenants []TenantInfoVO `json:"tenants"`
+	Tenants []TenantInfoVO `json:"tenants" validate:"required,gt=0,dive"`
 }
 
 type TenantInfoVO struct {

@@ -5,6 +5,7 @@ import (
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	consulReg "github.com/go-micro/plugins/v4/registry/consul"
+	"github.com/go-playground/validator/v10"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "github.com/zhanjunjie2019/clover/core/configs"
@@ -73,12 +74,18 @@ func (s *Server) RunServer() error {
 	return service.Run()
 }
 
+var validate = validator.New()
+
 func (s Server) registRoute(engine *gin.Engine) error {
 	// 加载全局限流配置
 	s.SentinelLoader.AppendServerRules()
 	for _, c := range s.Controllers {
 		// 读取接口配置
 		option := c.GetOption()
+		err := validate.Struct(option)
+		if err != nil {
+			return err
+		}
 		// 动态中间件
 		handlerFuncs := []gin.HandlerFunc{
 			s.SentinelMiddleware.MiddlewareHandlerFunc(nil),

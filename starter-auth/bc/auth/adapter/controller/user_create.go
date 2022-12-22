@@ -26,7 +26,7 @@ func (u *UserCreateController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
 		RelativePath: bcconsts.ModuleCode + "/user-create",
 		HttpMethod:   http.MethodPost,
-		AuthCode:     consts.AdminAuth,
+		AuthCodes:    []string{consts.AdminAuth, consts.SAdminAuth},
 	}
 }
 

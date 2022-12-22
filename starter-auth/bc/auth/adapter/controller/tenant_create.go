@@ -26,7 +26,7 @@ func (t *TenantCreateController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
 		RelativePath: bcconsts.ModuleCode + "/tenant-create",
 		HttpMethod:   http.MethodPost,
-		AuthCode:     consts.SAdminAuth,
+		AuthCodes:    []string{consts.SAdminAuth},
 	}
 }
 

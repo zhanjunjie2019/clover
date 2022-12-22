@@ -26,7 +26,7 @@ func (r *RoleCreateController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
 		RelativePath: bcconsts.ModuleCode + "/role-create",
 		HttpMethod:   http.MethodPost,
-		AuthCode:     consts.AdminAuth,
+		AuthCodes:    []string{consts.AdminAuth, consts.SAdminAuth},
 	}
 }
 

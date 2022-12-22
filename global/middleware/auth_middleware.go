@@ -15,7 +15,7 @@ type AuthMiddleware struct{}
 
 func (a *AuthMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if len(option.AuthCode) > 0 {
+		if len(option.AuthCodes) > 0 {
 			token, err := uctx.GetJwtClaimsByBearerToken(c)
 			if err != nil {
 				response.FailWithMessage(c, err)
@@ -31,9 +31,11 @@ func (a *AuthMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gi
 				auths := token.Auths
 				var hasAuth = false
 				for _, v := range auths {
-					if v == option.AuthCode {
-						hasAuth = true
-						break
+					for _, authCode := range option.AuthCodes {
+						if v == authCode {
+							hasAuth = true
+							break
+						}
 					}
 				}
 				if !hasAuth {

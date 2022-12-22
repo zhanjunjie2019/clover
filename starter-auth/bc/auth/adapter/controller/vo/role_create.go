@@ -1,7 +1,7 @@
 package vo
 
 type RoleCreateReqVO struct {
-	Roles []RoleInfoVO `json:"roles"`
+	Roles []RoleInfoVO `json:"roles" validate:"required,gt=0,dive"`
 }
 
 type RoleInfoVO struct {

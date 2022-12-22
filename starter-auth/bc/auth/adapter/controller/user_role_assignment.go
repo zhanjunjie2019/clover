@@ -27,7 +27,7 @@ func (u *UserRoleAssignmentController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
 		RelativePath: bcconsts.ModuleCode + "/user-role-assignment",
 		HttpMethod:   http.MethodPost,
-		AuthCode:     consts.AdminAuth,
+		AuthCodes:    []string{consts.AdminAuth, consts.SAdminAuth},
 	}
 }
 
