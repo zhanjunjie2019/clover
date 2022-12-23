@@ -180,7 +180,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "tenant"
+                    "sadmin"
                 ],
                 "summary": "获得超管Token",
                 "parameters": [
@@ -592,6 +592,9 @@
         },
         "vo.RoleCreateReqVO": {
             "type": "object",
+            "required": [
+                "roles"
+            ],
             "properties": {
                 "roles": {
                     "type": "array",
@@ -689,6 +692,9 @@
         },
         "vo.TenantCreateReqVO": {
             "type": "object",
+            "required": [
+                "tenants"
+            ],
             "properties": {
                 "tenants": {
                     "type": "array",

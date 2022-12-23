@@ -29,7 +29,7 @@ func (s *SadminTokenCreateController) GetOption() defs.ControllerOption {
 }
 
 // Handle 获得超管Token
-// @Tags tenant
+// @Tags sadmin
 // @Summary 获得超管Token
 // @accept application/json
 // @Produce application/json

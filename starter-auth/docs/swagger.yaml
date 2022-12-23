@@ -45,6 +45,8 @@ definitions:
         items:
           $ref: '#/definitions/vo.RoleInfoVO'
         type: array
+    required:
+    - roles
     type: object
   vo.RoleCreateRspVO:
     properties:
@@ -111,6 +113,8 @@ definitions:
         items:
           $ref: '#/definitions/vo.TenantInfoVO'
         type: array
+    required:
+    - tenants
     type: object
   vo.TenantCreateRspVO:
     properties:
@@ -383,7 +387,7 @@ paths:
               type: object
       summary: 获得超管Token
       tags:
-      - tenant
+      - sadmin
   /auth/tenant-create:
     post:
       consumes:

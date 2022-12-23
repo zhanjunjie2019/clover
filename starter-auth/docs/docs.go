@@ -189,7 +189,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "tenant"
+                    "sadmin"
                 ],
                 "summary": "获得超管Token",
                 "parameters": [
@@ -601,6 +601,9 @@ const docTemplate = `{
         },
         "vo.RoleCreateReqVO": {
             "type": "object",
+            "required": [
+                "roles"
+            ],
             "properties": {
                 "roles": {
                     "type": "array",
@@ -698,6 +701,9 @@ const docTemplate = `{
         },
         "vo.TenantCreateReqVO": {
             "type": "object",
+            "required": [
+                "tenants"
+            ],
             "properties": {
                 "tenants": {
                     "type": "array",

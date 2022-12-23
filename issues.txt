@@ -1,10 +1,7 @@
 遗留问题的修改计划列表：
 1. 剥离出一个独立的端口用于swagger+健康检查+pprof+prometheus，原端口只用与业务接口
-2. 开发自动化测试模块，植入CI进行自动化测试
-3. 接口允许兼容多资源
+2. 提供压测+自动化测试支持
 
-Type:
-用于说明git commit的类别，只允许使用下面的标识。
 feat: 新功能（feature）。
 fix: 修复bug，可以是QA发现的BUG，也可以是研发自己发现的BUG。
 docs: 文档（documentation）。
