@@ -1,0 +1,33 @@
+# 服务配置
+svcConf:
+  # 服务模式,1正式2测试
+  svcMode: 2
+  # 服务部署名
+  svcName: "clover-generation"
+  # 服务端口号
+  svcPort: 8820
+  # 服务实例序号
+  svcNum: 1
+  # 服务版本号
+  svcVersion: "v0.0.1"
+
+# consul配置
+consulConf:
+  # 服务配置中心路径
+  consulAddr: "localhost:8500"
+  # 注册时限
+  registerTTL: 2
+  # 注册间隔
+  registerInterval: 1
+
+# 日志配置
+logConf:
+  # 日志级别
+  level: "debug"
+  # 输出文件夹
+  director: "../deploy/docker/filebeat/logs"
+  # 最大天数
+  maxAge: 7
+  # 是否输出到控制台
+  logInConsole: 1
+

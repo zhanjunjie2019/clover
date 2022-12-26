@@ -1,6 +1,5 @@
 遗留问题的修改计划列表：
 1. 剥离出一个独立的端口用于swagger+健康检查+pprof+prometheus，原端口只用与业务接口
-2. 提供压测+自动化测试支持
 
 feat: 新功能（feature）。
 fix: 修复bug，可以是QA发现的BUG，也可以是研发自己发现的BUG。

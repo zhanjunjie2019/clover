@@ -739,8 +739,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "tenantID": {
-                    "description": "租户ID，非必要，不传默认则随机生成",
-                    "type": "string"
+                    "description": "租户ID，非必要，不传默认则随机生成，英文字母，长度小于{20}位",
+                    "type": "string",
+                    "maxLength": 20
                 },
                 "tenantName": {
                     "description": "租户名",

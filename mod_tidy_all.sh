@@ -19,3 +19,7 @@ cd ..
 cd starter-auth
 sh mod_tidy.sh
 cd ..
+
+cd starter-generation
+sh mod_tidy.sh
+cd ..

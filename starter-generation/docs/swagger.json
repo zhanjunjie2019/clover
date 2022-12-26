@@ -1,0 +1,180 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "clover-generation接口文档",
+        "title": "clover-generation-api",
+        "contact": {},
+        "version": "v1.0.0"
+    },
+    "paths": {
+        "/gen/module-gen": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gen"
+                ],
+                "summary": "生成完整服务代码",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "是否加载配置中心配置，1=是，其他=否",
+                        "name": "loadConfigByConsul",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "是否启用遥测链路追踪，1=是，其他=否",
+                        "name": "loadOpenTelemetry",
+                        "in": "query"
+                    },
+                    {
+                        "maxLength": 20,
+                        "minLength": 2,
+                        "type": "string",
+                        "description": "模块名，必须满足英文字母{2}~{20}位",
+                        "name": "moduleName",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 65535,
+                        "type": "integer",
+                        "description": "服务默认端口，0~65535",
+                        "name": "serverPort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/vo.ModuleGenRspVO"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "response.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "错误码：成功[0],底层的错误[1000-1999],平台层级的错误[2000-2999]",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据"
+                },
+                "msg": {
+                    "description": "详细信息",
+                    "type": "string"
+                }
+            }
+        },
+        "vo.DomainAggregationVO": {
+            "type": "object",
+            "properties": {
+                "aggregationRoot": {
+                    "description": "聚合根",
+                    "$ref": "#/definitions/vo.DomainEntityVO"
+                }
+            }
+        },
+        "vo.DomainBoundedContextVO": {
+            "type": "object",
+            "required": [
+                "aggregations"
+            ],
+            "properties": {
+                "aggregations": {
+                    "description": "领域聚合",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.DomainAggregationVO"
+                    }
+                }
+            }
+        },
+        "vo.DomainEntityVO": {
+            "type": "object",
+            "required": [
+                "ValueObjects"
+            ],
+            "properties": {
+                "ValueObjects": {
+                    "description": "值对象",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.DomainValueObjectVO"
+                    }
+                },
+                "entityName": {
+                    "description": "实体名，长度必须满足{2}~{30}位",
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 2
+                },
+                "entitys": {
+                    "description": "实体",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.DomainEntityVO"
+                    }
+                }
+            }
+        },
+        "vo.DomainValueObjectVO": {
+            "type": "object",
+            "properties": {
+                "ValueObjects": {
+                    "description": "值对象",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/vo.DomainValueObjectVO"
+                    }
+                },
+                "valObjBaseType": {
+                    "description": "值基础类型，0=非基础值对象，1=string，2=uint8，3=uint16，4=uint32，5=uint64",
+                    "type": "integer"
+                },
+                "valObjName": {
+                    "description": "值对象名，长度必须满足{2}~{30}位",
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 2
+                },
+                "valRelType": {
+                    "description": "值对象链接类型，1=一对一，其他=一对多",
+                    "type": "integer"
+                }
+            }
+        },
+        "vo.ModuleGenRspVO": {
+            "type": "object"
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "C-Token",
+            "in": "header"
+        }
+    }
+}

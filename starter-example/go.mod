@@ -10,11 +10,11 @@ replace (
 
 require (
 	github.com/alibaba/ioc-golang v1.0.3
-	github.com/gin-gonic/gin v1.8.1
+	github.com/gin-gonic/gin v1.8.2
 	github.com/gogo/protobuf v1.3.2
 	github.com/swaggo/swag v1.8.9
 	github.com/zhanjunjie2019/clover/core v0.0.0-20221122093237-46a09eeb2fe6
-	github.com/zhanjunjie2019/clover/global v0.0.0-20221222024513-8769741fa629
+	github.com/zhanjunjie2019/clover/global v0.0.0-20221223005832-9fda409ebb7f
 	github.com/zhanjunjie2019/clover/share v0.0.0-20221122093237-46a09eeb2fe6
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.24.2
@@ -184,7 +184,7 @@ require (
 	github.com/prometheus/client_golang v1.14.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.39.0 // indirect
-	github.com/prometheus/procfs v0.8.0 // indirect
+	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/cors v1.8.2 // indirect

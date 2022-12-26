@@ -5,8 +5,8 @@ type TenantCreateReqVO struct {
 }
 
 type TenantInfoVO struct {
-	// 租户ID，非必要，不传默认则随机生成
-	TenantID string `json:"tenantID"`
+	// 租户ID，非必要，不传默认则随机生成，英文字母，长度小于{20}位
+	TenantID string `json:"tenantID" validate:"lte=20"`
 	// 租户名
 	TenantName string `json:"tenantName" validate:"required"`
 	// 授权码重定向路径，非必要

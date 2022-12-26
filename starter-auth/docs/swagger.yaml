@@ -132,7 +132,8 @@ definitions:
         description: 授权码重定向路径，非必要
         type: string
       tenantID:
-        description: 租户ID，非必要，不传默认则随机生成
+        description: 租户ID，非必要，不传默认则随机生成，英文字母，长度小于{20}位
+        maxLength: 20
         type: string
       tenantName:
         description: 租户名

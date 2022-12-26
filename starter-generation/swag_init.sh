@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
 
-cd starter-example
 swag init --pd
-cd ..
-
-cd starter-auth
-swag init --pd
-cd ..
-
-cd starter-generation
-swag init --pd
-cd ..
 
 function pause(){
   read -n 1 -p "$*" INP

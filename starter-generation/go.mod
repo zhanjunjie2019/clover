@@ -1,24 +1,18 @@
-module github.com/zhanjunjie2019/clover/starter-auth
+module github.com/zhanjunjie2019/clover/starter-generation
 
 go 1.19
 
 replace (
 	github.com/zhanjunjie2019/clover/core => ../core
 	github.com/zhanjunjie2019/clover/global => ../global
-	github.com/zhanjunjie2019/clover/share => ../share
 )
 
 require (
 	github.com/alibaba/ioc-golang v1.0.3
 	github.com/gin-gonic/gin v1.8.2
-	github.com/gogo/protobuf v1.3.2
-	github.com/samber/lo v1.37.0
 	github.com/swaggo/swag v1.8.9
-	github.com/zhanjunjie2019/clover/core v0.0.0-20221117082526-cf9f91f74a29
+	github.com/zhanjunjie2019/clover/core v0.0.0-00010101000000-000000000000
 	github.com/zhanjunjie2019/clover/global v0.0.0-20221223005832-9fda409ebb7f
-	github.com/zhanjunjie2019/clover/share v0.0.0-20221117082526-cf9f91f74a29
-	gopkg.in/yaml.v3 v3.0.1
-	gorm.io/gorm v1.24.2
 )
 
 require (
@@ -85,11 +79,11 @@ require (
 	github.com/go-redis/redis/extra/rediscmd/v9 v9.0.0-rc.2 // indirect
 	github.com/go-redis/redis/extra/redisotel/v9 v9.0.0-rc.2 // indirect
 	github.com/go-redis/redis/v9 v9.0.0-rc.2 // indirect
-	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/gocql/gocql v1.3.1 // indirect
 	github.com/gogo/googleapis v1.4.1 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
@@ -120,14 +114,6 @@ require (
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/inconshreveable/log15 v3.0.0-testing.5+incompatible // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
-	github.com/jackc/pgconn v1.13.0 // indirect
-	github.com/jackc/pgio v1.0.0 // indirect
-	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgproto3/v2 v2.3.1 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
-	github.com/jackc/pgtype v1.13.0 // indirect
-	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/jaegertracing/jaeger v1.40.0 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/jcmturner/aescts/v2 v2.0.0 // indirect
@@ -190,6 +176,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/cors v1.8.2 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/samber/lo v1.37.0 // indirect
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/shirou/gopsutil/v3 v3.22.11 // indirect
@@ -211,8 +198,6 @@ require (
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
-	github.com/uptrace/opentelemetry-go-extra/otelgorm v0.1.17 // indirect
-	github.com/uptrace/opentelemetry-go-extra/otelsql v0.1.17 // indirect
 	github.com/urfave/cli/v2 v2.23.7 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
@@ -261,6 +246,6 @@ require (
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gorm.io/driver/mysql v1.4.4 // indirect
-	gorm.io/driver/postgres v1.4.5 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gorm.io/gorm v1.24.2 // indirect
 )

@@ -7,7 +7,7 @@ require (
 	github.com/alibaba/ioc-golang v1.0.3
 	github.com/alibaba/sentinel-golang v1.0.4
 	github.com/asim/go-micro/plugins/config/source/consul/v4 v4.7.0
-	github.com/gin-gonic/gin v1.8.1
+	github.com/gin-gonic/gin v1.8.2
 	github.com/go-micro/plugins/v4/config/encoder/yaml v1.2.0
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/go-redis/redis/extra/redisotel/v9 v9.0.0-rc.2
@@ -96,7 +96,7 @@ require (
 	github.com/prometheus/client_golang v1.14.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/common v0.39.0 // indirect
-	github.com/prometheus/procfs v0.8.0 // indirect
+	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/shirou/gopsutil/v3 v3.22.11 // indirect
 	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
