@@ -1,10 +1,10 @@
 package consts
 
 const (
-	TraceIDHeaderKey     = "Trace-ID"
-	TraceSpanIDHeaderKey = "Trace-Span-ID"
+	TraceIDHeaderKey     = "Trace-Id"
+	TraceSpanIDHeaderKey = "Trace-Span-Id"
 	TokenHeaderKey       = "C-Token"
-	TenantIDHeaderKey    = "Tenant-ID"
+	TenantIDHeaderKey    = "Tenant-Id"
 )
 
 const (

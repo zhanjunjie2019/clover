@@ -18,7 +18,7 @@ type ControllerOption struct {
 	// AuthCodes 接口资源编码，拥有任意一个资源就算通过
 	AuthCodes []string `validate:"dive,required"`
 	// Middlewares 自定义中间件
-	Middlewares []IMiddleware
+	Middlewares []IHttpMiddleware
 	// SentinelStrategy 熔断限流策略，不同得接口不要使用相同得策略
 	SentinelStrategy string
 }

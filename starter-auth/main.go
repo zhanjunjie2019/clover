@@ -50,18 +50,18 @@ type Starter struct {
 }
 
 func (s *Starter) Run() error {
-	// 加载本地配置
+	// 加载本地配置，必须
 	errs.Panic(s.ConfigDefines.LoadAllConfigByLocal())
-	// 初始化日志组件
+	// 初始化日志组件，必须
 	errs.Panic(logs.InitLogger())
-	// 加载远程配置
+	// 加载远程配置，非必须
 	errs.Panic(s.ConfigDefines.LoadAllConfigByConsul())
-	// 初始化遥感链路追踪
+	// 初始化遥感链路追踪，非必须
 	errs.Panic(s.OpenTelemetry.InitProvider())
-	// 初始化数据库连接
+	// 初始化数据库连接，非必须
 	errs.Panic(s.RepoDBFactory.Initialization())
-	// 启动NSQ消息队列监听
-	errs.Panic(s.ConsumerServer.ConsumersStart())
-	// 启动HTTP请求监听
+	// 注册NSQ消息队列监听，非必须
+	errs.Panic(s.ConsumerServer.RegistryServer())
+	// 启动HTTP服务，与GRPC至少启一个
 	return s.WebServer.RunServer()
 }

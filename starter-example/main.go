@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/alibaba/ioc-golang"
 	"github.com/zhanjunjie2019/clover/core/consumer"
+	"github.com/zhanjunjie2019/clover/core/grpc"
 	"github.com/zhanjunjie2019/clover/core/repo"
 	"github.com/zhanjunjie2019/clover/core/scheduler"
 	"github.com/zhanjunjie2019/clover/core/web"
@@ -12,6 +13,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/consumer"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/controller"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/grpchandler"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/scheduler"
 	_ "github.com/zhanjunjie2019/clover/starter-example/docs"
 )
@@ -46,6 +48,7 @@ func main() {
 type Starter struct {
 	SchedulerServer scheduler.ServerIOCInterface            `singleton:""`
 	ConsumerServer  consumer.ServerIOCInterface             `singleton:""`
+	GrpcServer      grpc.ServerIOCInterface                 `singleton:""`
 	WebServer       web.ServerIOCInterface                  `singleton:""`
 	RepoDBFactory   repo.RepoDBFactoryIOCInterface          `singleton:""`
 	OpenTelemetry   opentelemetry.OpenTelemetryIOCInterface `singleton:""`
@@ -64,9 +67,11 @@ func (s *Starter) Run() error {
 	// 初始化数据库连接，非必须
 	errs.Panic(s.RepoDBFactory.Initialization())
 	// 启动定时任务调度，非必须
-	errs.Panic(s.SchedulerServer.SchedulersStart())
+	errs.Panic(s.SchedulerServer.RegistryServer())
 	// 启动NSQ消息队列监听，非必须
-	errs.Panic(s.ConsumerServer.ConsumersStart())
-	// 启动HTTP请求监听，必须
-	return s.WebServer.RunServer()
+	errs.Panic(s.ConsumerServer.RegistryServer())
+	// 启动GRPC服务，与HTTP中至少启一个
+	return s.GrpcServer.RunServer()
+	// 启动HTTP服务，与GRPC中至少启一个
+	//return s.WebServer.RunServer()
 }

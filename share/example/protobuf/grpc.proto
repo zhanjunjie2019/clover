@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package protobuf;
+
+service ExampleService {
+  rpc HelloWorld (ExampleGrpcReqVO) returns (ExampleGrpcRspVO);
+}
+
+message ExampleGrpcReqVO {
+  // 姓
+  string FirstName = 1;
+  // 名
+  string LastName = 2;
+}
+
+message ExampleGrpcRspVO{
+  // 问候语
+  string Greetings = 1;
+}

@@ -35,7 +35,7 @@ func (e *ExampleGateway) SaveExampleEntity(ctx context.Context, entity model.Exa
 func (e *ExampleGateway) PublishEventMessage(ctx context.Context, entity model.ExampleEntity) error {
 	dto := protobuf.ExampleDTO{
 		FirstName: entity.FullValue().FirstName,
-		LastName:  entity.FullValue().FirstName,
+		LastName:  entity.FullValue().LastName,
 	}
 	bs, err := proto.Marshal(&dto)
 	if err != nil {

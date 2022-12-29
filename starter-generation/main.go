@@ -6,6 +6,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/config"
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/logs"
+	_ "github.com/zhanjunjie2019/clover/starter-generation/bc/generation/adapter/controller"
 	_ "github.com/zhanjunjie2019/clover/starter-generation/docs"
 )
 
@@ -46,6 +47,6 @@ func (s *Starter) Run() error {
 	errs.Panic(s.ConfigDefines.LoadAllConfigByLocal())
 	// 初始化日志组件，必须
 	errs.Panic(logs.InitLogger())
-	// 启动HTTP请求监听，必须
+	// 启动HTTP服务，与GRPC至少启一个
 	return s.WebServer.RunServer()
 }

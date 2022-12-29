@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-protoc --gofast_out=. *.proto
+protoc --gofast_out=plugins=grpc:. --micro_out=. *.proto
 
 function pause(){
   read -n 1 -p "$*" INP

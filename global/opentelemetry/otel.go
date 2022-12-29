@@ -133,6 +133,19 @@ func (o *OpenTelemetry) Extract(ctx context.Context, headers http.Header) contex
 	return o.GetCtx(ctx, traceID, spanID)
 }
 
+func (o *OpenTelemetry) ExtractByGrpcCtx(ctx context.Context) context.Context {
+	var traceID, spanID string
+	ctx, traceID = uctx.GetTraceIDByGrpcCtx(ctx)
+	if len(traceID) != 32 {
+		return ctx
+	}
+	spanID = uctx.GetTraceSpanIDByGrpcCtx(ctx)
+	if len(spanID) != 16 {
+		return ctx
+	}
+	return o.GetCtx(ctx, traceID, spanID)
+}
+
 func (o *OpenTelemetry) GetCtx(ctx context.Context, traceID, spanID string) context.Context {
 	var (
 		err error

@@ -26,7 +26,7 @@
 
 ### 代码分层依赖架构
 
-![分层依赖架构](https://assets.processon.com/chart_image/637334050791290b4b9a005e.png?r=v1)
+![分层依赖架构](https://assets.processon.com/chart_image/637334050791290b4b9a005e.png?r=v2)
 
 ## 配置优先级
 

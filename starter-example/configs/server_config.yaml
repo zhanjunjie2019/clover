@@ -4,12 +4,15 @@ svcConf:
   svcMode: 2
   # 服务部署名
   svcName: "clover-example"
-  # 服务端口号
-  svcPort: 8800
   # 服务实例序号
   svcNum: 1
   # 服务版本号
   svcVersion: "v0.0.1"
+  # 服务端口号
+  http:
+    port: 8800
+  grpc:
+    port: 8801
 
 # consul配置
 consulConf:

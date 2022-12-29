@@ -4,12 +4,13 @@ svcConf:
   svcMode: 2
   # 服务部署名
   svcName: "clover-generation"
-  # 服务端口号
-  svcPort: 8820
   # 服务实例序号
   svcNum: 1
   # 服务版本号
   svcVersion: "v0.0.1"
+  # 服务端口号
+  http:
+    port: 8820
 
 # consul配置
 consulConf:

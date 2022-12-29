@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/zhanjunjie2019/clover/global/consts"
+	"go-micro.dev/v4/metadata"
 )
 
 func WithValueTenantID(ctx context.Context, tenantID string) context.Context {
@@ -38,4 +39,21 @@ func GetTenantID(ctx context.Context) string {
 		}
 	}
 	return ""
+}
+
+func GetTenantIDByGrpcCtx(ctx context.Context) (context.Context, string) {
+	value := ctx.Value(consts.CtxTenantIDVar)
+	if value != nil {
+		s, ok := value.(string)
+		if ok {
+			return ctx, s
+		}
+	} else {
+		tenantID, ok := metadata.Get(ctx, consts.TenantIDHeaderKey)
+		if ok && len(tenantID) > 0 {
+			ctx = WithValueTenantID(ctx, tenantID)
+			return ctx, tenantID
+		}
+	}
+	return ctx, ""
 }

@@ -16,7 +16,7 @@ type Server struct {
 	OpenTelemetry opentelemetry.OpenTelemetryIOCInterface `singleton:""`
 }
 
-func (s *Server) ConsumersStart() error {
+func (s *Server) RegistryServer() error {
 	nsqConfig := confs.GetGlobalConfig().NsqConfig
 	if nsqConfig.Enabled == 1 {
 		svcConf := confs.GetServerConfig().SvcConf

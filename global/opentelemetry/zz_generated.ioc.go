@@ -34,13 +34,14 @@ func init() {
 }
 
 type openTelemetry_ struct {
-	Shutdown_     func()
-	InitProvider_ func() error
-	Start_        func(ctx contextx.Context, spanName string) (contextx.Context, trace.Span)
-	InvokeFunc_   func(ctx contextx.Context, spanName string, fn func(contextx.Context, any) (any, error), args any) (any, error)
-	Inject_       func(ctx contextx.Context, headers http.Header)
-	Extract_      func(ctx contextx.Context, headers http.Header) contextx.Context
-	GetCtx_       func(ctx contextx.Context, traceID, spanID string) contextx.Context
+	Shutdown_         func()
+	InitProvider_     func() error
+	Start_            func(ctx contextx.Context, spanName string) (contextx.Context, trace.Span)
+	InvokeFunc_       func(ctx contextx.Context, spanName string, fn func(contextx.Context, any) (any, error), args any) (any, error)
+	Inject_           func(ctx contextx.Context, headers http.Header)
+	Extract_          func(ctx contextx.Context, headers http.Header) contextx.Context
+	ExtractByGrpcCtx_ func(ctx contextx.Context) contextx.Context
+	GetCtx_           func(ctx contextx.Context, traceID, spanID string) contextx.Context
 }
 
 func (o *openTelemetry_) Shutdown() {
@@ -67,6 +68,10 @@ func (o *openTelemetry_) Extract(ctx contextx.Context, headers http.Header) cont
 	return o.Extract_(ctx, headers)
 }
 
+func (o *openTelemetry_) ExtractByGrpcCtx(ctx contextx.Context) contextx.Context {
+	return o.ExtractByGrpcCtx_(ctx)
+}
+
 func (o *openTelemetry_) GetCtx(ctx contextx.Context, traceID, spanID string) contextx.Context {
 	return o.GetCtx_(ctx, traceID, spanID)
 }
@@ -78,6 +83,7 @@ type OpenTelemetryIOCInterface interface {
 	InvokeFunc(ctx contextx.Context, spanName string, fn func(contextx.Context, any) (any, error), args any) (any, error)
 	Inject(ctx contextx.Context, headers http.Header)
 	Extract(ctx contextx.Context, headers http.Header) contextx.Context
+	ExtractByGrpcCtx(ctx contextx.Context) contextx.Context
 	GetCtx(ctx contextx.Context, traceID, spanID string) contextx.Context
 }
 

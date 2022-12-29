@@ -31,15 +31,15 @@ func init() {
 }
 
 type server_ struct {
-	ConsumersStart_ func() error
+	RegistryServer_ func() error
 }
 
-func (s *server_) ConsumersStart() error {
-	return s.ConsumersStart_()
+func (s *server_) RegistryServer() error {
+	return s.RegistryServer_()
 }
 
 type ServerIOCInterface interface {
-	ConsumersStart() error
+	RegistryServer() error
 }
 
 var _serverSDID string

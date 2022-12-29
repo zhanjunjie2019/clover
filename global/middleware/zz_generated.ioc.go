@@ -12,6 +12,7 @@ import (
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	"github.com/gin-gonic/gin"
 	"github.com/zhanjunjie2019/clover/global/defs"
+	"go-micro.dev/v4/server"
 )
 
 func init() {
@@ -86,7 +87,12 @@ func (a *authMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) g
 }
 
 type loggerMiddleware_ struct {
+	MiddlewareWrapHandler_ func() server.HandlerWrapper
 	MiddlewareHandlerFunc_ func(option *defs.ControllerOption) gin.HandlerFunc
+}
+
+func (l *loggerMiddleware_) MiddlewareWrapHandler() server.HandlerWrapper {
+	return l.MiddlewareWrapHandler_()
 }
 
 func (l *loggerMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
@@ -94,15 +100,30 @@ func (l *loggerMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption)
 }
 
 type sentinelMiddleware_ struct {
+	MiddlewareWrapHandler_ func() server.HandlerWrapper
 	MiddlewareHandlerFunc_ func(option *defs.ControllerOption) gin.HandlerFunc
+	filter_                func(tenantID, sentinelStrategy string) error
+}
+
+func (s *sentinelMiddleware_) MiddlewareWrapHandler() server.HandlerWrapper {
+	return s.MiddlewareWrapHandler_()
 }
 
 func (s *sentinelMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
 	return s.MiddlewareHandlerFunc_(option)
 }
 
+func (s *sentinelMiddleware_) filter(tenantID, sentinelStrategy string) error {
+	return s.filter_(tenantID, sentinelStrategy)
+}
+
 type traceMiddleware_ struct {
+	MiddlewareWrapHandler_ func() server.HandlerWrapper
 	MiddlewareHandlerFunc_ func(option *defs.ControllerOption) gin.HandlerFunc
+}
+
+func (t *traceMiddleware_) MiddlewareWrapHandler() server.HandlerWrapper {
+	return t.MiddlewareWrapHandler_()
 }
 
 func (t *traceMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
@@ -114,14 +135,18 @@ type AuthMiddlewareIOCInterface interface {
 }
 
 type LoggerMiddlewareIOCInterface interface {
+	MiddlewareWrapHandler() server.HandlerWrapper
 	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
 }
 
 type SentinelMiddlewareIOCInterface interface {
+	MiddlewareWrapHandler() server.HandlerWrapper
 	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
+	filter(tenantID, sentinelStrategy string) error
 }
 
 type TraceMiddlewareIOCInterface interface {
+	MiddlewareWrapHandler() server.HandlerWrapper
 	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
 }
 

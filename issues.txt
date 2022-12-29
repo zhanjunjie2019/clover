@@ -1,6 +1,10 @@
-遗留问题的修改计划列表：
-1. 剥离出一个独立的端口用于swagger+健康检查+pprof+prometheus，原端口只用与业务接口
+准备解决的问题列表：
+- 剥离出一个独立的端口用于swagger+健康检查+pprof+prometheus，原端口只用于业务接口
+- gRPC支持动态中间件
+- 优雅关机
+- 服务依赖的链路追踪信息传递
 
+提交信息规范：
 feat: 新功能（feature）。
 fix: 修复bug，可以是QA发现的BUG，也可以是研发自己发现的BUG。
 docs: 文档（documentation）。

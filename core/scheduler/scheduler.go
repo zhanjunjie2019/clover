@@ -23,7 +23,7 @@ type Server struct {
 	timer         utils.Timer
 }
 
-func (s *Server) SchedulersStart() error {
+func (s *Server) RegistryServer() error {
 	svcConf := confs.GetServerConfig().SvcConf
 	s.timer = utils.NewTimer()
 	for _, sc := range s.Schedulers {

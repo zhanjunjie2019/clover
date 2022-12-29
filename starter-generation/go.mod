@@ -137,7 +137,7 @@ require (
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.16 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/miekg/dns v1.1.50 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
@@ -197,7 +197,7 @@ require (
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
-	github.com/ugorji/go/codec v1.2.7 // indirect
+	github.com/ugorji/go/codec v1.2.8 // indirect
 	github.com/urfave/cli/v2 v2.23.7 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
@@ -230,7 +230,7 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
 	golang.org/x/crypto v0.4.0 // indirect
-	golang.org/x/exp v0.0.0-20221217163422-3c43f8badb15 // indirect
+	golang.org/x/exp v0.0.0-20221227203929-1b447090c38c // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
@@ -238,7 +238,7 @@ require (
 	golang.org/x/term v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
 	golang.org/x/tools v0.4.0 // indirect
-	google.golang.org/genproto v0.0.0-20221207170731-23e4bf6bdc37 // indirect
+	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
 	google.golang.org/grpc v1.51.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect

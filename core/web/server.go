@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
-	consulReg "github.com/go-micro/plugins/v4/registry/consul"
+	"github.com/go-micro/plugins/v4/registry/consul"
 	"github.com/go-playground/validator/v10"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -43,35 +43,35 @@ func (s *Server) RunServer() error {
 	if serverConfig.SvcConf.SvcMode == confs.Release {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
+		// swagger
 		gin.SetMode(gin.DebugMode)
 		engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	}
+	// 健康检查
 	engine.GET("/health", func(c *gin.Context) {
 		rsMap := gin.H{"STATUS": "UP"}
 		c.JSON(http.StatusOK, rsMap)
 	})
-	reg := consulReg.NewRegistry(
-		registry.Addrs(serverConfig.ConsulConf.ConsulAddr),
-	)
 
 	// 注册pprof
 	pprof.Register(engine)
-
+	// 注册核心业务HTTP接口
 	errs.Panic(s.registRoute(engine))
-
-	address := fmt.Sprintf(":%d", serverConfig.SvcConf.SvcPort)
-	service := web.NewService(
-		web.Name(serverConfig.SvcConf.SvcName),
-		web.Address(address),
+	// http服务
+	webService := web.NewService(
+		web.Name(serverConfig.SvcConf.SvcName+"-http"),
+		web.Version(serverConfig.SvcConf.SvcVersion+"-http"),
+		web.Address(fmt.Sprintf(":%d", serverConfig.SvcConf.Http.Port)),
+		web.Registry(consul.NewRegistry(
+			registry.Addrs(serverConfig.ConsulConf.ConsulAddr),
+		)),
 		web.RegisterTTL(time.Duration(serverConfig.ConsulConf.RegisterTTL)*time.Second),
 		web.RegisterInterval(time.Duration(serverConfig.ConsulConf.RegisterInterval)*time.Second),
-		web.Version(serverConfig.SvcConf.SvcVersion),
-		web.Registry(reg),
 		web.Handler(engine),
 	)
 	// 初始化服务
-	errs.Panic(service.Init())
-	return service.Run()
+	errs.Panic(webService.Init())
+	return webService.Run()
 }
 
 var validate = validator.New()

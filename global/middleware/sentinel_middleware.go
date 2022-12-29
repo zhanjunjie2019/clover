@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	sentapi "github.com/alibaba/sentinel-golang/api"
 	sbase "github.com/alibaba/sentinel-golang/core/base"
 	"github.com/gin-gonic/gin"
@@ -10,6 +11,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/response"
 	"github.com/zhanjunjie2019/clover/global/uctx"
+	"go-micro.dev/v4/server"
 )
 
 // +ioc:autowire=true
@@ -17,40 +19,53 @@ import (
 
 type SentinelMiddleware struct{}
 
+func (s *SentinelMiddleware) MiddlewareWrapHandler() server.HandlerWrapper {
+	return func(handlerFunc server.HandlerFunc) server.HandlerFunc {
+		return func(ctx context.Context, req server.Request, rsp interface{}) error {
+			ctx, tenantID := uctx.GetTenantIDByGrpcCtx(ctx)
+			err := s.filter(tenantID, "")
+			if err != nil {
+				return err
+			}
+			return handlerFunc(ctx, req, rsp)
+		}
+	}
+}
+
 func (s *SentinelMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 必须限流已开启，并且全局限流，或接口拥有指定的限流策略
-		if confs.GetSentinelConfig().Enabled == 1 {
-			if option == nil || len(option.SentinelStrategy) > 0 {
-				resource := confs.GetServerConfig().SvcConf.SvcName
-				if option != nil {
-					resource = resource + option.GetSentinelResourceSuffix()
-				}
-				// 热点参数
-				attrs := map[any]any{
-					consts.ClientIpField: c.ClientIP(),
-					consts.TenantIDField: uctx.GetTenantID(c),
-				}
-				// 限流关键选项
-				options := []sentapi.EntryOption{
-					sentapi.WithTrafficType(sbase.Inbound),
-					sentapi.WithResourceType(sbase.ResTypeWeb),
-					sentapi.WithAttachments(attrs),
-				}
-				// 执行限流器
-				entry, blockError := sentapi.Entry(
-					resource,
-					options...,
-				)
-				// 限流结果
-				if blockError != nil {
-					response.FailWithMessage(c, errs.CurrentLimitingErr)
-					c.Abort()
-					return
-				}
-				defer entry.Exit()
-			}
+		var sentinelStrategy string
+		if option != nil {
+			sentinelStrategy = option.GetSentinelResourceSuffix()
+		}
+		err := s.filter(uctx.GetTenantID(c), sentinelStrategy)
+		if err != nil {
+			response.FailWithMessage(c, err)
+			c.Abort()
+			return
 		}
 		c.Next()
 	}
+}
+
+func (s *SentinelMiddleware) filter(tenantID, sentinelStrategy string) error {
+	resource := confs.GetServerConfig().SvcConf.SvcName + sentinelStrategy
+	// 限流关键选项
+	options := []sentapi.EntryOption{
+		sentapi.WithTrafficType(sbase.Inbound),
+		sentapi.WithResourceType(sbase.ResTypeWeb),
+		// 热点参数，默认租户ID级别限流
+		sentapi.WithAttachment(consts.TenantIDField, tenantID),
+	}
+	// 执行限流器
+	entry, blockError := sentapi.Entry(
+		resource,
+		options...,
+	)
+	// 限流结果
+	if blockError != nil {
+		return errs.CurrentLimitingErr
+	}
+	defer entry.Exit()
+	return nil
 }

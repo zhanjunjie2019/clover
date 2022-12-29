@@ -38,10 +38,20 @@ type SvcConf struct {
 	SvcName string `env:"SVC_NAME" yaml:"svcName"`
 	// SvcNum 服务实例序号
 	SvcNum uint8 `env:"SVC_NUM" yaml:"svcNum"`
-	// SvcPort 服务端口号
-	SvcPort uint16 `env:"SVC_PORT" yaml:"svcPort"`
 	// SvcVersion 服务版本号
 	SvcVersion string `env:"SVC_VERSION" yaml:"svcVersion"`
+	// Http 配置
+	Http HttpConf `yaml:"http"`
+	// Grpc 配置
+	Grpc GrpcConf `yaml:"grpc"`
+}
+
+type HttpConf struct {
+	Port uint16 `env:"HTTP_PORT" yaml:"port"`
+}
+
+type GrpcConf struct {
+	Port uint16 `env:"GRPC_PORT" yaml:"port"`
 }
 
 type ConsulConf struct {
