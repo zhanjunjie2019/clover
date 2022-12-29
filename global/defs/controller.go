@@ -4,13 +4,53 @@ import "github.com/gin-gonic/gin"
 
 type IController interface {
 	// GetOption 关键配置
-	GetOption() ControllerOption
+	GetOption() ControllerOptions
 	// Handle 核心方法
 	Handle(c *gin.Context)
 }
 
-// ControllerOption 接口配置
-type ControllerOption struct {
+type ControllerOption func(*ControllerOptions)
+
+func NewControllerOptions(opts ...ControllerOption) ControllerOptions {
+	os := &ControllerOptions{}
+	for _, opt := range opts {
+		opt(os)
+	}
+	return *os
+}
+
+func RelativePath(relativePath string) ControllerOption {
+	return func(options *ControllerOptions) {
+		options.RelativePath = relativePath
+	}
+}
+
+func HttpMethod(httpMethod string) ControllerOption {
+	return func(options *ControllerOptions) {
+		options.HttpMethod = httpMethod
+	}
+}
+
+func AuthCodes(authCodes ...string) ControllerOption {
+	return func(options *ControllerOptions) {
+		options.AuthCodes = authCodes
+	}
+}
+
+func Middlewares(middlewares ...IHttpMiddleware) ControllerOption {
+	return func(options *ControllerOptions) {
+		options.Middlewares = middlewares
+	}
+}
+
+func SentinelStrategy(sentinelStrategy string) ControllerOption {
+	return func(options *ControllerOptions) {
+		options.SentinelStrategy = sentinelStrategy
+	}
+}
+
+// ControllerOptions 接口配置
+type ControllerOptions struct {
 	// RelativePath 接口路径
 	RelativePath string `validate:"required"`
 	// HttpMethod 请求方法 使用 http.MethodGet 等相关枚举

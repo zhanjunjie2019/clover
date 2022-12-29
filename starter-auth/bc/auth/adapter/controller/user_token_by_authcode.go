@@ -21,11 +21,11 @@ type UserTokenByAuthcodeController struct {
 	UserApp app.UserAppIOCInterface `singleton:""`
 }
 
-func (u *UserTokenByAuthcodeController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/user-token-by-authcode",
-		HttpMethod:   http.MethodPost,
-	}
+func (u *UserTokenByAuthcodeController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/user-token-by-authcode"),
+		defs.HttpMethod(http.MethodPost),
+	)
 }
 
 // Handle 使用授权码获取用户token信息

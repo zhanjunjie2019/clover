@@ -22,11 +22,11 @@ type TenantTokenCreateController struct {
 	TenantApp app.TenantAppIOCInterface `singleton:""`
 }
 
-func (t *TenantTokenCreateController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/tenant-token-create",
-		HttpMethod:   http.MethodPost,
-	}
+func (t *TenantTokenCreateController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/tenant-token-create"),
+		defs.HttpMethod(http.MethodPost),
+	)
 }
 
 // Handle 创建租户管理员Token

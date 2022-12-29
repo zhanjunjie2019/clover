@@ -21,11 +21,11 @@ type SadminTokenCreateController struct {
 	SadminApp app.SadminAppIOCInterface `singleton:""`
 }
 
-func (s *SadminTokenCreateController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/sadmin-token-create",
-		HttpMethod:   http.MethodPost,
-	}
+func (s *SadminTokenCreateController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/sadmin-token-create"),
+		defs.HttpMethod(http.MethodPost),
+	)
 }
 
 // Handle 获得超管Token

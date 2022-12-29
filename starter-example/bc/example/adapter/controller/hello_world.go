@@ -22,12 +22,12 @@ type HelloWorldController struct {
 	ExampleApp app.ExampleAppIOCInterface `singleton:""`
 }
 
-func (h *HelloWorldController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/hellow-world",
-		HttpMethod:   http.MethodGet,
-		AuthCodes:    []string{consts.SAdminAuth},
-	}
+func (h *HelloWorldController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/hellow-world"),
+		defs.HttpMethod(http.MethodGet),
+		defs.AuthCodes(consts.SAdminAuth),
+	)
 }
 
 // Handle 接口描述

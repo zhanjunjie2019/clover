@@ -38,11 +38,11 @@ func init() {
 }
 
 type helloWorldController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (h *helloWorldController_) GetOption() defs.ControllerOption {
+func (h *helloWorldController_) GetOption() defs.ControllerOptions {
 	return h.GetOption_()
 }
 
@@ -51,7 +51,7 @@ func (h *helloWorldController_) Handle(c *gin.Context) {
 }
 
 type HelloWorldControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 

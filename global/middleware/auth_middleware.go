@@ -33,7 +33,7 @@ func (a *AuthMiddleware) MiddlewareWrapHandlerByAuthCodes(authCodes []string) se
 	}
 }
 
-func (a *AuthMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (a *AuthMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token, err := uctx.GetJwtClaimsByBearerToken(c)
 		if err != nil {

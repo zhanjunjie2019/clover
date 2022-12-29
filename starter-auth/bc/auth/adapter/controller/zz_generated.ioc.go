@@ -227,11 +227,11 @@ func init() {
 }
 
 type permissionCreateController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (p *permissionCreateController_) GetOption() defs.ControllerOption {
+func (p *permissionCreateController_) GetOption() defs.ControllerOptions {
 	return p.GetOption_()
 }
 
@@ -240,11 +240,11 @@ func (p *permissionCreateController_) Handle(c *gin.Context) {
 }
 
 type roleCreateController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (r *roleCreateController_) GetOption() defs.ControllerOption {
+func (r *roleCreateController_) GetOption() defs.ControllerOptions {
 	return r.GetOption_()
 }
 
@@ -253,11 +253,11 @@ func (r *roleCreateController_) Handle(c *gin.Context) {
 }
 
 type rolePermissionAssignmentController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (r *rolePermissionAssignmentController_) GetOption() defs.ControllerOption {
+func (r *rolePermissionAssignmentController_) GetOption() defs.ControllerOptions {
 	return r.GetOption_()
 }
 
@@ -266,11 +266,11 @@ func (r *rolePermissionAssignmentController_) Handle(c *gin.Context) {
 }
 
 type sadminTokenCreateController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (s *sadminTokenCreateController_) GetOption() defs.ControllerOption {
+func (s *sadminTokenCreateController_) GetOption() defs.ControllerOptions {
 	return s.GetOption_()
 }
 
@@ -279,11 +279,11 @@ func (s *sadminTokenCreateController_) Handle(c *gin.Context) {
 }
 
 type tenantCreateController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (t *tenantCreateController_) GetOption() defs.ControllerOption {
+func (t *tenantCreateController_) GetOption() defs.ControllerOptions {
 	return t.GetOption_()
 }
 
@@ -292,11 +292,11 @@ func (t *tenantCreateController_) Handle(c *gin.Context) {
 }
 
 type tenantTokenCreateController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (t *tenantTokenCreateController_) GetOption() defs.ControllerOption {
+func (t *tenantTokenCreateController_) GetOption() defs.ControllerOptions {
 	return t.GetOption_()
 }
 
@@ -305,11 +305,11 @@ func (t *tenantTokenCreateController_) Handle(c *gin.Context) {
 }
 
 type userAuthorizationCodeController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (u *userAuthorizationCodeController_) GetOption() defs.ControllerOption {
+func (u *userAuthorizationCodeController_) GetOption() defs.ControllerOptions {
 	return u.GetOption_()
 }
 
@@ -318,11 +318,11 @@ func (u *userAuthorizationCodeController_) Handle(c *gin.Context) {
 }
 
 type userCreateController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (u *userCreateController_) GetOption() defs.ControllerOption {
+func (u *userCreateController_) GetOption() defs.ControllerOptions {
 	return u.GetOption_()
 }
 
@@ -331,11 +331,11 @@ func (u *userCreateController_) Handle(c *gin.Context) {
 }
 
 type userRoleAssignmentController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (u *userRoleAssignmentController_) GetOption() defs.ControllerOption {
+func (u *userRoleAssignmentController_) GetOption() defs.ControllerOptions {
 	return u.GetOption_()
 }
 
@@ -344,11 +344,11 @@ func (u *userRoleAssignmentController_) Handle(c *gin.Context) {
 }
 
 type userTokenByAuthcodeController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (u *userTokenByAuthcodeController_) GetOption() defs.ControllerOption {
+func (u *userTokenByAuthcodeController_) GetOption() defs.ControllerOptions {
 	return u.GetOption_()
 }
 
@@ -357,52 +357,52 @@ func (u *userTokenByAuthcodeController_) Handle(c *gin.Context) {
 }
 
 type PermissionCreateControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type RoleCreateControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type RolePermissionAssignmentControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type SadminTokenCreateControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type TenantCreateControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type TenantTokenCreateControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type UserAuthorizationCodeControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type UserCreateControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type UserRoleAssignmentControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 
 type UserTokenByAuthcodeControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 

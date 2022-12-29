@@ -22,12 +22,12 @@ type RoleCreateController struct {
 	RoleApp app.RoleAppIOCInterface `singleton:""`
 }
 
-func (r *RoleCreateController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/role-create",
-		HttpMethod:   http.MethodPost,
-		AuthCodes:    []string{consts.AdminAuth, consts.SAdminAuth},
-	}
+func (r *RoleCreateController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/role-create"),
+		defs.HttpMethod(http.MethodPost),
+		defs.AuthCodes(consts.AdminAuth, consts.SAdminAuth),
+	)
 }
 
 // Handle 创建角色，需要租户管理员权限

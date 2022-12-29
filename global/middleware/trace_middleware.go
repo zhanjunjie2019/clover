@@ -45,7 +45,7 @@ func (t *TraceMiddleware) MiddlewareWrapHandler() server.HandlerWrapper {
 	}
 }
 
-func (t *TraceMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (t *TraceMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	otelConfig := confs.GetGlobalConfig().OtelConfig
 	return func(c *gin.Context) {
 		if otelConfig.Enabled == 1 {

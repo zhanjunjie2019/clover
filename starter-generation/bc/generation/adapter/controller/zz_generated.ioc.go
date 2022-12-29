@@ -38,11 +38,11 @@ func init() {
 }
 
 type moduleGenController_ struct {
-	GetOption_ func() defs.ControllerOption
+	GetOption_ func() defs.ControllerOptions
 	Handle_    func(c *gin.Context)
 }
 
-func (m *moduleGenController_) GetOption() defs.ControllerOption {
+func (m *moduleGenController_) GetOption() defs.ControllerOptions {
 	return m.GetOption_()
 }
 
@@ -51,7 +51,7 @@ func (m *moduleGenController_) Handle(c *gin.Context) {
 }
 
 type ModuleGenControllerIOCInterface interface {
-	GetOption() defs.ControllerOption
+	GetOption() defs.ControllerOptions
 	Handle(c *gin.Context)
 }
 

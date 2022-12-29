@@ -80,7 +80,7 @@ func init() {
 
 type authMiddleware_ struct {
 	MiddlewareWrapHandlerByAuthCodes_ func(authCodes []string) server.HandlerWrapper
-	MiddlewareHandlerFunc_            func(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc_            func(option *defs.ControllerOptions) gin.HandlerFunc
 	filter_                           func(token defs.JwtClaims, authCodes []string, tenantID string) error
 }
 
@@ -88,7 +88,7 @@ func (a *authMiddleware_) MiddlewareWrapHandlerByAuthCodes(authCodes []string) s
 	return a.MiddlewareWrapHandlerByAuthCodes_(authCodes)
 }
 
-func (a *authMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (a *authMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	return a.MiddlewareHandlerFunc_(option)
 }
 
@@ -98,21 +98,21 @@ func (a *authMiddleware_) filter(token defs.JwtClaims, authCodes []string, tenan
 
 type loggerMiddleware_ struct {
 	MiddlewareWrapHandler_ func() server.HandlerWrapper
-	MiddlewareHandlerFunc_ func(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc_ func(option *defs.ControllerOptions) gin.HandlerFunc
 }
 
 func (l *loggerMiddleware_) MiddlewareWrapHandler() server.HandlerWrapper {
 	return l.MiddlewareWrapHandler_()
 }
 
-func (l *loggerMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (l *loggerMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	return l.MiddlewareHandlerFunc_(option)
 }
 
 type sentinelMiddleware_ struct {
 	MiddlewareWrapHandler_                   func() server.HandlerWrapper
 	MiddlewareWrapHandlerBySentinelStrategy_ func(sentinelStrategy string) server.HandlerWrapper
-	MiddlewareHandlerFunc_                   func(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc_                   func(option *defs.ControllerOptions) gin.HandlerFunc
 	filter_                                  func(tenantID, sentinelResourceSuffix string) error
 }
 
@@ -124,7 +124,7 @@ func (s *sentinelMiddleware_) MiddlewareWrapHandlerBySentinelStrategy(sentinelSt
 	return s.MiddlewareWrapHandlerBySentinelStrategy_(sentinelStrategy)
 }
 
-func (s *sentinelMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (s *sentinelMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	return s.MiddlewareHandlerFunc_(option)
 }
 
@@ -134,38 +134,38 @@ func (s *sentinelMiddleware_) filter(tenantID, sentinelResourceSuffix string) er
 
 type traceMiddleware_ struct {
 	MiddlewareWrapHandler_ func() server.HandlerWrapper
-	MiddlewareHandlerFunc_ func(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc_ func(option *defs.ControllerOptions) gin.HandlerFunc
 }
 
 func (t *traceMiddleware_) MiddlewareWrapHandler() server.HandlerWrapper {
 	return t.MiddlewareWrapHandler_()
 }
 
-func (t *traceMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (t *traceMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	return t.MiddlewareHandlerFunc_(option)
 }
 
 type AuthMiddlewareIOCInterface interface {
 	MiddlewareWrapHandlerByAuthCodes(authCodes []string) server.HandlerWrapper
-	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc
 	filter(token defs.JwtClaims, authCodes []string, tenantID string) error
 }
 
 type LoggerMiddlewareIOCInterface interface {
 	MiddlewareWrapHandler() server.HandlerWrapper
-	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc
 }
 
 type SentinelMiddlewareIOCInterface interface {
 	MiddlewareWrapHandler() server.HandlerWrapper
 	MiddlewareWrapHandlerBySentinelStrategy(sentinelStrategy string) server.HandlerWrapper
-	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc
 	filter(tenantID, sentinelResourceSuffix string) error
 }
 
 type TraceMiddlewareIOCInterface interface {
 	MiddlewareWrapHandler() server.HandlerWrapper
-	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc
 }
 
 var _authMiddlewareSDID string

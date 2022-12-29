@@ -46,7 +46,7 @@ func (s *SentinelMiddleware) MiddlewareWrapHandlerBySentinelStrategy(sentinelStr
 	}
 }
 
-func (s *SentinelMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (s *SentinelMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var sentinelResourceSuffix string
 		if option != nil {

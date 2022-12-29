@@ -22,12 +22,12 @@ type ModuleGenController struct {
 	GenerationApp app.GenerationAppIOCInterface `singleton:""`
 }
 
-func (m *ModuleGenController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/module-gen",
-		HttpMethod:   http.MethodPost,
-		AuthCodes:    []string{consts.SAdminAuth},
-	}
+func (m *ModuleGenController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/module-gen"),
+		defs.HttpMethod(http.MethodPost),
+		defs.AuthCodes(consts.SAdminAuth),
+	)
 }
 
 // Handle 生成完整服务代码

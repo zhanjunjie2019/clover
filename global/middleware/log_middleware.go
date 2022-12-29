@@ -70,7 +70,7 @@ func (l *LoggerMiddleware) MiddlewareWrapHandler() server.HandlerWrapper {
 	}
 }
 
-func (l *LoggerMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
+func (l *LoggerMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOptions) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
 		layout := uctx.GetLogLayout(c)

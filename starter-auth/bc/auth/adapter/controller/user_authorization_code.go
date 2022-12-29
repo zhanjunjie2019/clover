@@ -21,11 +21,11 @@ type UserAuthorizationCodeController struct {
 	UserApp app.UserAppIOCInterface `singleton:""`
 }
 
-func (u *UserAuthorizationCodeController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/user-authorization-code",
-		HttpMethod:   http.MethodPost,
-	}
+func (u *UserAuthorizationCodeController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/user-authorization-code"),
+		defs.HttpMethod(http.MethodPost),
+	)
 }
 
 // Handle 用户登录获得授权码，注意授权码不是Token，不能直接用于访问接口

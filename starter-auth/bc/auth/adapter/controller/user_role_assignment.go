@@ -23,12 +23,12 @@ type UserRoleAssignmentController struct {
 	UserApp app.UserAppIOCInterface `singleton:""`
 }
 
-func (u *UserRoleAssignmentController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/user-role-assignment",
-		HttpMethod:   http.MethodPost,
-		AuthCodes:    []string{consts.AdminAuth, consts.SAdminAuth},
-	}
+func (u *UserRoleAssignmentController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/user-role-assignment"),
+		defs.HttpMethod(http.MethodPost),
+		defs.AuthCodes(consts.AdminAuth, consts.SAdminAuth),
+	)
 }
 
 // Handle 用户赋予角色，需要租户管理员权限

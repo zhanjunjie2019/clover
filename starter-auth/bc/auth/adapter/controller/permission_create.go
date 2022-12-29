@@ -22,12 +22,12 @@ type PermissionCreateController struct {
 	PermissionApp app.PermissionAppIOCInterface `singleton:""`
 }
 
-func (p *PermissionCreateController) GetOption() defs.ControllerOption {
-	return defs.ControllerOption{
-		RelativePath: bcconsts.ModuleCode + "/permission-create",
-		HttpMethod:   http.MethodPost,
-		AuthCodes:    []string{consts.SAdminAuth},
-	}
+func (p *PermissionCreateController) GetOption() defs.ControllerOptions {
+	return defs.NewControllerOptions(
+		defs.RelativePath(bcconsts.ModuleCode+"/permission-create"),
+		defs.HttpMethod(http.MethodPost),
+		defs.AuthCodes(consts.SAdminAuth),
+	)
 }
 
 // Handle 创建资源权限许可

@@ -6,7 +6,7 @@ import (
 )
 
 type IHttpMiddleware interface {
-	MiddlewareHandlerFunc(option *ControllerOption) gin.HandlerFunc
+	MiddlewareHandlerFunc(option *ControllerOptions) gin.HandlerFunc
 }
 
 type IGrpcMiddleware interface {
