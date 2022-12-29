@@ -1,4 +1,4 @@
-package grpchandler
+package grpsvc
 
 import (
 	"context"
@@ -10,17 +10,17 @@ import (
 
 // +ioc:autowire=true
 // +ioc:autowire:type=allimpls
-// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IGrpcHandler
+// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IGrpcServiceHandler
 
-type HelloWorldGrpcHandler struct {
+type ExampleServiceHandler struct {
 	ExampleApp app.ExampleAppIOCInterface `singleton:""`
 }
 
-func (h *HelloWorldGrpcHandler) GrpcRegister(s server.Server) error {
+func (h *ExampleServiceHandler) GrpcRegister(s server.Server) error {
 	return protobuf.RegisterExampleServiceHandler(s, h)
 }
 
-func (h *HelloWorldGrpcHandler) HelloWorld(ctx context.Context, reqVO *protobuf.ExampleGrpcReqVO, rspVO *protobuf.ExampleGrpcRspVO) error {
+func (h *ExampleServiceHandler) HelloWorld(ctx context.Context, reqVO *protobuf.ExampleGrpcReqVO, rspVO *protobuf.ExampleGrpcRspVO) error {
 	result, err := h.ExampleApp.ExampleHellowWorld(ctx, cmd.HelloWorldCmd{
 		FirstName: reqVO.FirstName,
 		LastName:  reqVO.LastName,

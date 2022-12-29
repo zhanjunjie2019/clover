@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zhanjunjie2019/clover/global/consts"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/response"
 	"github.com/zhanjunjie2019/clover/global/uctx"
@@ -25,6 +26,7 @@ func (h *HelloWorldController) GetOption() defs.ControllerOption {
 	return defs.ControllerOption{
 		RelativePath: bcconsts.ModuleCode + "/hellow-world",
 		HttpMethod:   http.MethodGet,
+		AuthCodes:    []string{consts.SAdminAuth},
 	}
 }
 

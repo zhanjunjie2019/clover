@@ -1,6 +1,7 @@
 package uctx
 
 import (
+	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/zhanjunjie2019/clover/global/confs"
@@ -8,20 +9,32 @@ import (
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/utils"
+	"go-micro.dev/v4/metadata"
 	"time"
 )
 
-func GetJwtClaims(c *gin.Context) (defs.JwtClaims, error) {
-	jc, ok := c.Get(consts.CtxJwtVar)
+func GetJwtClaims(ctx context.Context) (defs.JwtClaims, error) {
+	c, ok := ctx.(*gin.Context)
 	if ok {
-		claims, ok := jc.(defs.JwtClaims)
+		jc, ok := c.Get(consts.CtxJwtVar)
 		if ok {
-			return claims, nil
-		} else {
-			return defs.JwtClaims{}, errs.TokenMalformedErr
+			claims, ok := jc.(defs.JwtClaims)
+			if ok {
+				return claims, nil
+			} else {
+				return defs.JwtClaims{}, errs.TokenMalformedErr
+			}
 		}
-	} else {
 		return GetJwtClaimsByBearerToken(c)
+	} else {
+		jc := ctx.Value(consts.CtxJwtVar)
+		if jc != nil {
+			claims, ok := jc.(defs.JwtClaims)
+			if ok {
+				return claims, nil
+			}
+		}
+		return defs.JwtClaims{}, errs.TokenMalformedErr
 	}
 }
 
@@ -73,6 +86,20 @@ func GetJwtClaimsByBearerToken(c *gin.Context) (defs.JwtClaims, error) {
 		}
 	}
 	return defs.JwtClaims{}, errs.TokenNoExistErr
+}
+
+func GetJwtClaimsByGrpcCtx(ctx context.Context) (context.Context, defs.JwtClaims, error) {
+	token, ok := metadata.Get(ctx, consts.TokenHeaderKey)
+	if ok && len(token) > 0 {
+		jc, err := ParseYhUserTokenClaims(token)
+		if err == nil && jc != nil {
+			ctx = context.WithValue(ctx, consts.CtxJwtVar, *jc)
+			return ctx, *jc, nil
+		} else {
+			return ctx, defs.JwtClaims{}, err
+		}
+	}
+	return ctx, defs.JwtClaims{}, errs.TokenNoExistErr
 }
 
 func ParseYhUserTokenClaims(tokenString string) (*defs.JwtClaims, error) {

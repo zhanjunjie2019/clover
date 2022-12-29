@@ -13,7 +13,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/consumer"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/controller"
-	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/grpchandler"
+	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/grpsvc"
 	_ "github.com/zhanjunjie2019/clover/starter-example/bc/example/adapter/scheduler"
 	_ "github.com/zhanjunjie2019/clover/starter-example/docs"
 )

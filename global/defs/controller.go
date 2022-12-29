@@ -22,7 +22,3 @@ type ControllerOption struct {
 	// SentinelStrategy 熔断限流策略，不同得接口不要使用相同得策略
 	SentinelStrategy string
 }
-
-func (c ControllerOption) GetSentinelResourceSuffix() string {
-	return "-" + c.SentinelStrategy
-}

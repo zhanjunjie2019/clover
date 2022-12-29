@@ -79,11 +79,21 @@ func init() {
 }
 
 type authMiddleware_ struct {
-	MiddlewareHandlerFunc_ func(option *defs.ControllerOption) gin.HandlerFunc
+	MiddlewareWrapHandlerByAuthCodes_ func(authCodes []string) server.HandlerWrapper
+	MiddlewareHandlerFunc_            func(option *defs.ControllerOption) gin.HandlerFunc
+	filter_                           func(token defs.JwtClaims, authCodes []string, tenantID string) error
+}
+
+func (a *authMiddleware_) MiddlewareWrapHandlerByAuthCodes(authCodes []string) server.HandlerWrapper {
+	return a.MiddlewareWrapHandlerByAuthCodes_(authCodes)
 }
 
 func (a *authMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
 	return a.MiddlewareHandlerFunc_(option)
+}
+
+func (a *authMiddleware_) filter(token defs.JwtClaims, authCodes []string, tenantID string) error {
+	return a.filter_(token, authCodes, tenantID)
 }
 
 type loggerMiddleware_ struct {
@@ -100,21 +110,26 @@ func (l *loggerMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption)
 }
 
 type sentinelMiddleware_ struct {
-	MiddlewareWrapHandler_ func() server.HandlerWrapper
-	MiddlewareHandlerFunc_ func(option *defs.ControllerOption) gin.HandlerFunc
-	filter_                func(tenantID, sentinelStrategy string) error
+	MiddlewareWrapHandler_                   func() server.HandlerWrapper
+	MiddlewareWrapHandlerBySentinelStrategy_ func(sentinelStrategy string) server.HandlerWrapper
+	MiddlewareHandlerFunc_                   func(option *defs.ControllerOption) gin.HandlerFunc
+	filter_                                  func(tenantID, sentinelResourceSuffix string) error
 }
 
 func (s *sentinelMiddleware_) MiddlewareWrapHandler() server.HandlerWrapper {
 	return s.MiddlewareWrapHandler_()
 }
 
+func (s *sentinelMiddleware_) MiddlewareWrapHandlerBySentinelStrategy(sentinelStrategy string) server.HandlerWrapper {
+	return s.MiddlewareWrapHandlerBySentinelStrategy_(sentinelStrategy)
+}
+
 func (s *sentinelMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
 	return s.MiddlewareHandlerFunc_(option)
 }
 
-func (s *sentinelMiddleware_) filter(tenantID, sentinelStrategy string) error {
-	return s.filter_(tenantID, sentinelStrategy)
+func (s *sentinelMiddleware_) filter(tenantID, sentinelResourceSuffix string) error {
+	return s.filter_(tenantID, sentinelResourceSuffix)
 }
 
 type traceMiddleware_ struct {
@@ -131,7 +146,9 @@ func (t *traceMiddleware_) MiddlewareHandlerFunc(option *defs.ControllerOption) 
 }
 
 type AuthMiddlewareIOCInterface interface {
+	MiddlewareWrapHandlerByAuthCodes(authCodes []string) server.HandlerWrapper
 	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
+	filter(token defs.JwtClaims, authCodes []string, tenantID string) error
 }
 
 type LoggerMiddlewareIOCInterface interface {
@@ -141,8 +158,9 @@ type LoggerMiddlewareIOCInterface interface {
 
 type SentinelMiddlewareIOCInterface interface {
 	MiddlewareWrapHandler() server.HandlerWrapper
+	MiddlewareWrapHandlerBySentinelStrategy(sentinelStrategy string) server.HandlerWrapper
 	MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc
-	filter(tenantID, sentinelStrategy string) error
+	filter(tenantID, sentinelResourceSuffix string) error
 }
 
 type TraceMiddlewareIOCInterface interface {

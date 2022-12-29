@@ -32,13 +32,27 @@ func (s *SentinelMiddleware) MiddlewareWrapHandler() server.HandlerWrapper {
 	}
 }
 
+// MiddlewareWrapHandlerBySentinelStrategy 有需要的gRPC接口，要手动在注册时加上
+func (s *SentinelMiddleware) MiddlewareWrapHandlerBySentinelStrategy(sentinelStrategy string) server.HandlerWrapper {
+	return func(handlerFunc server.HandlerFunc) server.HandlerFunc {
+		return func(ctx context.Context, req server.Request, rsp interface{}) error {
+			ctx, tenantID := uctx.GetTenantIDByGrpcCtx(ctx)
+			err := s.filter(tenantID, "-"+sentinelStrategy)
+			if err != nil {
+				return err
+			}
+			return handlerFunc(ctx, req, rsp)
+		}
+	}
+}
+
 func (s *SentinelMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var sentinelStrategy string
+		var sentinelResourceSuffix string
 		if option != nil {
-			sentinelStrategy = option.GetSentinelResourceSuffix()
+			sentinelResourceSuffix = "-" + option.SentinelStrategy
 		}
-		err := s.filter(uctx.GetTenantID(c), sentinelStrategy)
+		err := s.filter(uctx.GetTenantID(c), sentinelResourceSuffix)
 		if err != nil {
 			response.FailWithMessage(c, err)
 			c.Abort()
@@ -48,8 +62,8 @@ func (s *SentinelMiddleware) MiddlewareHandlerFunc(option *defs.ControllerOption
 	}
 }
 
-func (s *SentinelMiddleware) filter(tenantID, sentinelStrategy string) error {
-	resource := confs.GetServerConfig().SvcConf.SvcName + sentinelStrategy
+func (s *SentinelMiddleware) filter(tenantID, sentinelResourceSuffix string) error {
+	resource := confs.GetServerConfig().SvcConf.SvcName + sentinelResourceSuffix
 	// 限流关键选项
 	options := []sentapi.EntryOption{
 		sentapi.WithTrafficType(sbase.Inbound),

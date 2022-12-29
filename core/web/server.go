@@ -103,7 +103,7 @@ func (s Server) registRoute(engine *gin.Engine) error {
 		}
 		if sentineEnabled == 1 && len(option.SentinelStrategy) > 0 {
 			// 接口限流规则导入
-			s.SentinelLoader.AppendApiRules(option)
+			s.SentinelLoader.AppendApiRules(option.SentinelStrategy)
 			// 资源级限流中间件
 			handlerFuncs = append(handlerFuncs, s.SentinelMiddleware.MiddlewareHandlerFunc(&option))
 		}

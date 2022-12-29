@@ -11,7 +11,6 @@ import (
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
 	"github.com/zhanjunjie2019/clover/global/confs"
-	"github.com/zhanjunjie2019/clover/global/defs"
 )
 
 func init() {
@@ -24,6 +23,11 @@ func init() {
 		Factory: func() interface{} {
 			return &SentinelLoader{}
 		},
+		ConstructFunc: func(i interface{}, _ interface{}) (interface{}, error) {
+			impl := i.(*SentinelLoader)
+			var constructFunc SentinelLoaderConstructFunc = InitSentinelLoader
+			return constructFunc(impl)
+		},
 		Metadata: map[string]interface{}{
 			"aop":      map[string]interface{}{},
 			"autowire": map[string]interface{}{},
@@ -32,10 +36,11 @@ func init() {
 	singleton.RegisterStructDescriptor(sentinelLoaderStructDescriptor)
 }
 
+type SentinelLoaderConstructFunc func(impl *SentinelLoader) (*SentinelLoader, error)
 type sentinelLoader_ struct {
 	CleanBufferRules_  func()
 	AppendServerRules_ func()
-	AppendApiRules_    func(c defs.ControllerOption)
+	AppendApiRules_    func(sentinelStrategy string)
 	appendRules_       func(resource string, ruleStrategy confs.RuleStrategy)
 	LoadSentinelRules_ func() error
 }
@@ -48,8 +53,8 @@ func (s *sentinelLoader_) AppendServerRules() {
 	s.AppendServerRules_()
 }
 
-func (s *sentinelLoader_) AppendApiRules(c defs.ControllerOption) {
-	s.AppendApiRules_(c)
+func (s *sentinelLoader_) AppendApiRules(sentinelStrategy string) {
+	s.AppendApiRules_(sentinelStrategy)
 }
 
 func (s *sentinelLoader_) appendRules(resource string, ruleStrategy confs.RuleStrategy) {
@@ -63,7 +68,7 @@ func (s *sentinelLoader_) LoadSentinelRules() error {
 type SentinelLoaderIOCInterface interface {
 	CleanBufferRules()
 	AppendServerRules()
-	AppendApiRules(c defs.ControllerOption)
+	AppendApiRules(sentinelStrategy string)
 	appendRules(resource string, ruleStrategy confs.RuleStrategy)
 	LoadSentinelRules() error
 }
