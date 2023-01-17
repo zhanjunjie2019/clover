@@ -16,7 +16,7 @@ require (
 	github.com/samber/lo v1.37.0
 	github.com/swaggo/files v1.0.0
 	github.com/swaggo/gin-swagger v1.5.3
-	github.com/zhanjunjie2019/clover/global v0.0.0-20230117010206-5efd4c44a698
+	github.com/zhanjunjie2019/clover/global v0.0.0-20230117014429-fb8ae3f295db
 	go-micro.dev/v4 v4.9.0
 	go.uber.org/zap v1.24.0
 	gopkg.in/yaml.v3 v3.0.1

@@ -743,8 +743,8 @@ github.com/yuin/goldmark v1.4.1/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/yusufpapurcu/wmi v1.2.2 h1:KBNDSne4vP5mbSWnJbO+51IMOXJB67QiYCSBrubbPRg=
 github.com/yusufpapurcu/wmi v1.2.2/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQmPyzfmi0=
-github.com/zhanjunjie2019/clover/global v0.0.0-20230117010206-5efd4c44a698 h1:yu3wdoRFSCOokSektpvsUVQMvSQt0KywRn6W6gnY1YU=
-github.com/zhanjunjie2019/clover/global v0.0.0-20230117010206-5efd4c44a698/go.mod h1:A/XsKtPTiuyLDP5Lw5miEoOWmVmTZczyxk3idT8rZnA=
+github.com/zhanjunjie2019/clover/global v0.0.0-20230117014429-fb8ae3f295db h1:ca6HgQJe04r+B7msx3BQ0p6xqnWu7pYvn/BBXQOwxt0=
+github.com/zhanjunjie2019/clover/global v0.0.0-20230117014429-fb8ae3f295db/go.mod h1:A/XsKtPTiuyLDP5Lw5miEoOWmVmTZczyxk3idT8rZnA=
 go-micro.dev/v4 v4.9.0 h1:pd1CpqMT9hA47jSmX8mfdGK865PkMh95Rwj5RdfqPqE=
 go-micro.dev/v4 v4.9.0/go.mod h1:Ju8HrZ5hQSF+QguZ2QUs9Kbe42MHP1tJa/fpP5g07Cs=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
