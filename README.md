@@ -1,6 +1,6 @@
 <div align=center>
 
-![Icon](https://gitee.com/zhanjunjie/clover/raw/master/icon.svg)
+![Icon](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/icon.svg)
 
 # Clover
 
@@ -20,13 +20,13 @@
 
 ### 服务分层依赖架构
 
-![服务分层依赖架构](https://assets.processon.com/chart_image/63745a045653bb3a8405069a.png?r=v1)
+![服务分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/services.svg?r=v1)
 
-### 领域分层领域图
+### 领域分层架构图
 
 ### 代码分层依赖架构
 
-![分层依赖架构](https://assets.processon.com/chart_image/637334050791290b4b9a005e.png?r=v2)
+![分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/depend.svg?r=v1)
 
 ## 配置优先级
 
@@ -80,8 +80,8 @@
 | nsqd            | 4150/4151                 | 消息队列引擎      | 无                                                                                         |
 | nsqadmin        | 4171                      | 消息队列管理中心    | [http://127.0.0.1:4171/](http://127.0.0.1:4171/)                                          |
 | livego          | 1935/8090/7001/7002       | 直播视频推拉流中间服务 | 无                                                                                         |
-| clover-example  | 8800                      | 示例项目        | 接口文档：[http://127.0.0.1:8800/swagger/index.html](http://127.0.0.1:8800/swagger/index.html) |
-| clover-auth     | 8810                      | 权限中心        | 接口文档：[http://127.0.0.1:8810/swagger/index.html](http://127.0.0.1:8810/swagger/index.html) |
+| clover-example  | 8800（http）/8801（gRPC）     | 示例项目        | 接口文档：[http://127.0.0.1:8800/swagger/index.html](http://127.0.0.1:8800/swagger/index.html) |
+| clover-auth     | 8810（http）/8811（gRPC）     | 权限中心        | 接口文档：[http://127.0.0.1:8810/swagger/index.html](http://127.0.0.1:8810/swagger/index.html) |
 
 ### redis数据库子库序号分配
 

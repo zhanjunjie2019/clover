@@ -1,4 +1,0 @@
-# jwt配置
-jwtConfig:
-  # 签名密钥
-  signingKey: "clover"
