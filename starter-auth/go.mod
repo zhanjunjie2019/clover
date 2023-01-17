@@ -2,11 +2,11 @@ module github.com/zhanjunjie2019/clover/starter-auth
 
 go 1.19
 
-replace (
-	github.com/zhanjunjie2019/clover/core => ../core
-	github.com/zhanjunjie2019/clover/global => ../global
-	github.com/zhanjunjie2019/clover/share => ../share
-)
+//replace (
+//	github.com/zhanjunjie2019/clover/core => ../core
+//	github.com/zhanjunjie2019/clover/global => ../global
+//	github.com/zhanjunjie2019/clover/share => ../share
+//)
 
 require (
 	github.com/alibaba/ioc-golang v1.0.3
@@ -16,7 +16,7 @@ require (
 	github.com/swaggo/swag v1.8.9
 	github.com/zhanjunjie2019/clover/core v0.0.0-20221117082526-cf9f91f74a29
 	github.com/zhanjunjie2019/clover/global v0.0.0-20221223005832-9fda409ebb7f
-	github.com/zhanjunjie2019/clover/share v0.0.0-20221117082526-cf9f91f74a29
+	github.com/zhanjunjie2019/clover/share v0.0.0-20221229095731-d293493b8a64
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/gorm v1.24.2
 )
@@ -58,7 +58,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gin-contrib/pprof v1.4.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect

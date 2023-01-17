@@ -59,7 +59,7 @@ func (s *Server) RunServer() error {
 	errs.Panic(s.registRoute(engine))
 	// http服务
 	webService := web.NewService(
-		web.Name(serverConfig.SvcConf.SvcName+"-http"),
+		web.Name(serverConfig.SvcConf.SvcName),
 		web.Version(serverConfig.SvcConf.SvcVersion+"-http"),
 		web.Address(fmt.Sprintf(":%d", serverConfig.SvcConf.Http.Port)),
 		web.Registry(consul.NewRegistry(

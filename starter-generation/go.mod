@@ -2,16 +2,16 @@ module github.com/zhanjunjie2019/clover/starter-generation
 
 go 1.19
 
-replace (
-	github.com/zhanjunjie2019/clover/core => ../core
-	github.com/zhanjunjie2019/clover/global => ../global
-)
+//replace (
+//	github.com/zhanjunjie2019/clover/core => ../core
+//	github.com/zhanjunjie2019/clover/global => ../global
+//)
 
 require (
 	github.com/alibaba/ioc-golang v1.0.3
 	github.com/gin-gonic/gin v1.8.2
 	github.com/swaggo/swag v1.8.9
-	github.com/zhanjunjie2019/clover/core v0.0.0-00010101000000-000000000000
+	github.com/zhanjunjie2019/clover/core v0.0.0-20221229095731-d293493b8a64
 	github.com/zhanjunjie2019/clover/global v0.0.0-20221223005832-9fda409ebb7f
 )
 

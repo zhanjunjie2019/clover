@@ -2,18 +2,18 @@ module github.com/zhanjunjie2019/clover/starter-example
 
 go 1.19
 
-replace (
-	github.com/zhanjunjie2019/clover/core => ../core
-	github.com/zhanjunjie2019/clover/global => ../global
-	github.com/zhanjunjie2019/clover/share => ../share
-)
+//replace (
+//	github.com/zhanjunjie2019/clover/core => ../core
+//	github.com/zhanjunjie2019/clover/global => ../global
+//	github.com/zhanjunjie2019/clover/share => ../share
+//)
 
 require (
 	github.com/alibaba/ioc-golang v1.0.3
 	github.com/gin-gonic/gin v1.8.2
 	github.com/gogo/protobuf v1.3.2
 	github.com/swaggo/swag v1.8.9
-	github.com/zhanjunjie2019/clover/core v0.0.0-20221122093237-46a09eeb2fe6
+	github.com/zhanjunjie2019/clover/core v0.0.0-20221229095731-d293493b8a64
 	github.com/zhanjunjie2019/clover/global v0.0.0-20221223005832-9fda409ebb7f
 	github.com/zhanjunjie2019/clover/share v0.0.0-20221122093237-46a09eeb2fe6
 	go-micro.dev/v4 v4.9.0
@@ -54,14 +54,12 @@ require (
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
 	github.com/eapache/queue v1.1.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
-	github.com/evanphx/json-patch/v5 v5.5.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/pprof v1.4.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/go-acme/lego/v4 v4.4.0 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
 	github.com/go-git/go-git/v5 v5.5.1 // indirect
@@ -90,9 +88,6 @@ require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.2 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
-	github.com/gobwas/httphead v0.1.0 // indirect
-	github.com/gobwas/pool v0.2.1 // indirect
-	github.com/gobwas/ws v1.0.4 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/gocql/gocql v1.3.1 // indirect
 	github.com/gogo/googleapis v1.4.1 // indirect
