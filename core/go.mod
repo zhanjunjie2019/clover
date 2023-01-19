@@ -26,7 +26,7 @@ require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
 	github.com/MrAlias/flow v0.1.5 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20230113180642-068501e20d67 // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20230117203413-a47887b8f098 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -133,14 +133,14 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.5.0 // indirect
-	golang.org/x/exp v0.0.0-20230116083435-1de6713980de // indirect
+	golang.org/x/exp v0.0.0-20230118134722-a68e582fa157 // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.5.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.4.0 // indirect
 	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/tools v0.5.0 // indirect
-	google.golang.org/genproto v0.0.0-20230113154510-dbe35b8444a5 // indirect
+	google.golang.org/genproto v0.0.0-20230117162540-28d6b9783ac4 // indirect
 	google.golang.org/grpc v1.52.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
