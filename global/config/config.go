@@ -1,6 +1,7 @@
 package config
 
 import (
+	"context"
 	consulCfg "github.com/asim/go-micro/plugins/config/source/consul/v4"
 	"github.com/go-micro/plugins/v4/config/encoder/yaml"
 	"github.com/zhanjunjie2019/clover/global/confs"
@@ -13,12 +14,15 @@ import (
 	"go-micro.dev/v4/config/source"
 	"os"
 	"sync"
+	"time"
 )
 
 var enc = yaml.NewEncoder()
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
+// +ioc:autowire:type=allimpls
+// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IScheduler
 
 type ConfigDefines struct {
 	ConfigDefineCaches []defs.IConfigDefine `allimpls:""`
@@ -26,6 +30,27 @@ type ConfigDefines struct {
 	configLoader       config.Config
 }
 
+// GetTaskTypeCode 定时任务
+func (d *ConfigDefines) GetTaskTypeCode() string {
+	return "config.ConfigDefineScheduler"
+}
+
+// GetSpec 每秒执行一次
+func (d *ConfigDefines) GetSpec() string {
+	return "* * * * * ?"
+}
+
+// GetLockDuration 不验证分布式锁
+func (d *ConfigDefines) GetLockDuration() time.Duration {
+	return 0
+}
+
+// RunTask 获取最新的配置
+func (d *ConfigDefines) RunTask(ctx context.Context) error {
+	return d.LoadAllConfigByConsul()
+}
+
+// LoadAllConfigByLocal 加载本地配置
 func (d *ConfigDefines) LoadAllConfigByLocal() error {
 	d.rw.Lock()
 	defer d.rw.Unlock()
@@ -49,6 +74,7 @@ func (d *ConfigDefines) LoadAllConfigByLocal() error {
 	return nil
 }
 
+// LoadAllConfigByConsul 加载配置中心配置
 func (d *ConfigDefines) LoadAllConfigByConsul() error {
 	d.rw.Lock()
 	defer d.rw.Unlock()

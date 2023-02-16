@@ -2,8 +2,8 @@ package redisc
 
 import (
 	"context"
-	"github.com/go-redis/redis/extra/redisotel/v9"
-	redis "github.com/go-redis/redis/v9"
+	"github.com/redis/go-redis/extra/redisotel/v9"
+	redis "github.com/redis/go-redis/v9"
 )
 
 // +ioc:autowire=true

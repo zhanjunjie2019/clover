@@ -10,7 +10,7 @@ type IScheduler interface {
 	GetTaskTypeCode() string
 	// GetSpec corn表达式
 	GetSpec() string
-	// GetLockDuration 并发限制间隔，多久时间内限制重复并发
+	// GetLockDuration 并发限制间隔，多久时间内限制重复并发，0无锁
 	GetLockDuration() time.Duration
 	// RunTask 指定核心任务
 	RunTask(contextx.Context) error

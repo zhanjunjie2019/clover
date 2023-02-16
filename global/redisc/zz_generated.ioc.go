@@ -10,7 +10,7 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
-	v9 "github.com/go-redis/redis/v9"
+	v9 "github.com/redis/go-redis/v9"
 )
 
 func init() {

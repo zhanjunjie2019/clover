@@ -40,29 +40,32 @@ func (s *Server) startScheduler(scheduler defs.IScheduler, svcName string) error
 		scheduler.GetTaskTypeCode(),
 		scheduler.GetSpec(),
 		func() {
-			// 竞争分布式并发锁
-			ok, _ := redisc.RedisConcurrentLockInTime(context.Background(), s.RedisClient, svcName+"."+scheduler.GetTaskTypeCode(), scheduler.GetLockDuration())
-			if ok {
-				// 链路上下文中传递日志输出器
-				layout := defs.NewLogLayout(zapcore.InfoLevel)
-				ctx := uctx.WithValueLogLayout(context.Background(), layout)
-
-				start := time.Now()
-				// 开启一个根级span
-				ctx, span := s.OpenTelemetry.Start(ctx, "Scheduler "+scheduler.GetTaskTypeCode())
-				defer span.End()
-
-				err := scheduler.RunTask(ctx)
-				if err != nil {
-					layout.Error(err.Error(), zap.Error(err))
+			if scheduler.GetLockDuration() > 0 {
+				// 竞争分布式并发锁
+				ok, _ := redisc.RedisConcurrentLockInTime(context.Background(), s.RedisClient, svcName+"."+scheduler.GetTaskTypeCode(), scheduler.GetLockDuration())
+				if !ok {
+					return
 				}
-				layout.AppendLogsFields(
-					zap.Time("startTime", start),
-					zap.Time("endTime", time.Now()),
-					zap.String("taskTypeCode", scheduler.GetTaskTypeCode()),
-				)
-				layout.Println()
 			}
+			// 链路上下文中传递日志输出器
+			layout := defs.NewLogLayout(zapcore.InfoLevel)
+			ctx := uctx.WithValueLogLayout(context.Background(), layout)
+
+			start := time.Now()
+			// 开启一个根级span
+			ctx, span := s.OpenTelemetry.Start(ctx, "Scheduler "+scheduler.GetTaskTypeCode())
+			defer span.End()
+
+			err := scheduler.RunTask(ctx)
+			if err != nil {
+				layout.Error(err.Error(), zap.Error(err))
+			}
+			layout.AppendLogsFields(
+				zap.Time("startTime", start),
+				zap.Time("endTime", time.Now()),
+				zap.String("taskTypeCode", scheduler.GetTaskTypeCode()),
+			)
+			layout.Println()
 		},
 	)
 	return err
