@@ -18,6 +18,10 @@ svcConf:
 consulConf:
   # 服务配置中心路径
   consulAddr: "localhost:8500"
+  # 配置节点，越往后优先级越高
+  configNode:
+    - "/clover-example/default"
+    - "/clover-example/v0.0.1"
   # 注册时限
   registerTTL: 2
   # 注册间隔

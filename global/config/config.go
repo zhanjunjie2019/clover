@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 	consulCfg "github.com/asim/go-micro/plugins/config/source/consul/v4"
 	"github.com/go-micro/plugins/v4/config/encoder/yaml"
 	"github.com/zhanjunjie2019/clover/global/confs"
@@ -155,22 +156,19 @@ func (d *ConfigDefines) newConfigLoader() error {
 	}
 	serverConfig := confs.GetServerConfig()
 	consulAddr := serverConfig.ConsulConf.ConsulAddr
-	svcName := serverConfig.SvcConf.SvcName
-	version := serverConfig.SvcConf.SvcVersion
+	if len(consulAddr) == 0 {
+		return fmt.Errorf("configuration node does not exist")
+	}
+
 	// 优先级从低到高
-	sources := []source.Source{
-		consulCfg.NewSource(
+	var sources []source.Source
+	for _, node := range serverConfig.ConsulConf.ConfigNode {
+		sources = append(sources, consulCfg.NewSource(
 			consulCfg.WithAddress(consulAddr),
-			consulCfg.WithPrefix("/"+svcName+"/default"),
+			consulCfg.WithPrefix(node),
 			consulCfg.StripPrefix(true),
 			withYamlOption(),
-		),
-		consulCfg.NewSource(
-			consulCfg.WithAddress(consulAddr),
-			consulCfg.WithPrefix("/"+svcName+"/"+version),
-			consulCfg.StripPrefix(true),
-			withYamlOption(),
-		),
+		))
 	}
 	err = conf.Load(sources...)
 	if err != nil {

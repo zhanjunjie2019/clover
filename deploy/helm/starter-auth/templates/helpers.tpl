@@ -16,6 +16,10 @@ svcConf:
 consulConf:
   # 服务配置中心路径
   consulAddr: "consul:8500"
+  # 配置节点，越往后优先级越高
+  configNode:
+    - {{ print "/" .Release.Name "-auth/default" | quote }}
+    - {{ print "/" .Release.Name "-auth/v0.0.1" | quote }}
   # 注册时限
   registerTTL: 2
   # 注册间隔

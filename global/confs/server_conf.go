@@ -57,6 +57,8 @@ type GrpcConf struct {
 type ConsulConf struct {
 	// ConsulAddr 服务配置中心路径
 	ConsulAddr string `env:"CONSUL_ADDR" yaml:"consulAddr"`
+	// ConfigNode 配置节点，越往后优先级越高
+	ConfigNode []string `env:"CONSUL_CONFIG_NODE" yaml:"configNode"`
 	// RegisterTTL 注册时限
 	RegisterTTL uint16 `env:"CONSUL_REGISTER_TTL" yaml:"registerTTL"`
 	// RegisterInterval 注册间隔
