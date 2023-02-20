@@ -11,29 +11,20 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl"
-	"gorm.io/gorm"
 	"time"
 )
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
-// +ioc:autowire:type=allimpls
-// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IAppDef
 
 type UserApp struct {
 	UserGateway   gateway.IUserGateway   `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl.UserGateway"`
 	RoleGateway   gateway.IRoleGateway   `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl.RoleGateway"`
 	TenantGateway gateway.ITenantGateway `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl.TenantGateway"`
-	DB            *gorm.DB
-}
-
-func (u *UserApp) SetGormDB(db *gorm.DB) {
-	u.DB = db
 }
 
 func (u *UserApp) UserCreate(ctx context.Context, c cmd.UserCreateCmd) (rs cmd.UserCreateResult, err error) {
-	err = u.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
+	err = uctx.AppTransaction(ctx, func(ctx context.Context) (err error) {
 		tenantID := uctx.GetTenantID(ctx)
 		userNames := lo.Map(c.Users, func(item cmd.UserInfo, index int) string {
 			return item.UserName
@@ -71,7 +62,6 @@ func (u *UserApp) UserCreate(ctx context.Context, c cmd.UserCreateCmd) (rs cmd.U
 
 // UserAuthorizationCode 登录验证用户账号密码，验证通过后在Redis保存一个授权码60秒有效，关联用户信息。用以可以用授权码接口换取登录Token。
 func (u *UserApp) UserAuthorizationCode(ctx context.Context, c cmd.UserAuthorizationCodeCmd) (rs cmd.UserAuthorizationCodeResult, err error) {
-	ctx = uctx.WithValueAppDB(ctx, u.DB)
 	tenantID := uctx.GetTenantID(ctx)
 	user, exist, err := u.UserGateway.FindByUserName(ctx, c.UserName)
 	if err != nil {
@@ -107,7 +97,6 @@ func (u *UserApp) UserAuthorizationCode(ctx context.Context, c cmd.UserAuthoriza
 }
 
 func (u *UserApp) UserTokenByAuthcode(ctx context.Context, c cmd.UserTokenByAuthcodeCmd) (rs cmd.UserTokenByAuthcodeResult, err error) {
-	ctx = uctx.WithValueAppDB(ctx, u.DB)
 	tenantID := uctx.GetTenantID(ctx)
 	tenant, exist, err := u.TenantGateway.FindByTenantID(ctx, tenantID)
 	if err != nil {
@@ -137,8 +126,7 @@ func (u *UserApp) UserTokenByAuthcode(ctx context.Context, c cmd.UserTokenByAuth
 }
 
 func (u *UserApp) UserRoleAssignment(ctx context.Context, c cmd.UserRoleAssignmentCmd) (rs cmd.UserRoleAssignmentResult, err error) {
-	err = u.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
+	err = uctx.AppTransaction(ctx, func(ctx context.Context) (err error) {
 		// 验证有效性
 		var (
 			user  model.User

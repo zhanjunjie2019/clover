@@ -39,7 +39,7 @@ func (o *OpenTelemetry) Shutdown() {
 
 func (o *OpenTelemetry) InitProvider() error {
 	otelConfig := confs.GetGlobalConfig().OtelConfig
-	if otelConfig.Enabled == 1 {
+	if otelConfig.Enabled.Bool() {
 		svcConf := confs.GetServerConfig().SvcConf
 		var (
 			grpcEndpoint = otelConfig.CollectorGrpcEndpoint

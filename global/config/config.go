@@ -51,11 +51,16 @@ func (d *ConfigDefines) RunTask(ctx context.Context) error {
 	return d.LoadAllConfigByConsul()
 }
 
+func (d *ConfigDefines) LoggerEnable() bool {
+	return false
+}
+
 // LoadAllConfigByLocal 加载本地配置
 func (d *ConfigDefines) LoadAllConfigByLocal() error {
 	d.rw.Lock()
 	defer d.rw.Unlock()
 	for _, cache := range d.ConfigDefineCaches {
+		// 防止本地未加载的情况下，依赖的配置先加载了
 		if cache.GetOption().CanLoadByConsul {
 			continue
 		}

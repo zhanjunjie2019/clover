@@ -17,7 +17,7 @@ func SetSentinelConfig(sc SentinelConfig) {
 
 type SentinelConfig struct {
 	// Enabled 是否开启熔断限流,1是2否
-	Enabled uint8 `yaml:"enabled"`
+	Enabled Enabled `yaml:"enabled"`
 	// SvcRuleStrategy 服务全局熔断限流策略
 	SvcRuleStrategy RuleStrategy `yaml:"svcRuleStrategy"`
 	// ApisRuleStrategys 接口级熔断限流策略

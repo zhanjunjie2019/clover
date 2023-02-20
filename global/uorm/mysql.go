@@ -7,22 +7,28 @@ import (
 	"gorm.io/gorm"
 )
 
-func gormMysql(dbc confs.GeneralDBConf) (*gorm.DB, error) {
+func gormMysql(dbc confs.DBConfig) (db *gorm.DB, err error) {
 	mysqlConfig := mysql.Config{
 		DSN:                       mySqlDsn(dbc),
 		DefaultStringSize:         191,
 		SkipInitializeWithVersion: false,
 	}
-	if db, err := gorm.Open(mysql.New(mysqlConfig), config()); err != nil {
+	if db, err = gorm.Open(mysql.New(mysqlConfig), config()); err != nil {
 		return nil, errs.DBConnectionErr
-	} else {
-		sqlDB, _ := db.DB()
+	}
+	return db, updateMysqlConns(dbc, db)
+}
+
+func updateMysqlConns(dbc confs.DBConfig, db *gorm.DB) error {
+	if sqlDB, err := db.DB(); err == nil {
 		sqlDB.SetMaxIdleConns(dbc.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(dbc.MaxOpenConns)
-		return db, nil
+		return nil
+	} else {
+		return errs.DBConnectionErr
 	}
 }
 
-func mySqlDsn(m confs.GeneralDBConf) string {
+func mySqlDsn(m confs.DBConfig) string {
 	return m.Username + ":" + m.Password + "@tcp(" + m.Path + ":" + m.Port + ")/" + m.Dbname + "?" + m.Config
 }

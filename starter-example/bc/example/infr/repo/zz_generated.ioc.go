@@ -39,6 +39,7 @@ func init() {
 	}
 	singleton.RegisterStructDescriptor(exampleEntityRepoStructDescriptor)
 	allimpls.RegisterStructDescriptor(exampleEntityRepoStructDescriptor)
+	var _ defs.IRepo = &ExampleEntityRepo{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &exampleValueObjectRepo_{}
@@ -61,6 +62,7 @@ func init() {
 	}
 	singleton.RegisterStructDescriptor(exampleValueObjectRepoStructDescriptor)
 	allimpls.RegisterStructDescriptor(exampleValueObjectRepoStructDescriptor)
+	var _ defs.IRepo = &ExampleValueObjectRepo{}
 }
 
 type exampleEntityRepo_ struct {

@@ -11,10 +11,7 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
-	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/app/cmd"
-	"gorm.io/gorm"
 )
 
 func init() {
@@ -28,18 +25,11 @@ func init() {
 			return &PermissionApp{}
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IAppDef),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(permissionAppStructDescriptor)
-	allimpls.RegisterStructDescriptor(permissionAppStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &roleApp_{}
@@ -50,18 +40,11 @@ func init() {
 			return &RoleApp{}
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IAppDef),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(roleAppStructDescriptor)
-	allimpls.RegisterStructDescriptor(roleAppStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &sadminApp_{}
@@ -87,18 +70,11 @@ func init() {
 			return &TenantApp{}
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IAppDef),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(tenantAppStructDescriptor)
-	allimpls.RegisterStructDescriptor(tenantAppStructDescriptor)
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &userApp_{}
@@ -109,27 +85,15 @@ func init() {
 			return &UserApp{}
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IAppDef),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(userAppStructDescriptor)
-	allimpls.RegisterStructDescriptor(userAppStructDescriptor)
 }
 
 type permissionApp_ struct {
-	SetGormDB_        func(db *gorm.DB)
 	PermissionCreate_ func(ctx contextx.Context, c cmd.PermissionCreateCmd) (rs cmd.PermissionCreateResult, err error)
-}
-
-func (p *permissionApp_) SetGormDB(db *gorm.DB) {
-	p.SetGormDB_(db)
 }
 
 func (p *permissionApp_) PermissionCreate(ctx contextx.Context, c cmd.PermissionCreateCmd) (rs cmd.PermissionCreateResult, err error) {
@@ -137,13 +101,8 @@ func (p *permissionApp_) PermissionCreate(ctx contextx.Context, c cmd.Permission
 }
 
 type roleApp_ struct {
-	SetGormDB_                func(db *gorm.DB)
 	RoleCreate_               func(ctx contextx.Context, c cmd.RoleCreateCmd) (rs cmd.RoleCreateResult, err error)
 	RolePermissionAssignment_ func(ctx contextx.Context, c cmd.RolePermissionAssignmentCmd) (rs cmd.RolePermissionAssignmentResult, err error)
-}
-
-func (r *roleApp_) SetGormDB(db *gorm.DB) {
-	r.SetGormDB_(db)
 }
 
 func (r *roleApp_) RoleCreate(ctx contextx.Context, c cmd.RoleCreateCmd) (rs cmd.RoleCreateResult, err error) {
@@ -163,14 +122,9 @@ func (s *sadminApp_) SadminTokenCreate(ctx contextx.Context, c cmd.SadminTokenCr
 }
 
 type tenantApp_ struct {
-	SetGormDB_         func(db *gorm.DB)
 	TenantCreate_      func(ctx contextx.Context, c cmd.TenantCreateCmd) (rs cmd.TenantCreateResult, err error)
 	TenantInit_        func(ctx contextx.Context, c cmd.TenantInitCmd) (err error)
 	TenantTokenCreate_ func(ctx contextx.Context, c cmd.TenantTokenCreateCmd) (rs cmd.TenantTokenCreateResult, err error)
-}
-
-func (t *tenantApp_) SetGormDB(db *gorm.DB) {
-	t.SetGormDB_(db)
 }
 
 func (t *tenantApp_) TenantCreate(ctx contextx.Context, c cmd.TenantCreateCmd) (rs cmd.TenantCreateResult, err error) {
@@ -186,15 +140,10 @@ func (t *tenantApp_) TenantTokenCreate(ctx contextx.Context, c cmd.TenantTokenCr
 }
 
 type userApp_ struct {
-	SetGormDB_             func(db *gorm.DB)
 	UserCreate_            func(ctx contextx.Context, c cmd.UserCreateCmd) (rs cmd.UserCreateResult, err error)
 	UserAuthorizationCode_ func(ctx contextx.Context, c cmd.UserAuthorizationCodeCmd) (rs cmd.UserAuthorizationCodeResult, err error)
 	UserTokenByAuthcode_   func(ctx contextx.Context, c cmd.UserTokenByAuthcodeCmd) (rs cmd.UserTokenByAuthcodeResult, err error)
 	UserRoleAssignment_    func(ctx contextx.Context, c cmd.UserRoleAssignmentCmd) (rs cmd.UserRoleAssignmentResult, err error)
-}
-
-func (u *userApp_) SetGormDB(db *gorm.DB) {
-	u.SetGormDB_(db)
 }
 
 func (u *userApp_) UserCreate(ctx contextx.Context, c cmd.UserCreateCmd) (rs cmd.UserCreateResult, err error) {
@@ -214,12 +163,10 @@ func (u *userApp_) UserRoleAssignment(ctx contextx.Context, c cmd.UserRoleAssign
 }
 
 type PermissionAppIOCInterface interface {
-	SetGormDB(db *gorm.DB)
 	PermissionCreate(ctx contextx.Context, c cmd.PermissionCreateCmd) (rs cmd.PermissionCreateResult, err error)
 }
 
 type RoleAppIOCInterface interface {
-	SetGormDB(db *gorm.DB)
 	RoleCreate(ctx contextx.Context, c cmd.RoleCreateCmd) (rs cmd.RoleCreateResult, err error)
 	RolePermissionAssignment(ctx contextx.Context, c cmd.RolePermissionAssignmentCmd) (rs cmd.RolePermissionAssignmentResult, err error)
 }
@@ -229,14 +176,12 @@ type SadminAppIOCInterface interface {
 }
 
 type TenantAppIOCInterface interface {
-	SetGormDB(db *gorm.DB)
 	TenantCreate(ctx contextx.Context, c cmd.TenantCreateCmd) (rs cmd.TenantCreateResult, err error)
 	TenantInit(ctx contextx.Context, c cmd.TenantInitCmd) (err error)
 	TenantTokenCreate(ctx contextx.Context, c cmd.TenantTokenCreateCmd) (rs cmd.TenantTokenCreateResult, err error)
 }
 
 type UserAppIOCInterface interface {
-	SetGormDB(db *gorm.DB)
 	UserCreate(ctx contextx.Context, c cmd.UserCreateCmd) (rs cmd.UserCreateResult, err error)
 	UserAuthorizationCode(ctx contextx.Context, c cmd.UserAuthorizationCodeCmd) (rs cmd.UserAuthorizationCodeResult, err error)
 	UserTokenByAuthcode(ctx contextx.Context, c cmd.UserTokenByAuthcodeCmd) (rs cmd.UserTokenByAuthcodeResult, err error)

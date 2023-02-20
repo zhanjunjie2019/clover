@@ -79,7 +79,7 @@ var validate = validator.New()
 func (s Server) registRoute(engine *gin.Engine) error {
 	sentineEnabled := confs.GetSentinelConfig().Enabled
 	// 加载全局限流配置
-	if sentineEnabled == 1 {
+	if sentineEnabled.Bool() {
 		s.SentinelLoader.AppendServerRules()
 	}
 	for _, c := range s.Controllers {
@@ -91,7 +91,7 @@ func (s Server) registRoute(engine *gin.Engine) error {
 		}
 		// 动态中间件
 		var handlerFuncs []gin.HandlerFunc
-		if sentineEnabled == 1 {
+		if sentineEnabled.Bool() {
 			handlerFuncs = append(handlerFuncs, s.SentinelMiddleware.MiddlewareHandlerFunc(nil))
 		}
 		handlerFuncs = append(handlerFuncs, s.TraceMiddleware.MiddlewareHandlerFunc(nil))
@@ -101,7 +101,7 @@ func (s Server) registRoute(engine *gin.Engine) error {
 			// 资源级限流中间件
 			handlerFuncs = append(handlerFuncs, s.AuthMiddleware.MiddlewareHandlerFunc(&option))
 		}
-		if sentineEnabled == 1 && len(option.SentinelStrategy) > 0 {
+		if sentineEnabled.Bool() && len(option.SentinelStrategy) > 0 {
 			// 接口限流规则导入
 			s.SentinelLoader.AppendApiRules(option.SentinelStrategy)
 			// 资源级限流中间件
@@ -118,7 +118,7 @@ func (s Server) registRoute(engine *gin.Engine) error {
 		// 注册接口路由
 		engine.Handle(option.HttpMethod, option.RelativePath, handlerFuncs...)
 	}
-	if sentineEnabled == 1 {
+	if sentineEnabled.Bool() {
 		return s.SentinelLoader.LoadSentinelRules()
 	}
 	return nil

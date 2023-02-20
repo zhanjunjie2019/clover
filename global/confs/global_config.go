@@ -24,7 +24,7 @@ type GlobalConfig struct {
 // RedisConfig redis配置
 type RedisConfig struct {
 	// Enabled 是否启用redis，1是2否
-	Enabled uint8 `env:"REDIS_ENABLED" yaml:"enabled"`
+	Enabled Enabled `env:"REDIS_ENABLED" yaml:"enabled"`
 	// Addr redis域名地址
 	Addr string `env:"REDIS_ADDR" yaml:"addr"`
 	// Password redis密码
@@ -44,7 +44,7 @@ type JwtConfig struct {
 // OtelConfig 遥测体系配置
 type OtelConfig struct {
 	// Enabled 是否启用遥测体系，1是2否
-	Enabled uint8 `env:"OTEL_ENABLED" yaml:"enabled"`
+	Enabled Enabled `env:"OTEL_ENABLED" yaml:"enabled"`
 	// CollectorGrpcEndpoint collector端口
 	CollectorGrpcEndpoint string `env:"OTEL_COLLECTOR_ENDPOINT" yaml:"collectorGrpcEndpoint"`
 }
@@ -52,7 +52,7 @@ type OtelConfig struct {
 // NsqConfig NSQ消息队列配置
 type NsqConfig struct {
 	// Enabled 是否开启NSQ消息队列，1是2否
-	Enabled uint8 `env:"NSQ_ENABLED" yaml:"enabled"`
+	Enabled Enabled `env:"NSQ_ENABLED" yaml:"enabled"`
 	// ProducerAddr 用于生产者使用的nsqd服务地址
 	ProducerAddr string `env:"NSQ_NSQD_ADDR" yaml:"producerAddr"`
 	// ConsumerAddr 用于消费者使用的nsqlookupd服务地址

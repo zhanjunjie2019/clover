@@ -34,6 +34,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(dBConfigDefineStructDescriptor)
+	var _ defs.IConfigDefine = &DBConfigDefine{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &globalConfigDefine_{}
@@ -55,6 +56,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(globalConfigDefineStructDescriptor)
+	var _ defs.IConfigDefine = &GlobalConfigDefine{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &sentinelConfigDefine_{}
@@ -76,6 +78,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(sentinelConfigDefineStructDescriptor)
+	var _ defs.IConfigDefine = &SentinelConfigDefine{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &serverConfigDefine_{}
@@ -97,6 +100,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(serverConfigDefineStructDescriptor)
+	var _ defs.IConfigDefine = &ServerConfigDefine{}
 }
 
 type dBConfigDefine_ struct {

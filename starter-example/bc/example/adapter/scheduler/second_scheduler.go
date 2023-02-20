@@ -27,3 +27,7 @@ func (s *SecondScheduler) GetLockDuration() time.Duration {
 func (s *SecondScheduler) RunTask(ctx contextx.Context) error {
 	return nil
 }
+
+func (s *SecondScheduler) LoggerEnable() bool {
+	return true
+}

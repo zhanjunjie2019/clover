@@ -37,6 +37,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(exampleServiceHandlerStructDescriptor)
+	var _ defs.IGrpcServiceHandler = &ExampleServiceHandler{}
 }
 
 type exampleServiceHandler_ struct {

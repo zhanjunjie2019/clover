@@ -101,15 +101,11 @@ func (u *UserGateway) SaveAuthorizationCodeToCache(ctx context.Context, user mod
 		UserID:   user.ID().UInt64(),
 		UserName: user.FullValue().UserName,
 	}
-	client, err := u.RedisClient.GetClient()
-	if err != nil {
-		return
-	}
 	bytes, err := proto.Marshal(&userAuthorizationCode)
 	if err != nil {
 		return
 	}
-	err = client.Set(ctx, bcconsts.RedisAuthCodePre+authcode, bytes, time.Minute).Err()
+	err = u.RedisClient.GetClient().Set(ctx, bcconsts.RedisAuthCodePre+authcode, bytes, time.Minute).Err()
 	if err != nil {
 		return
 	}
@@ -118,11 +114,7 @@ func (u *UserGateway) SaveAuthorizationCodeToCache(ctx context.Context, user mod
 
 func (u *UserGateway) FindByAuthcode(ctx context.Context, authcode string) (user model.User, exist bool, err error) {
 	// 链接redis获取用户缓存信息
-	client, err := u.RedisClient.GetClient()
-	if err != nil {
-		return
-	}
-	bytes, err := client.Get(ctx, bcconsts.RedisAuthCodePre+authcode).Bytes()
+	bytes, err := u.RedisClient.GetClient().Get(ctx, bcconsts.RedisAuthCodePre+authcode).Bytes()
 	if err != nil {
 		return
 	}

@@ -10,6 +10,7 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
+	"github.com/zhanjunjie2019/clover/global/confs"
 	"gorm.io/gorm"
 )
 
@@ -32,15 +33,21 @@ func init() {
 }
 
 type dBFactory_ struct {
-	GetDB_ func() (*gorm.DB, error)
+	Create_ func(linkConf confs.DBConfig) (bool, error)
+	GetDB_  func() *gorm.DB
 }
 
-func (d *dBFactory_) GetDB() (*gorm.DB, error) {
+func (d *dBFactory_) Create(linkConf confs.DBConfig) (bool, error) {
+	return d.Create_(linkConf)
+}
+
+func (d *dBFactory_) GetDB() *gorm.DB {
 	return d.GetDB_()
 }
 
 type DBFactoryIOCInterface interface {
-	GetDB() (*gorm.DB, error)
+	Create(linkConf confs.DBConfig) (bool, error)
+	GetDB() *gorm.DB
 }
 
 var _dBFactorySDID string

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/redis/go-redis/extra/redisotel/v9"
 	redis "github.com/redis/go-redis/v9"
+	"sync"
 )
 
 // +ioc:autowire=true
@@ -13,14 +14,24 @@ type RedisClient struct {
 	addr     string
 	password string
 	db       uint8
+	rw       sync.RWMutex
 	*redis.Client
 }
 
-func (r *RedisClient) Create(addr, password string, db uint8) error {
-	r.addr = addr
-	r.password = password
-	r.db = db
-	return r.create()
+func (r *RedisClient) Create(addr, password string, db uint8) (bool, error) {
+	r.rw.Lock()
+	defer r.rw.Unlock()
+	if r.addr != addr || r.password != password || r.db != db {
+		r.addr = addr
+		r.password = password
+		r.db = db
+		err := r.create()
+		if err != nil {
+			return false, err
+		}
+		return true, nil
+	}
+	return false, nil
 }
 
 func (r *RedisClient) create() error {
@@ -51,12 +62,8 @@ func (r *RedisClient) create() error {
 	return nil
 }
 
-func (r *RedisClient) GetClient() (*redis.Client, error) {
-	if r.Client == nil {
-		err := r.create()
-		if err != nil {
-			return nil, err
-		}
-	}
-	return r.Client, nil
+func (r *RedisClient) GetClient() *redis.Client {
+	r.rw.RLock()
+	defer r.rw.RUnlock()
+	return r.Client
 }

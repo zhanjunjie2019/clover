@@ -11,27 +11,18 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl"
-	"gorm.io/gorm"
 )
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
-// +ioc:autowire:type=allimpls
-// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IAppDef
 
 type RoleApp struct {
 	RoleGateway       gateway.IRoleGateway       `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl.RoleGateway"`
 	PermissionGateway gateway.IPermissionGateway `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl.PermissionGateway"`
-	DB                *gorm.DB
-}
-
-func (r *RoleApp) SetGormDB(db *gorm.DB) {
-	r.DB = db
 }
 
 func (r *RoleApp) RoleCreate(ctx context.Context, c cmd.RoleCreateCmd) (rs cmd.RoleCreateResult, err error) {
-	err = r.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
+	err = uctx.AppTransaction(ctx, func(ctx context.Context) (err error) {
 		roleCodes := lo.Map(c.Roles, func(item cmd.RoleInfo, index int) string {
 			return item.RoleCode
 		})
@@ -66,8 +57,7 @@ func (r *RoleApp) RoleCreate(ctx context.Context, c cmd.RoleCreateCmd) (rs cmd.R
 }
 
 func (r *RoleApp) RolePermissionAssignment(ctx context.Context, c cmd.RolePermissionAssignmentCmd) (rs cmd.RolePermissionAssignmentResult, err error) {
-	err = r.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
+	err = uctx.AppTransaction(ctx, func(ctx context.Context) (err error) {
 		// 验证角色有效性
 		var (
 			role  model.Role

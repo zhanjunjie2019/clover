@@ -39,6 +39,7 @@ func init() {
 	}
 	singleton.RegisterStructDescriptor(configDefinesStructDescriptor)
 	allimpls.RegisterStructDescriptor(configDefinesStructDescriptor)
+	var _ defs.IScheduler = &ConfigDefines{}
 }
 
 type configDefines_ struct {
@@ -46,11 +47,9 @@ type configDefines_ struct {
 	GetSpec_               func() string
 	GetLockDuration_       func() timex.Duration
 	RunTask_               func(ctx contextx.Context) error
+	LoggerEnable_          func() bool
 	LoadAllConfigByLocal_  func() error
 	LoadAllConfigByConsul_ func() error
-	loadConfigByLocal_     func(configDefine defs.IConfigDefine) (any, error)
-	loadConfigByConsul_    func(configDefine defs.IConfigDefine) (any, error)
-	newConfigLoader_       func() error
 }
 
 func (c *configDefines_) GetTaskTypeCode() string {
@@ -69,6 +68,10 @@ func (c *configDefines_) RunTask(ctx contextx.Context) error {
 	return c.RunTask_(ctx)
 }
 
+func (c *configDefines_) LoggerEnable() bool {
+	return c.LoggerEnable_()
+}
+
 func (c *configDefines_) LoadAllConfigByLocal() error {
 	return c.LoadAllConfigByLocal_()
 }
@@ -77,28 +80,14 @@ func (c *configDefines_) LoadAllConfigByConsul() error {
 	return c.LoadAllConfigByConsul_()
 }
 
-func (c *configDefines_) loadConfigByLocal(configDefine defs.IConfigDefine) (any, error) {
-	return c.loadConfigByLocal_(configDefine)
-}
-
-func (c *configDefines_) loadConfigByConsul(configDefine defs.IConfigDefine) (any, error) {
-	return c.loadConfigByConsul_(configDefine)
-}
-
-func (c *configDefines_) newConfigLoader() error {
-	return c.newConfigLoader_()
-}
-
 type ConfigDefinesIOCInterface interface {
 	GetTaskTypeCode() string
 	GetSpec() string
 	GetLockDuration() timex.Duration
 	RunTask(ctx contextx.Context) error
+	LoggerEnable() bool
 	LoadAllConfigByLocal() error
 	LoadAllConfigByConsul() error
-	loadConfigByLocal(configDefine defs.IConfigDefine) (any, error)
-	loadConfigByConsul(configDefine defs.IConfigDefine) (any, error)
-	newConfigLoader() error
 }
 
 var _configDefinesSDID string

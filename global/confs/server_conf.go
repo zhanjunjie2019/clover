@@ -31,6 +31,10 @@ const (
 	Debug
 )
 
+func (m SvcMode) Uint8() uint8 {
+	return uint8(m)
+}
+
 type SvcConf struct {
 	// SvcMode 服务模式,1正式2测试
 	SvcMode SvcMode `env:"SVC_MODE" yaml:"svcMode"`
@@ -58,7 +62,7 @@ type ConsulConf struct {
 	// ConsulAddr 服务配置中心路径
 	ConsulAddr string `env:"CONSUL_ADDR" yaml:"consulAddr"`
 	// ConfigNode 配置节点，越往后优先级越高
-	ConfigNode []string `env:"CONSUL_CONFIG_NODE" yaml:"configNode"`
+	ConfigNode []string `yaml:"configNode"`
 	// RegisterTTL 注册时限
 	RegisterTTL uint16 `env:"CONSUL_REGISTER_TTL" yaml:"registerTTL"`
 	// RegisterInterval 注册间隔
@@ -73,7 +77,7 @@ type LogConf struct {
 	// MaxAge 最大天数
 	MaxAge uint8 `env:"LOG_MAX_AGE" yaml:"maxAge"`
 	// LogInConsole 是否输出到控制台
-	LogInConsole uint8 `env:"LOG_IN_CONSOLE" yaml:"logInConsole"`
+	LogInConsole Enabled `env:"LOG_IN_CONSOLE" yaml:"logInConsole"`
 }
 
 func (z *LogConf) TransportLevel() zapcore.Level {

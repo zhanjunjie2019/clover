@@ -12,27 +12,18 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl"
-	"gorm.io/gorm"
 	"time"
 )
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
-// +ioc:autowire:type=allimpls
-// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IAppDef
 
 type TenantApp struct {
 	TenantGateway gateway.ITenantGateway `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl.TenantGateway"`
-	DB            *gorm.DB
-}
-
-func (t *TenantApp) SetGormDB(db *gorm.DB) {
-	t.DB = db
 }
 
 func (t *TenantApp) TenantCreate(ctx context.Context, c cmd.TenantCreateCmd) (rs cmd.TenantCreateResult, err error) {
-	err = t.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
+	err = uctx.AppTransaction(ctx, func(ctx context.Context) (err error) {
 		// 先筛选出带租户ID的数据，在获取租户ID查询数据库是否重复
 		tenantIds := lo.Map(lo.Filter(c.Tenants, func(item cmd.TenantInfo, index int) bool {
 			return len(item.TenantID) > 0
@@ -93,12 +84,11 @@ func (t *TenantApp) TenantCreate(ctx context.Context, c cmd.TenantCreateCmd) (rs
 }
 
 func (t *TenantApp) TenantInit(ctx context.Context, c cmd.TenantInitCmd) (err error) {
-	ctx = uctx.WithValueTenantAndAppDB(ctx, c.TenantID, t.DB)
+	ctx = uctx.WithValueTenant(ctx, c.TenantID)
 	return t.TenantGateway.TenantTablesManualMigrate(ctx)
 }
 
 func (t *TenantApp) TenantTokenCreate(ctx context.Context, c cmd.TenantTokenCreateCmd) (rs cmd.TenantTokenCreateResult, err error) {
-	ctx = uctx.WithValueAppDB(ctx, t.DB)
 	tenant, exist, err := t.TenantGateway.FindByTenantID(ctx, c.TenantID)
 	if err != nil {
 		err = errs.ToUnifiedError(err)

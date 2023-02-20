@@ -36,6 +36,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(secondSchedulerStructDescriptor)
+	var _ defs.IScheduler = &SecondScheduler{}
 }
 
 type secondScheduler_ struct {
@@ -43,6 +44,7 @@ type secondScheduler_ struct {
 	GetSpec_         func() string
 	GetLockDuration_ func() timex.Duration
 	RunTask_         func(ctx contextx.Context) error
+	LoggerEnable_    func() bool
 }
 
 func (s *secondScheduler_) GetTaskTypeCode() string {
@@ -61,11 +63,16 @@ func (s *secondScheduler_) RunTask(ctx contextx.Context) error {
 	return s.RunTask_(ctx)
 }
 
+func (s *secondScheduler_) LoggerEnable() bool {
+	return s.LoggerEnable_()
+}
+
 type SecondSchedulerIOCInterface interface {
 	GetTaskTypeCode() string
 	GetSpec() string
 	GetLockDuration() timex.Duration
 	RunTask(ctx contextx.Context) error
+	LoggerEnable() bool
 }
 
 var _secondSchedulerSDID string

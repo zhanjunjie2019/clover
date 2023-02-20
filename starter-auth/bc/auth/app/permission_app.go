@@ -11,26 +11,17 @@ import (
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/gateway"
 	"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/domain/model"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl"
-	"gorm.io/gorm"
 )
 
 // +ioc:autowire=true
 // +ioc:autowire:type=singleton
-// +ioc:autowire:type=allimpls
-// +ioc:autowire:implements=github.com/zhanjunjie2019/clover/global/defs.IAppDef
 
 type PermissionApp struct {
 	PermissionGateway gateway.IPermissionGateway `singleton:"github.com/zhanjunjie2019/clover/starter-auth/bc/auth/infr/gatewayimpl.PermissionGateway"`
-	DB                *gorm.DB
-}
-
-func (p *PermissionApp) SetGormDB(db *gorm.DB) {
-	p.DB = db
 }
 
 func (p *PermissionApp) PermissionCreate(ctx context.Context, c cmd.PermissionCreateCmd) (rs cmd.PermissionCreateResult, err error) {
-	err = p.DB.Transaction(func(tx *gorm.DB) (err error) {
-		ctx = uctx.WithValueAppDB(ctx, tx)
+	err = uctx.AppTransaction(ctx, func(ctx context.Context) (err error) {
 		authCodes := lo.Map(c.Permissions, func(item cmd.PermissionInfo, index int) string {
 			return item.AuthCode
 		})

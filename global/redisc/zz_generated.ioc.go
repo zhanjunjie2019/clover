@@ -32,27 +32,21 @@ func init() {
 }
 
 type redisClient_ struct {
-	Create_    func(addr, password string, db uint8) error
-	create_    func() error
-	GetClient_ func() (*v9.Client, error)
+	Create_    func(addr, password string, db uint8) (bool, error)
+	GetClient_ func() *v9.Client
 }
 
-func (r *redisClient_) Create(addr, password string, db uint8) error {
+func (r *redisClient_) Create(addr, password string, db uint8) (bool, error) {
 	return r.Create_(addr, password, db)
 }
 
-func (r *redisClient_) create() error {
-	return r.create_()
-}
-
-func (r *redisClient_) GetClient() (*v9.Client, error) {
+func (r *redisClient_) GetClient() *v9.Client {
 	return r.GetClient_()
 }
 
 type RedisClientIOCInterface interface {
-	Create(addr, password string, db uint8) error
-	create() error
-	GetClient() (*v9.Client, error)
+	Create(addr, password string, db uint8) (bool, error)
+	GetClient() *v9.Client
 }
 
 var _redisClientSDID string

@@ -10,7 +10,6 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
-	"github.com/zhanjunjie2019/clover/global/confs"
 )
 
 func init() {
@@ -41,7 +40,6 @@ type sentinelLoader_ struct {
 	CleanBufferRules_  func()
 	AppendServerRules_ func()
 	AppendApiRules_    func(sentinelStrategy string)
-	appendRules_       func(resource string, ruleStrategy confs.RuleStrategy)
 	LoadSentinelRules_ func() error
 }
 
@@ -57,10 +55,6 @@ func (s *sentinelLoader_) AppendApiRules(sentinelStrategy string) {
 	s.AppendApiRules_(sentinelStrategy)
 }
 
-func (s *sentinelLoader_) appendRules(resource string, ruleStrategy confs.RuleStrategy) {
-	s.appendRules_(resource, ruleStrategy)
-}
-
 func (s *sentinelLoader_) LoadSentinelRules() error {
 	return s.LoadSentinelRules_()
 }
@@ -69,7 +63,6 @@ type SentinelLoaderIOCInterface interface {
 	CleanBufferRules()
 	AppendServerRules()
 	AppendApiRules(sentinelStrategy string)
-	appendRules(resource string, ruleStrategy confs.RuleStrategy)
 	LoadSentinelRules() error
 }
 

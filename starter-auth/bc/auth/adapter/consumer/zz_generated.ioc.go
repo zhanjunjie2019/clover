@@ -35,6 +35,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(tenantInitConsumerStructDescriptor)
+	var _ defs.IConsumer = &TenantInitConsumer{}
 }
 
 type tenantInitConsumer_ struct {

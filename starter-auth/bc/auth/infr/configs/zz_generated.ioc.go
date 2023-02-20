@@ -34,6 +34,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(authConfigDefineStructDescriptor)
+	var _ defs.IConfigDefine = &AuthConfigDefine{}
 }
 
 type authConfigDefine_ struct {

@@ -32,11 +32,11 @@ func init() {
 }
 
 type nsqProducer_ struct {
-	CreatePublisher_ func(producerAddr string) error
+	CreatePublisher_ func(producerAddr string) (bool, error)
 	Publish_         func(ctx contextx.Context, topic string, body []byte) (err error)
 }
 
-func (n *nsqProducer_) CreatePublisher(producerAddr string) error {
+func (n *nsqProducer_) CreatePublisher(producerAddr string) (bool, error) {
 	return n.CreatePublisher_(producerAddr)
 }
 
@@ -45,7 +45,7 @@ func (n *nsqProducer_) Publish(ctx contextx.Context, topic string, body []byte) 
 }
 
 type NsqProducerIOCInterface interface {
-	CreatePublisher(producerAddr string) error
+	CreatePublisher(producerAddr string) (bool, error)
 	Publish(ctx contextx.Context, topic string, body []byte) (err error)
 }
 

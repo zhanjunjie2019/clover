@@ -4,13 +4,16 @@ import (
 	"context"
 	"github.com/gogo/protobuf/proto"
 	"github.com/nsqio/go-nsq"
+	"github.com/zhanjunjie2019/clover/global/confs"
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/nsqd/protobuf"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
 	"github.com/zhanjunjie2019/clover/global/uctx"
+	"github.com/zhanjunjie2019/clover/global/uorm"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"runtime"
+	"sync"
 	"time"
 )
 
@@ -18,23 +21,33 @@ import (
 // +ioc:autowire:type=singleton
 
 type NsqProducer struct {
+	addr          string
+	rw            sync.RWMutex
 	producer      *nsq.Producer
 	OpenTelemetry opentelemetry.OpenTelemetryIOCInterface `singleton:""`
 }
 
-func (n *NsqProducer) CreatePublisher(producerAddr string) error {
-	producer, err := nsq.NewProducer(producerAddr, nsq.NewConfig())
-	if err != nil {
-		return err
+func (n *NsqProducer) CreatePublisher(producerAddr string) (bool, error) {
+	n.rw.Lock()
+	defer n.rw.Unlock()
+	if n.addr != producerAddr {
+		producer, err := nsq.NewProducer(producerAddr, nsq.NewConfig())
+		if err != nil {
+			return false, err
+		}
+		if n.producer != nil {
+			n.producer.Stop()
+		}
+		n.addr = producerAddr
+		n.producer = producer
+		return true, nil
 	}
-	if n.producer != nil {
-		n.producer.Stop()
-	}
-	n.producer = producer
-	return nil
+	return false, nil
 }
 
 func (n *NsqProducer) Publish(ctx context.Context, topic string, body []byte) (err error) {
+	n.rw.RLock()
+	defer n.rw.RUnlock()
 	_, span := n.OpenTelemetry.Start(ctx, "Producer "+topic)
 	defer func() {
 		if err == nil {
@@ -59,20 +72,23 @@ func (n *NsqProducer) Publish(ctx context.Context, topic string, body []byte) (e
 	return n.producer.Publish(topic, bytes)
 }
 
-func NewMessageHandler(consumer defs.IConsumer, provider opentelemetry.OpenTelemetryIOCInterface) nsq.Handler {
+func NewMessageHandler(consumer defs.IConsumer, provider opentelemetry.OpenTelemetryIOCInterface, dbFactory uorm.DBFactoryIOCInterface) nsq.Handler {
 	return &messageHandler{
-		provider: provider,
-		consumer: consumer,
+		provider:  provider,
+		consumer:  consumer,
+		dbFactory: dbFactory,
 	}
 }
 
 type messageHandler struct {
-	provider opentelemetry.OpenTelemetryIOCInterface
-	consumer defs.IConsumer
+	provider  opentelemetry.OpenTelemetryIOCInterface
+	consumer  defs.IConsumer
+	dbFactory uorm.DBFactoryIOCInterface
 }
 
 func (m *messageHandler) HandleMessage(message *nsq.Message) (err error) {
-	layout := defs.NewLogLayout(zapcore.InfoLevel)
+	svcConf := confs.GetServerConfig().SvcConf
+	layout := defs.NewLogLayout(zapcore.InfoLevel, svcConf.SvcMode.Uint8(), svcConf.SvcName, svcConf.SvcNum, svcConf.SvcVersion)
 
 	var pb protobuf.NsqMessage
 	err = proto.Unmarshal(message.Body, &pb)
@@ -82,6 +98,11 @@ func (m *messageHandler) HandleMessage(message *nsq.Message) (err error) {
 	}
 	// 链路上下文中传递日志输出器
 	ctx := uctx.WithValueLogLayout(context.Background(), layout)
+	// 数据库实例对象
+	db := m.dbFactory.GetDB()
+	if db != nil {
+		ctx = uctx.WithValueAppDB(ctx, db)
+	}
 	// 链路上下文中传递租户ID
 	if len(pb.TenantID) > 0 {
 		ctx = uctx.WithValueTenantID(ctx, pb.TenantID)

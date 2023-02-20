@@ -60,7 +60,7 @@ func (s *Server) RunServer() error {
 func (s Server) registHandler(sv server.Server) error {
 	sentineEnabled := confs.GetSentinelConfig().Enabled
 	// 加载全局限流配置
-	if sentineEnabled == 1 {
+	if sentineEnabled.Bool() {
 		s.SentinelLoader.AppendServerRules()
 	}
 	// 注册gRPC核心业务接口
@@ -68,7 +68,7 @@ func (s Server) registHandler(sv server.Server) error {
 		// 注册事件
 		errs.Panic(handler.GrpcRegister(sv))
 	}
-	if sentineEnabled == 1 {
+	if sentineEnabled.Bool() {
 		return s.SentinelLoader.LoadSentinelRules()
 	}
 	return nil

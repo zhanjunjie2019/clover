@@ -11,10 +11,7 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
-	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	defs "github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/starter-example/bc/example/app/cmd"
-	"gorm.io/gorm"
 )
 
 func init() {
@@ -28,27 +25,15 @@ func init() {
 			return &ExampleApp{}
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IAppDef),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(exampleAppStructDescriptor)
-	allimpls.RegisterStructDescriptor(exampleAppStructDescriptor)
 }
 
 type exampleApp_ struct {
-	SetGormDB_          func(db *gorm.DB)
 	ExampleHellowWorld_ func(ctx contextx.Context, c cmd.HelloWorldCmd) (rs cmd.HelloWorldResult, err error)
-}
-
-func (e *exampleApp_) SetGormDB(db *gorm.DB) {
-	e.SetGormDB_(db)
 }
 
 func (e *exampleApp_) ExampleHellowWorld(ctx contextx.Context, c cmd.HelloWorldCmd) (rs cmd.HelloWorldResult, err error) {
@@ -56,7 +41,6 @@ func (e *exampleApp_) ExampleHellowWorld(ctx contextx.Context, c cmd.HelloWorldC
 }
 
 type ExampleAppIOCInterface interface {
-	SetGormDB(db *gorm.DB)
 	ExampleHellowWorld(ctx contextx.Context, c cmd.HelloWorldCmd) (rs cmd.HelloWorldResult, err error)
 }
 

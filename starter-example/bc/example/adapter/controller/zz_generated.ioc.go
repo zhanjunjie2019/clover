@@ -35,6 +35,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(helloWorldControllerStructDescriptor)
+	var _ defs.IController = &HelloWorldController{}
 }
 
 type helloWorldController_ struct {

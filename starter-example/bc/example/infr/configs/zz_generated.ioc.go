@@ -34,6 +34,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(exampleConfigDefineStructDescriptor)
+	var _ defs.IConfigDefine = &ExampleConfigDefine{}
 }
 
 type exampleConfigDefine_ struct {

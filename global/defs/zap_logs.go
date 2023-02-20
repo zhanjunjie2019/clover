@@ -1,7 +1,6 @@
 package defs
 
 import (
-	"github.com/zhanjunjie2019/clover/global/confs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -12,22 +11,22 @@ func SetLogger(l *zap.Logger) {
 	logger = l
 }
 
-func NewLogLayout(level zapcore.Level) *LogLayout {
-	return &LogLayout{level: level}
-}
-
-func ErrorLog(msg string, logFields ...zap.Field) {
-	layout := NewLogLayout(zapcore.ErrorLevel)
-	layout.msg = msg
-	layout.logFields = logFields
-	layout.Println()
-}
-
-func InfoLog(msg string, logFields ...zap.Field) {
-	layout := NewLogLayout(zapcore.InfoLevel)
-	layout.msg = msg
-	layout.logFields = logFields
-	layout.Println()
+func NewLogLayout(
+	level zapcore.Level,
+	svcMode uint8,
+	svcName string,
+	svcNum uint8,
+	svcVersion string,
+) *LogLayout {
+	return &LogLayout{
+		level: level,
+		logFields: []zap.Field{
+			zap.Uint8("svcMode", svcMode),
+			zap.String("svcName", svcName),
+			zap.Uint8("svcNum", svcNum),
+			zap.String("svcVersion", svcVersion),
+		},
+	}
 }
 
 // LogLayout 日志layout
@@ -57,12 +56,6 @@ func (l *LogLayout) Info(msg string, logFields ...zap.Field) {
 
 // Println 打印日志
 func (l LogLayout) Println() {
-	serverConfig := confs.GetServerConfig().SvcConf
-	l.logFields = append(l.logFields,
-		zap.String("svcName", serverConfig.SvcName),
-		zap.String("svcVersion", serverConfig.SvcVersion),
-		zap.Uint8("svcNum", serverConfig.SvcNum),
-	)
 	switch l.level {
 	case zapcore.DebugLevel:
 		logger.Debug(l.msg, l.logFields...)

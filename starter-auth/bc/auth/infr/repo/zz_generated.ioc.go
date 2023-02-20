@@ -39,6 +39,7 @@ func init() {
 	}
 	singleton.RegisterStructDescriptor(permissionRepoStructDescriptor)
 	allimpls.RegisterStructDescriptor(permissionRepoStructDescriptor)
+	var _ defs.IRepo = &PermissionRepo{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &rolePermissionRelRepo_{}
@@ -101,6 +102,7 @@ func init() {
 	}
 	singleton.RegisterStructDescriptor(tenantRepoStructDescriptor)
 	allimpls.RegisterStructDescriptor(tenantRepoStructDescriptor)
+	var _ defs.IRepo = &TenantRepo{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &userRepo_{}

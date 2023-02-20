@@ -1,9 +1,10 @@
-postgres:
-  path: 127.0.0.1
-  port: 9432
-  config: sslmode=disable TimeZone=Asia/Shanghai
-  dbName: clover_auth
-  username: root
-  password: 123456
-  maxIdleConns: 10
-  maxOpenConns: 50
+enabled: 1
+dbType: postgres
+path: 127.0.0.1
+port: 9432
+config: sslmode=disable TimeZone=Asia/Shanghai
+dbName: clover_auth
+username: root
+password: 123456
+maxIdleConns: 10
+maxOpenConns: 50

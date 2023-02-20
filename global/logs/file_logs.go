@@ -57,7 +57,7 @@ func getWriteSyncer(serverConfig confs.ServerConfig) (zapcore.WriteSyncer, error
 		rotatelogs.WithMaxAge(time.Duration(logConf.MaxAge)*24*time.Hour),
 		rotatelogs.WithRotationTime(time.Hour*24),
 	)
-	if logConf.LogInConsole == 1 {
+	if logConf.LogInConsole.Bool() {
 		return zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(fileWriter)), err
 	}
 	return zapcore.AddSync(fileWriter), err

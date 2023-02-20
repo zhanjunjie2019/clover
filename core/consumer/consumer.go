@@ -6,6 +6,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/defs"
 	"github.com/zhanjunjie2019/clover/global/nsqd"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
+	"github.com/zhanjunjie2019/clover/global/uorm"
 )
 
 // +ioc:autowire=true
@@ -14,11 +15,12 @@ import (
 type Server struct {
 	Consumers     []defs.IConsumer                        `allimpls:""`
 	OpenTelemetry opentelemetry.OpenTelemetryIOCInterface `singleton:""`
+	DBFactory     uorm.DBFactoryIOCInterface              `singleton:""`
 }
 
 func (s *Server) RegistryServer() error {
 	nsqConfig := confs.GetGlobalConfig().NsqConfig
-	if nsqConfig.Enabled == 1 {
+	if nsqConfig.Enabled.Bool() {
 		svcConf := confs.GetServerConfig().SvcConf
 		config := nsq.NewConfig()
 		for _, consumer := range s.Consumers {
@@ -26,7 +28,7 @@ func (s *Server) RegistryServer() error {
 			if err != nil {
 				return err
 			}
-			con.AddHandler(nsqd.NewMessageHandler(consumer, s.OpenTelemetry))
+			con.AddHandler(nsqd.NewMessageHandler(consumer, s.OpenTelemetry, s.DBFactory))
 			err = con.ConnectToNSQLookupd(nsqConfig.ConsumerAddr)
 			if err != nil {
 				return err

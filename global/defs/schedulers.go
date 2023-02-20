@@ -14,4 +14,6 @@ type IScheduler interface {
 	GetLockDuration() time.Duration
 	// RunTask 指定核心任务
 	RunTask(contextx.Context) error
+	// LoggerEnable 是否记录日志
+	LoggerEnable() bool
 }

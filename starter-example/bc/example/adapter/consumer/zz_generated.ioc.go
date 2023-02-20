@@ -35,6 +35,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(helloWorldConsumerStructDescriptor)
+	var _ defs.IConsumer = &HelloWorldConsumer{}
 }
 
 type helloWorldConsumer_ struct {

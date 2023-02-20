@@ -35,6 +35,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(permissionCreateControllerStructDescriptor)
+	var _ defs.IController = &PermissionCreateController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &roleCreateController_{}
@@ -56,6 +57,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(roleCreateControllerStructDescriptor)
+	var _ defs.IController = &RoleCreateController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &rolePermissionAssignmentController_{}
@@ -77,6 +79,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(rolePermissionAssignmentControllerStructDescriptor)
+	var _ defs.IController = &RolePermissionAssignmentController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &sadminTokenCreateController_{}
@@ -98,6 +101,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(sadminTokenCreateControllerStructDescriptor)
+	var _ defs.IController = &SadminTokenCreateController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &tenantCreateController_{}
@@ -119,6 +123,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(tenantCreateControllerStructDescriptor)
+	var _ defs.IController = &TenantCreateController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &tenantTokenCreateController_{}
@@ -140,6 +145,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(tenantTokenCreateControllerStructDescriptor)
+	var _ defs.IController = &TenantTokenCreateController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &userAuthorizationCodeController_{}
@@ -161,6 +167,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(userAuthorizationCodeControllerStructDescriptor)
+	var _ defs.IController = &UserAuthorizationCodeController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &userCreateController_{}
@@ -182,6 +189,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(userCreateControllerStructDescriptor)
+	var _ defs.IController = &UserCreateController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &userRoleAssignmentController_{}
@@ -203,6 +211,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(userRoleAssignmentControllerStructDescriptor)
+	var _ defs.IController = &UserRoleAssignmentController{}
 	normal.RegisterStructDescriptor(&autowire.StructDescriptor{
 		Factory: func() interface{} {
 			return &userTokenByAuthcodeController_{}
@@ -224,6 +233,7 @@ func init() {
 		},
 	}
 	allimpls.RegisterStructDescriptor(userTokenByAuthcodeControllerStructDescriptor)
+	var _ defs.IController = &UserTokenByAuthcodeController{}
 }
 
 type permissionCreateController_ struct {

@@ -102,15 +102,16 @@ nsqConfig:
 {{ end }}
 
 {{- define "auth.db.config" }}
-postgres:
-  path: postgres-master
-  port: 5432
-  config: sslmode=disable TimeZone=Asia/Shanghai
-  dbName: clover_auth
-  username: root
-  password: 123456
-  maxIdleConns: 10
-  maxOpenConns: 50
+enabled: 1
+dbType: postgres
+path: postgres-master
+port: 5432
+config: sslmode=disable TimeZone=Asia/Shanghai
+dbName: clover_auth
+username: root
+password: 123456
+maxIdleConns: 10
+maxOpenConns: 50
 {{ end }}
 
 {{- define "auth.auth.config" }}

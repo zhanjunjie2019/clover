@@ -10,7 +10,6 @@ import (
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
-	"github.com/zhanjunjie2019/clover/global/defs"
 )
 
 func init() {
@@ -33,20 +32,14 @@ func init() {
 
 type server_ struct {
 	RegistryServer_ func() error
-	startScheduler_ func(scheduler defs.IScheduler, svcName string) error
 }
 
 func (s *server_) RegistryServer() error {
 	return s.RegistryServer_()
 }
 
-func (s *server_) startScheduler(scheduler defs.IScheduler, svcName string) error {
-	return s.startScheduler_(scheduler, svcName)
-}
-
 type ServerIOCInterface interface {
 	RegistryServer() error
-	startScheduler(scheduler defs.IScheduler, svcName string) error
 }
 
 var _serverSDID string
