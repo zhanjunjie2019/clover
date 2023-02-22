@@ -38,12 +38,12 @@ func init() {
 }
 
 type authConfigDefine_ struct {
-	GetOption_    func() defs.ConfigOption
+	GetOption_    func() defs.ConfigOptions
 	ReloadConfig_ func(config any) error
 	Unmarshal_    func(data []byte) (any, error)
 }
 
-func (a *authConfigDefine_) GetOption() defs.ConfigOption {
+func (a *authConfigDefine_) GetOption() defs.ConfigOptions {
 	return a.GetOption_()
 }
 
@@ -56,7 +56,7 @@ func (a *authConfigDefine_) Unmarshal(data []byte) (any, error) {
 }
 
 type AuthConfigDefineIOCInterface interface {
-	GetOption() defs.ConfigOption
+	GetOption() defs.ConfigOptions
 	ReloadConfig(config any) error
 	Unmarshal(data []byte) (any, error)
 }

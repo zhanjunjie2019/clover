@@ -10,8 +10,7 @@ import (
 	"github.com/zhanjunjie2019/clover/global/errs"
 	"github.com/zhanjunjie2019/clover/global/logs"
 	"github.com/zhanjunjie2019/clover/global/opentelemetry"
-	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/adapter/consumer"
-	_ "github.com/zhanjunjie2019/clover/starter-auth/bc/auth/adapter/controller"
+	_ "github.com/zhanjunjie2019/clover/starter-auth/bc"
 	_ "github.com/zhanjunjie2019/clover/starter-auth/docs"
 )
 

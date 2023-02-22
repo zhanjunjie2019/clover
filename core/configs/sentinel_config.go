@@ -13,12 +13,12 @@ import (
 
 type SentinelConfigDefine struct{}
 
-func (s *SentinelConfigDefine) GetOption() defs.ConfigOption {
-	return defs.ConfigOption{
-		ConfigKey:       coreconsts.SentinelConfigDefineKey,
-		CanLoadByConsul: true,
-		ConfigFileName:  coreconsts.SentinelConfigFileName,
-	}
+func (s *SentinelConfigDefine) GetOption() defs.ConfigOptions {
+	return defs.NewConfigOptions(
+		defs.ConfigKey(coreconsts.SentinelConfigDefineKey),
+		defs.ConfigFileName(coreconsts.SentinelConfigFileName),
+		defs.ConfigCanLoadByConsul(true),
+	)
 }
 
 func (s *SentinelConfigDefine) ReloadConfig(config any) error {

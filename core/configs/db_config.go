@@ -18,12 +18,12 @@ type DBConfigDefine struct {
 	DBFactory uorm.DBFactoryIOCInterface `singleton:""`
 }
 
-func (d *DBConfigDefine) GetOption() defs.ConfigOption {
-	return defs.ConfigOption{
-		ConfigKey:       coreconsts.DBConfigDefineKey,
-		CanLoadByConsul: true,
-		ConfigFileName:  coreconsts.DBConfigFileName,
-	}
+func (d *DBConfigDefine) GetOption() defs.ConfigOptions {
+	return defs.NewConfigOptions(
+		defs.ConfigKey(coreconsts.DBConfigDefineKey),
+		defs.ConfigFileName(coreconsts.DBConfigFileName),
+		defs.ConfigCanLoadByConsul(true),
+	)
 }
 
 func (d *DBConfigDefine) ReloadConfig(config any) error {

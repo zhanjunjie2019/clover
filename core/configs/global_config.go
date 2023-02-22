@@ -20,12 +20,12 @@ type GlobalConfigDefine struct {
 	NsqProducer nsqd.NsqProducerIOCInterface   `singleton:""`
 }
 
-func (g *GlobalConfigDefine) GetOption() defs.ConfigOption {
-	return defs.ConfigOption{
-		ConfigKey:       coreconsts.GlobalConfigDefineKey,
-		CanLoadByConsul: true,
-		ConfigFileName:  coreconsts.GlobalConfigFileName,
-	}
+func (g *GlobalConfigDefine) GetOption() defs.ConfigOptions {
+	return defs.NewConfigOptions(
+		defs.ConfigKey(coreconsts.GlobalConfigDefineKey),
+		defs.ConfigFileName(coreconsts.GlobalConfigFileName),
+		defs.ConfigCanLoadByConsul(true),
+	)
 }
 
 func (g *GlobalConfigDefine) ReloadConfig(config any) (err error) {

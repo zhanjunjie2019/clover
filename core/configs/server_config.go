@@ -13,12 +13,11 @@ import (
 
 type ServerConfigDefine struct{}
 
-func (s *ServerConfigDefine) GetOption() defs.ConfigOption {
-	return defs.ConfigOption{
-		ConfigKey:       coreconsts.ServerConfigDefineKey,
-		CanLoadByConsul: false,
-		ConfigFileName:  coreconsts.ServerConfigFileName,
-	}
+func (s *ServerConfigDefine) GetOption() defs.ConfigOptions {
+	return defs.NewConfigOptions(
+		defs.ConfigKey(coreconsts.ServerConfigDefineKey),
+		defs.ConfigFileName(coreconsts.ServerConfigFileName),
+	)
 }
 
 func (s *ServerConfigDefine) ReloadConfig(config any) error {

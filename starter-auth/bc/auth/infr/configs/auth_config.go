@@ -12,12 +12,12 @@ import (
 
 type AuthConfigDefine struct{}
 
-func (a *AuthConfigDefine) GetOption() defs.ConfigOption {
-	return defs.ConfigOption{
-		ConfigKey:       bcconsts.AuthConfigDefineKey,
-		CanLoadByConsul: true,
-		ConfigFileName:  bcconsts.AuthConfigFileName,
-	}
+func (a *AuthConfigDefine) GetOption() defs.ConfigOptions {
+	return defs.NewConfigOptions(
+		defs.ConfigKey(bcconsts.AuthConfigDefineKey),
+		defs.ConfigFileName(bcconsts.AuthConfigFileName),
+		defs.ConfigCanLoadByConsul(true),
+	)
 }
 
 func (a *AuthConfigDefine) ReloadConfig(config any) error {

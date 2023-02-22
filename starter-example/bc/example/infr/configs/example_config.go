@@ -12,12 +12,11 @@ import (
 
 type ExampleConfigDefine struct{}
 
-func (e *ExampleConfigDefine) GetOption() defs.ConfigOption {
-	return defs.ConfigOption{
-		ConfigKey:       bcconsts.ExampleConfigDefineKey,
-		CanLoadByConsul: false,
-		ConfigFileName:  bcconsts.ExampleConfigFileName,
-	}
+func (e *ExampleConfigDefine) GetOption() defs.ConfigOptions {
+	return defs.NewConfigOptions(
+		defs.ConfigKey(bcconsts.ExampleConfigDefineKey),
+		defs.ConfigFileName(bcconsts.ExampleConfigFileName),
+	)
 }
 
 func (e *ExampleConfigDefine) ReloadConfig(config any) error {

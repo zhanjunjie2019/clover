@@ -104,12 +104,12 @@ func init() {
 }
 
 type dBConfigDefine_ struct {
-	GetOption_    func() defs.ConfigOption
+	GetOption_    func() defs.ConfigOptions
 	ReloadConfig_ func(config any) error
 	Unmarshal_    func(data []byte) (any, error)
 }
 
-func (d *dBConfigDefine_) GetOption() defs.ConfigOption {
+func (d *dBConfigDefine_) GetOption() defs.ConfigOptions {
 	return d.GetOption_()
 }
 
@@ -122,12 +122,12 @@ func (d *dBConfigDefine_) Unmarshal(data []byte) (any, error) {
 }
 
 type globalConfigDefine_ struct {
-	GetOption_    func() defs.ConfigOption
+	GetOption_    func() defs.ConfigOptions
 	ReloadConfig_ func(config any) (err error)
 	Unmarshal_    func(data []byte) (any, error)
 }
 
-func (g *globalConfigDefine_) GetOption() defs.ConfigOption {
+func (g *globalConfigDefine_) GetOption() defs.ConfigOptions {
 	return g.GetOption_()
 }
 
@@ -140,12 +140,12 @@ func (g *globalConfigDefine_) Unmarshal(data []byte) (any, error) {
 }
 
 type sentinelConfigDefine_ struct {
-	GetOption_    func() defs.ConfigOption
+	GetOption_    func() defs.ConfigOptions
 	ReloadConfig_ func(config any) error
 	Unmarshal_    func(data []byte) (any, error)
 }
 
-func (s *sentinelConfigDefine_) GetOption() defs.ConfigOption {
+func (s *sentinelConfigDefine_) GetOption() defs.ConfigOptions {
 	return s.GetOption_()
 }
 
@@ -158,12 +158,12 @@ func (s *sentinelConfigDefine_) Unmarshal(data []byte) (any, error) {
 }
 
 type serverConfigDefine_ struct {
-	GetOption_    func() defs.ConfigOption
+	GetOption_    func() defs.ConfigOptions
 	ReloadConfig_ func(config any) error
 	Unmarshal_    func(data []byte) (any, error)
 }
 
-func (s *serverConfigDefine_) GetOption() defs.ConfigOption {
+func (s *serverConfigDefine_) GetOption() defs.ConfigOptions {
 	return s.GetOption_()
 }
 
@@ -176,25 +176,25 @@ func (s *serverConfigDefine_) Unmarshal(data []byte) (any, error) {
 }
 
 type DBConfigDefineIOCInterface interface {
-	GetOption() defs.ConfigOption
+	GetOption() defs.ConfigOptions
 	ReloadConfig(config any) error
 	Unmarshal(data []byte) (any, error)
 }
 
 type GlobalConfigDefineIOCInterface interface {
-	GetOption() defs.ConfigOption
+	GetOption() defs.ConfigOptions
 	ReloadConfig(config any) (err error)
 	Unmarshal(data []byte) (any, error)
 }
 
 type SentinelConfigDefineIOCInterface interface {
-	GetOption() defs.ConfigOption
+	GetOption() defs.ConfigOptions
 	ReloadConfig(config any) error
 	Unmarshal(data []byte) (any, error)
 }
 
 type ServerConfigDefineIOCInterface interface {
-	GetOption() defs.ConfigOption
+	GetOption() defs.ConfigOptions
 	ReloadConfig(config any) error
 	Unmarshal(data []byte) (any, error)
 }

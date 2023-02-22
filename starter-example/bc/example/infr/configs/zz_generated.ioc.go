@@ -38,12 +38,12 @@ func init() {
 }
 
 type exampleConfigDefine_ struct {
-	GetOption_    func() defs.ConfigOption
+	GetOption_    func() defs.ConfigOptions
 	ReloadConfig_ func(config any) error
 	Unmarshal_    func(data []byte) (any, error)
 }
 
-func (e *exampleConfigDefine_) GetOption() defs.ConfigOption {
+func (e *exampleConfigDefine_) GetOption() defs.ConfigOptions {
 	return e.GetOption_()
 }
 
@@ -56,7 +56,7 @@ func (e *exampleConfigDefine_) Unmarshal(data []byte) (any, error) {
 }
 
 type ExampleConfigDefineIOCInterface interface {
-	GetOption() defs.ConfigOption
+	GetOption() defs.ConfigOptions
 	ReloadConfig(config any) error
 	Unmarshal(data []byte) (any, error)
 }
