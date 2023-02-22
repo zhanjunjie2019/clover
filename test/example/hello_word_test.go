@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	bashUrl          = "http://localhost:8800"
+	bashUrl          = "http://127.0.0.1:8800"
 	helloworldApiUrl = "/example/hellow-world"
 )
 

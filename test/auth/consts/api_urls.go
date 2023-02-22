@@ -9,7 +9,7 @@ func init() {
 	if len(domainHost) > 0 {
 		DomainHost = domainHost
 	} else {
-		DomainHost = "http://localhost:8810"
+		DomainHost = "http://127.0.0.1:8810"
 	}
 }
 

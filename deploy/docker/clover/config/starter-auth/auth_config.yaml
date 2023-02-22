@@ -1,0 +1,3 @@
+superAdmin:
+  secretKey: CloverSecretKeyCloverSecretKey
+  accessTokenTimeLimit: 7200

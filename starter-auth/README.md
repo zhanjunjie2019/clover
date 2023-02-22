@@ -4,6 +4,8 @@
 
 ## 领域图
 
+![业务领域图](https://gitee.com/zhanjunjie/clover/raw/master/starter-auth/docs/imgs/domain.svg?r=v1)
+
 ## 目录结构
 
 - bc --限界上下文

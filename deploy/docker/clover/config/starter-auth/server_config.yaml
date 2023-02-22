@@ -4,12 +4,13 @@ svcConf:
   svcMode: 2
   # 服务部署名
   svcName: "clover-auth"
-  # 服务端口号
-  svcPort: 8810
   # 服务实例序号
   svcNum: 1
   # 服务版本号
   svcVersion: "v0.0.1"
+  # 服务端口号
+  http:
+    port: 8810
 
 # consul配置
 consulConf:
@@ -29,7 +30,7 @@ logConf:
   # 日志级别
   level: "debug"
   # 输出文件夹
-  director: "../filebeat/logs"
+  director: "./logs"
   # 最大天数
   maxAge: 7
   # 是否输出到控制台

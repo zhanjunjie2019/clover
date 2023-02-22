@@ -5,12 +5,13 @@ svcConf:
   svcMode: 2
   # 服务部署名
   svcName: {{ print .Release.Name "-auth" | quote }}
-  # 服务端口号
-  svcPort: {{ .Values.service.targetPort }}
   # 服务实例序号
   svcNum: 1
   # 服务版本号
   svcVersion: "v0.0.1"
+  # 服务端口号
+  http:
+    port: 8810
 
 # consul配置
 consulConf:
