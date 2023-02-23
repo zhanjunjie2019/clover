@@ -20,7 +20,7 @@
 
 ### 服务分层依赖架构
 
-![服务分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/services.svg?r=v1)
+![服务分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/services.svg?r=v2)
 
 ### 领域分层架构图
 
