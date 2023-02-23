@@ -84,6 +84,8 @@
 
 #### 时序图
 
+![授权码获得用户Token](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/zhanjunjie2019/clover/master/starter-auth/docs/puml/user_token_by_authcode.puml)
+
 ## 监听消息队列(Topic)
 
 NSQ:TenantInit

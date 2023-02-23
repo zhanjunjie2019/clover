@@ -1,12 +1,12 @@
 @startuml
 
-participant "starter-admin(超管业务服务)"
+participant "starter-admin(超管平台服务)"
 participant "starter-auth(权限中心)"
 database "auth数据库"
 queue "NSQ"
-collections "其他涉及租户的服务"
+collections "其他业务中台服务"
 
-"starter-admin(超管业务服务)" -> "starter-auth(权限中心)" : \
+"starter-admin(超管平台服务)" -> "starter-auth(权限中心)" : \
 创建租户接口
 
 "starter-auth(权限中心)" -> "auth数据库" : \
@@ -16,12 +16,12 @@ collections "其他涉及租户的服务"
 返回新增的租户ID
 
 "starter-auth(权限中心)" --> "NSQ" : \
-异步通知其他涉及租户的服务，进行租户初始化
+异步通知其他业务中台服务，进行租户初始化
 
-"starter-admin(超管业务服务)" <- "starter-auth(权限中心)" : \
+"starter-admin(超管平台服务)" <- "starter-auth(权限中心)" : \
 响应：租户ID及密钥信息
 
-"NSQ" --> "其他涉及租户的服务" : \
+"NSQ" --> "其他业务中台服务" : \
 异步通知，租户初始化
 
 "starter-auth(权限中心)" <-- "NSQ" : \

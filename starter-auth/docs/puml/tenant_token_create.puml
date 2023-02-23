@@ -1,10 +1,10 @@
 @startuml
 
-collections "依赖权限的服务"
+collections "接入权限的服务"
 participant "starter-auth(权限中心)"
 database "auth数据库"
 
-"依赖权限的服务" -> "starter-auth(权限中心)" : \
+"接入权限的服务" -> "starter-auth(权限中心)" : \
 创建租户Token接口
 
 "starter-auth(权限中心)" -> "starter-auth(权限中心)" : \
@@ -22,7 +22,7 @@ database "auth数据库"
 "starter-auth(权限中心)" -> "starter-auth(权限中心)" : \
 生成Token
 
-"依赖权限的服务" <- "starter-auth(权限中心)" : \
+"接入权限的服务" <- "starter-auth(权限中心)" : \
 响应租户Token
 
 @enduml

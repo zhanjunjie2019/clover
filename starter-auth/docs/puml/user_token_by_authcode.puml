@@ -1,0 +1,30 @@
+@startuml
+
+participant "接入平台的前端页"
+participant "接入平台的后端服务"
+participant "starter-auth(权限中心)"
+database "redis"
+
+"接入平台的前端页" -> "接入平台的后端服务" : \
+获取授权token请求\n\
+附带授权码
+
+"接入平台的后端服务" -> "starter-auth(权限中心)" : \
+使用授权码更换token
+
+"starter-auth(权限中心)" -> "redis" : \
+获取授权码对应的用户信息
+
+"starter-auth(权限中心)" <- "redis" : \
+返回缓存中的用户信息
+
+"starter-auth(权限中心)" -> "starter-auth(权限中心)" : \
+根据用户和租户权限信息构建jwt
+
+"接入平台的后端服务" <- "starter-auth(权限中心)" : \
+返回jwt
+
+"接入平台的前端页" -> "接入平台的后端服务" : \
+响应jwt或Set-Cookies
+
+@enduml
