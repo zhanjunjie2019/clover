@@ -16,11 +16,13 @@
 本项目的期望是通过提供给开源项目的开发者，统一的代码框架和开发规范，贡献更多的可任意插拔的通用领域服务和基础设施服务。
 最终让业务开发者在这套微服务架构的帮助下，在做核心领域业务开发过程中，可以更快的集成实现各类业务和扩展。
 
+项目先从Saas化的直播电商平台开始做起。
+
 ## 架构图
 
 ### 服务分层依赖架构
 
-![服务分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/services.svg?r=v2)
+![服务分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/services.svg?r=v3)
 
 ### 领域分层架构图
 
