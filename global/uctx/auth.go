@@ -76,6 +76,13 @@ func CreateJwtClaimsToken(claims defs.JwtClaims) (string, error) {
 
 func GetJwtClaimsByBearerToken(c *gin.Context) (defs.JwtClaims, error) {
 	token := c.Request.Header.Get(consts.TokenHeaderKey)
+	if len(token) == 0 {
+		cookie, err := c.Request.Cookie(consts.TokenHeaderKey)
+		if err != nil || cookie == nil {
+			return defs.JwtClaims{}, errs.TokenNoExistErr
+		}
+		token = cookie.Value
+	}
 	if len(token) > 0 {
 		jc, err := ParseYhUserTokenClaims(token)
 		if err == nil && jc != nil {
