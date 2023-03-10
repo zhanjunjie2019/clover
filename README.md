@@ -20,13 +20,13 @@
 
 ## 架构图
 
-### 服务分层依赖架构
+### 服务分层架构
 
 ![服务分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/services.svg?r=v3)
 
 ### 领域分层架构图
 
-### 代码分层依赖架构
+### 代码分层架构
 
 ![分层依赖架构](https://gitee.com/zhanjunjie/clover/raw/master/docs/imgs/depend.svg?r=v1)
 
