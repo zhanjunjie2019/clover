@@ -63,19 +63,13 @@ func GetTraceSpanIDByGrpcCtx(ctx context.Context) string {
 }
 
 func SetSpanContext(ctx *gin.Context, spanCtx context.Context) {
-	ctx.Set(consts.CtxSpanCtxVar, spanCtx)
+	ctx.Request = ctx.Request.WithContext(spanCtx)
 }
 
 func GetSpanContext(ctx context.Context) context.Context {
 	c, ok := ctx.(*gin.Context)
 	if ok {
-		value, ok := c.Get(consts.CtxSpanCtxVar)
-		if ok {
-			c, ok := value.(context.Context)
-			if ok {
-				return c
-			}
-		}
+		return c.Request.Context()
 	}
 	return ctx
 }

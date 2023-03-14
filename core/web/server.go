@@ -81,6 +81,7 @@ func (s Server) registRoute(engine *gin.Engine) error {
 	// 加载全局限流配置
 	if sentineEnabled.Bool() {
 		s.SentinelLoader.AppendServerRules()
+		engine.Use(s.SentinelMiddleware.MiddlewareHandlerFunc(nil))
 	}
 	for _, c := range s.Controllers {
 		// 读取接口配置
@@ -91,10 +92,7 @@ func (s Server) registRoute(engine *gin.Engine) error {
 		}
 		// 动态中间件
 		var handlerFuncs []gin.HandlerFunc
-		if sentineEnabled.Bool() {
-			handlerFuncs = append(handlerFuncs, s.SentinelMiddleware.MiddlewareHandlerFunc(nil))
-		}
-		handlerFuncs = append(handlerFuncs, s.TraceMiddleware.MiddlewareHandlerFunc(nil))
+		handlerFuncs = append(handlerFuncs, s.TraceMiddleware.MiddlewareHandlerFunc(&option))
 		handlerFuncs = append(handlerFuncs, s.LoggerMiddleware.MiddlewareHandlerFunc(&option))
 		// 如果属于限权接口
 		if len(option.AuthCodes) > 0 {
