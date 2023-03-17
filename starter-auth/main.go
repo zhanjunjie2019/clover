@@ -41,7 +41,6 @@ func main() {
 // +ioc:autowire:type=singleton
 
 type Starter struct {
-	//SchedulerServer scheduler.ServerIOCInterface            `singleton:""`
 	ConsumerServer consumer.ServerIOCInterface             `singleton:""`
 	WebServer      web.ServerIOCInterface                  `singleton:""`
 	RepoDBFactory  repo.RepoDBFactoryIOCInterface          `singleton:""`
@@ -60,8 +59,6 @@ func (s *Starter) Run() error {
 	errs.Panic(s.OpenTelemetry.InitProvider())
 	// 初始化数据库连接，非必须
 	errs.Panic(s.RepoDBFactory.Initialization())
-	//// 启动定时任务调度，非必须
-	//errs.Panic(s.SchedulerServer.RegistryServer())
 	// 注册NSQ消息队列监听，非必须
 	errs.Panic(s.ConsumerServer.RegistryServer())
 	// 启动HTTP服务，与GRPC至少启一个
