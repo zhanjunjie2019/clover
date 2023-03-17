@@ -6,14 +6,10 @@
 package config
 
 import (
-	contextx "context"
 	autowire "github.com/alibaba/ioc-golang/autowire"
 	normal "github.com/alibaba/ioc-golang/autowire/normal"
 	singleton "github.com/alibaba/ioc-golang/autowire/singleton"
 	util "github.com/alibaba/ioc-golang/autowire/util"
-	allimpls "github.com/alibaba/ioc-golang/extension/autowire/allimpls"
-	"github.com/zhanjunjie2019/clover/global/defs"
-	timex "time"
 )
 
 func init() {
@@ -27,49 +23,16 @@ func init() {
 			return &ConfigDefines{}
 		},
 		Metadata: map[string]interface{}{
-			"aop": map[string]interface{}{},
-			"autowire": map[string]interface{}{
-				"common": map[string]interface{}{
-					"implements": []interface{}{
-						new(defs.IScheduler),
-					},
-				},
-			},
+			"aop":      map[string]interface{}{},
+			"autowire": map[string]interface{}{},
 		},
 	}
 	singleton.RegisterStructDescriptor(configDefinesStructDescriptor)
-	allimpls.RegisterStructDescriptor(configDefinesStructDescriptor)
-	var _ defs.IScheduler = &ConfigDefines{}
 }
 
 type configDefines_ struct {
-	GetTaskTypeCode_       func() string
-	GetSpec_               func() string
-	GetLockDuration_       func() timex.Duration
-	RunTask_               func(ctx contextx.Context) error
-	LoggerEnable_          func() bool
 	LoadAllConfigByLocal_  func() error
 	LoadAllConfigByConsul_ func() error
-}
-
-func (c *configDefines_) GetTaskTypeCode() string {
-	return c.GetTaskTypeCode_()
-}
-
-func (c *configDefines_) GetSpec() string {
-	return c.GetSpec_()
-}
-
-func (c *configDefines_) GetLockDuration() timex.Duration {
-	return c.GetLockDuration_()
-}
-
-func (c *configDefines_) RunTask(ctx contextx.Context) error {
-	return c.RunTask_(ctx)
-}
-
-func (c *configDefines_) LoggerEnable() bool {
-	return c.LoggerEnable_()
 }
 
 func (c *configDefines_) LoadAllConfigByLocal() error {
@@ -81,11 +44,6 @@ func (c *configDefines_) LoadAllConfigByConsul() error {
 }
 
 type ConfigDefinesIOCInterface interface {
-	GetTaskTypeCode() string
-	GetSpec() string
-	GetLockDuration() timex.Duration
-	RunTask(ctx contextx.Context) error
-	LoggerEnable() bool
 	LoadAllConfigByLocal() error
 	LoadAllConfigByConsul() error
 }
