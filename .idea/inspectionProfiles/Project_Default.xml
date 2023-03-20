@@ -16,5 +16,6 @@
         <method importPath="github.com/zhanjunjie2019/clover/global/middleware" receiver="*SentinelMiddleware" name="doFinal" />
       </methods>
     </inspection_tool>
+    <inspection_tool class="LanguageDetectionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
   </profile>
 </component>

@@ -8,12 +8,12 @@ COPY . /go/clover
 
 WORKDIR /go/clover/${pgName}
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
-RUN apk update
-RUN apk add gcc g++ libffi-dev make zlib-dev libcec-dev libtool
-RUN go install github.com/swaggo/swag/cmd/swag@latest
-RUN swag init --pd
-RUN go build -v -o server .
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories && \
+    apk update && \
+    apk add gcc g++ libffi-dev make zlib-dev libcec-dev libtool && \
+    go install github.com/swaggo/swag/cmd/swag@latest && \
+    swag init --pd && \
+    go build -v -o server .
 
 FROM alpine:3.16.2
 ARG pgName
