@@ -116,7 +116,7 @@ func (u *UserApp) UserTokenByAuthcode(ctx context.Context, c cmd.UserTokenByAuth
 		err = biserrs.LoginVerifyFailedErr
 		return
 	}
-	rs.AccessTokenExpirationTime = time.Now().Add(time.Second * time.Duration(tenant.FullValue().AccessTokenTimeLimit)).Unix()
+	rs.AccessTokenExpirationTime = time.Now().Unix() + int64(tenant.FullValue().AccessTokenTimeLimit)
 	rs.AccessToken, err = uctx.NewJwtClaimsToken(tenantID, user.ID().UInt64(), user.FullValue().UserName, user.GetAuthCodes(), rs.AccessTokenExpirationTime)
 	if err != nil {
 		err = errs.ToUnifiedError(err)

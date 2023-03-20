@@ -103,7 +103,7 @@ func (t *TenantApp) TenantTokenCreate(ctx context.Context, c cmd.TenantTokenCrea
 		return
 	}
 	if c.AccessTokenExpirationTime == 0 {
-		rs.AccessTokenExpirationTime = time.Now().Add(time.Second * time.Duration(tenant.FullValue().AccessTokenTimeLimit)).Unix()
+		rs.AccessTokenExpirationTime = time.Now().Unix() + int64(tenant.FullValue().AccessTokenTimeLimit)
 	} else {
 		rs.AccessTokenExpirationTime = c.AccessTokenExpirationTime
 	}

@@ -28,7 +28,7 @@ func (s *SadminApp) SadminTokenCreate(ctx context.Context, c cmd.SadminTokenCrea
 		err = biserrs.TenantValidationFailedErr
 		return
 	}
-	rs.AccessTokenExpirationTime = time.Now().Add(time.Second * time.Duration(tenant.FullValue().AccessTokenTimeLimit)).Unix()
+	rs.AccessTokenExpirationTime = time.Now().Unix() + int64(tenant.FullValue().AccessTokenTimeLimit)
 	rs.AccessToken, err = uctx.NewJwtClaimsToken("", 0, "", []string{consts.SAdminAuth}, rs.AccessTokenExpirationTime)
 	if err != nil {
 		err = errs.ToUnifiedError(err)
