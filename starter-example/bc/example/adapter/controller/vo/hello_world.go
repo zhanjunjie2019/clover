@@ -2,9 +2,9 @@ package vo
 
 type HelloWorldReqVO struct {
 	// 姓，必填
-	FirstName string `json:"firstName" form:"firstName" validate:"required"`
+	FirstName string `json:"first_name" form:"firstName" validate:"required"`
 	// 名，必填
-	LastName string `json:"lastName" form:"lastName" validate:"required"`
+	LastName string `json:"last_name" form:"lastName" validate:"required"`
 }
 
 type HelloWorldRspVO struct {

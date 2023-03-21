@@ -559,15 +559,15 @@ const docTemplate = `{
         "vo.PermissionInfoVO": {
             "type": "object",
             "required": [
-                "authCode",
-                "permissionName"
+                "auth_code",
+                "permission_name"
             ],
             "properties": {
-                "authCode": {
+                "auth_code": {
                     "description": "资源编码",
                     "type": "string"
                 },
-                "permissionName": {
+                "permission_name": {
                     "description": "许可名称",
                     "type": "string"
                 }
@@ -590,7 +590,7 @@ const docTemplate = `{
         "vo.PermissionRspVO": {
             "type": "object",
             "properties": {
-                "permissionIDs": {
+                "permission_ids": {
                     "description": "许可ID",
                     "type": "array",
                     "items": {
@@ -616,7 +616,7 @@ const docTemplate = `{
         "vo.RoleCreateRspVO": {
             "type": "object",
             "properties": {
-                "roleIDs": {
+                "role_ids": {
                     "description": "角色ID",
                     "type": "array",
                     "items": {
@@ -628,15 +628,15 @@ const docTemplate = `{
         "vo.RoleInfoVO": {
             "type": "object",
             "required": [
-                "roleCode",
-                "roleName"
+                "role_code",
+                "role_name"
             ],
             "properties": {
-                "roleCode": {
+                "role_code": {
                     "description": "角色编码",
                     "type": "string"
                 },
-                "roleName": {
+                "role_name": {
                     "description": "角色名",
                     "type": "string"
                 }
@@ -645,21 +645,21 @@ const docTemplate = `{
         "vo.RolePermissionAssignmentReqVO": {
             "type": "object",
             "required": [
-                "authCodes"
+                "auth_codes"
             ],
             "properties": {
-                "authCodes": {
+                "auth_codes": {
                     "description": "资源编码",
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
                 },
-                "roleCode": {
+                "role_code": {
                     "description": "角色编码，与角色ID二选一",
                     "type": "string"
                 },
-                "roleID": {
+                "role_id": {
                     "description": "角色ID，与角色编码二选一",
                     "type": "integer"
                 }
@@ -668,7 +668,7 @@ const docTemplate = `{
         "vo.RolePermissionAssignmentRspVO": {
             "type": "object",
             "properties": {
-                "roleID": {
+                "role_id": {
                     "description": "角色ID",
                     "type": "integer"
                 }
@@ -677,10 +677,10 @@ const docTemplate = `{
         "vo.SadminTokenCreateReqVO": {
             "type": "object",
             "required": [
-                "secretKey"
+                "secret_key"
             ],
             "properties": {
-                "secretKey": {
+                "secret_key": {
                     "description": "租户密钥",
                     "type": "string"
                 }
@@ -689,11 +689,11 @@ const docTemplate = `{
         "vo.SadminTokenCreateRspVO": {
             "type": "object",
             "properties": {
-                "accessToken": {
+                "access_token": {
                     "description": "访问Token",
                     "type": "string"
                 },
-                "accessTokenExpirationTime": {
+                "access_token_expiration_time": {
                     "description": "访问Token过期时间戳",
                     "type": "integer"
                 }
@@ -716,7 +716,7 @@ const docTemplate = `{
         "vo.TenantCreateRspVO": {
             "type": "object",
             "properties": {
-                "secretKeys": {
+                "secret_keys": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/vo.TenantSecretKeyVO"
@@ -727,23 +727,23 @@ const docTemplate = `{
         "vo.TenantInfoVO": {
             "type": "object",
             "required": [
-                "tenantName"
+                "tenant_name"
             ],
             "properties": {
-                "AccessTokenTimeLimit": {
+                "access_token_time_limit": {
                     "description": "访问Token有效时限，非必要，默认7200s",
                     "type": "integer"
                 },
-                "redirectUrl": {
+                "redirect_url": {
                     "description": "授权码重定向路径，非必要",
                     "type": "string"
                 },
-                "tenantID": {
+                "tenant_id": {
                     "description": "租户ID，非必要，不传默认则随机生成，英文字母，长度小于{20}位",
                     "type": "string",
                     "maxLength": 20
                 },
-                "tenantName": {
+                "tenant_name": {
                     "description": "租户名",
                     "type": "string"
                 }
@@ -752,11 +752,11 @@ const docTemplate = `{
         "vo.TenantSecretKeyVO": {
             "type": "object",
             "properties": {
-                "secretKey": {
+                "secret_key": {
                     "description": "租户密钥",
                     "type": "string"
                 },
-                "tenantID": {
+                "tenant_id": {
                     "description": "租户ID",
                     "type": "string"
                 }
@@ -765,19 +765,19 @@ const docTemplate = `{
         "vo.TenantTokenCreateReqVO": {
             "type": "object",
             "required": [
-                "secretKey",
-                "tenantID"
+                "secret_key",
+                "tenant_id"
             ],
             "properties": {
-                "accessTokenExpirationTime": {
+                "access_token_expiration_time": {
                     "description": "访问Token过期时间戳，非必要，不传则按当前时间+戳追加租户设置有效时限",
                     "type": "integer"
                 },
-                "secretKey": {
+                "secret_key": {
                     "description": "租户密钥",
                     "type": "string"
                 },
-                "tenantID": {
+                "tenant_id": {
                     "description": "租户ID",
                     "type": "string"
                 }
@@ -786,11 +786,11 @@ const docTemplate = `{
         "vo.TenantTokenCreateRspVO": {
             "type": "object",
             "properties": {
-                "accessToken": {
+                "access_token": {
                     "description": "访问Token",
                     "type": "string"
                 },
-                "accessTokenExpirationTime": {
+                "access_token_expiration_time": {
                     "description": "访问Token过期时间戳",
                     "type": "integer"
                 }
@@ -800,14 +800,14 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "password",
-                "userName"
+                "user_name"
             ],
             "properties": {
                 "password": {
                     "description": "密码",
                     "type": "string"
                 },
-                "userName": {
+                "user_name": {
                     "description": "账户名",
                     "type": "string"
                 }
@@ -816,11 +816,11 @@ const docTemplate = `{
         "vo.UserAuthorizationCodeRspVO": {
             "type": "object",
             "properties": {
-                "authorizationCode": {
+                "authorization_code": {
                     "description": "授权码",
                     "type": "string"
                 },
-                "redirectUrl": {
+                "redirect_url": {
                     "description": "重定向路径",
                     "type": "string"
                 }
@@ -843,7 +843,7 @@ const docTemplate = `{
         "vo.UserCreateRspVO": {
             "type": "object",
             "properties": {
-                "userIDs": {
+                "user_ids": {
                     "description": "用户ID",
                     "type": "array",
                     "items": {
@@ -856,14 +856,14 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "password",
-                "userName"
+                "user_name"
             ],
             "properties": {
                 "password": {
                     "description": "密码",
                     "type": "string"
                 },
-                "userName": {
+                "user_name": {
                     "description": "用户名",
                     "type": "string"
                 }
@@ -872,21 +872,21 @@ const docTemplate = `{
         "vo.UserRoleAssignmentReqVO": {
             "type": "object",
             "required": [
-                "roleCodes"
+                "role_codes"
             ],
             "properties": {
-                "roleCodes": {
+                "role_codes": {
                     "description": "角色编码",
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
                 },
-                "userID": {
+                "user_id": {
                     "description": "用户ID，与用户名二选一",
                     "type": "integer"
                 },
-                "userName": {
+                "user_name": {
                     "description": "用户名，与用户ID二选一",
                     "type": "string"
                 }
@@ -895,7 +895,7 @@ const docTemplate = `{
         "vo.UserRoleAssignmentRspVO": {
             "type": "object",
             "properties": {
-                "userID": {
+                "user_id": {
                     "description": "用户ID",
                     "type": "integer"
                 }
@@ -904,10 +904,10 @@ const docTemplate = `{
         "vo.UserTokenByAuthcodeReqVO": {
             "type": "object",
             "required": [
-                "authorizationCode"
+                "authorization_code"
             ],
             "properties": {
-                "authorizationCode": {
+                "authorization_code": {
                     "description": "授权码",
                     "type": "string"
                 }
@@ -916,11 +916,11 @@ const docTemplate = `{
         "vo.UserTokenByAuthcodeRspVO": {
             "type": "object",
             "properties": {
-                "accessToken": {
+                "access_token": {
                     "description": "访问Token",
                     "type": "string"
                 },
-                "accessTokenExpirationTime": {
+                "access_token_expiration_time": {
                     "description": "访问Token过期时间戳",
                     "type": "integer"
                 }

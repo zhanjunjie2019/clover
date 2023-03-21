@@ -32,14 +32,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "姓，必填",
-                        "name": "firstName",
+                        "name": "first_name",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "名，必填",
-                        "name": "lastName",
+                        "name": "last_name",
                         "in": "query",
                         "required": true
                     }

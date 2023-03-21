@@ -8,11 +8,11 @@ type UserCreateCmd struct {
 
 type UserInfo struct {
 	// 用户名
-	UserName string `json:"userName"`
+	UserName string `json:"user_name"`
 	// 密码
 	Password string `json:"password"`
 }
 
 type UserCreateResult struct {
-	UserIDs []defs.ID `json:"userIDs"`
+	UserIDs []defs.ID `json:"user_ids"`
 }

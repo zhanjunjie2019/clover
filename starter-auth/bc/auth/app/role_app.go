@@ -49,7 +49,7 @@ func (r *RoleApp) RoleCreate(ctx context.Context, c cmd.RoleCreateCmd) (rs cmd.R
 				err = errs.ToUnifiedError(err)
 				return
 			}
-			rs.PermissionIDs = append(rs.PermissionIDs, id)
+			rs.RoleIDs = append(rs.RoleIDs, id)
 		}
 		return nil
 	})

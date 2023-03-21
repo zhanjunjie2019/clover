@@ -29,12 +29,12 @@ paths:
       parameters:
       - description: 姓，必填
         in: query
-        name: firstName
+        name: first_name
         required: true
         type: string
       - description: 名，必填
         in: query
-        name: lastName
+        name: last_name
         required: true
         type: string
       produces:

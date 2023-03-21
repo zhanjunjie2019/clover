@@ -9,11 +9,11 @@ type PermissionCreateCmd struct {
 // PermissionInfo 资源许可
 type PermissionInfo struct {
 	// 许可名称
-	PermissionName string `json:"permissionName"`
+	PermissionName string `json:"permission_name"`
 	// 资源编码
-	AuthCode string `json:"authCode"`
+	AuthCode string `json:"auth_code"`
 }
 
 type PermissionCreateResult struct {
-	PermissionIDs []defs.ID `json:"permissionIDs"`
+	PermissionIDs []defs.ID `json:"permission_ids"`
 }

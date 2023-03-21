@@ -7,9 +7,9 @@ import (
 type JwtClaims struct {
 	jwt.RegisteredClaims
 	// TenantID 租户ID
-	TenantID string `json:"tenantID,omitempty"`
+	TenantID string `json:"tenant_id,omitempty"`
 	// UserID 用户ID
-	UserID uint64 `json:"userID,omitempty"`
+	UserID uint64 `json:"user_id,omitempty"`
 	// Username 用户名
 	Username string `json:"username,omitempty"`
 	// Auths 资源许可
