@@ -16,3 +16,4 @@ function pause(){
 }
 
 pause 'Press any key to continue...'
+echo "All swag init completed"
