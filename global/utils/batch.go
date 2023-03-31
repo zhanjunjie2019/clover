@@ -16,12 +16,18 @@ func ConvIDsToUint64(ids []defs.ID) []uint64 {
 // newArray:新结果集合;oldArray:原集合;compare:比较方法
 func LoadChangeByArrays[T any](newArray, oldArray []T, compare func(newObject, oldObject *T) bool) (inserts, updates, deletes []T) {
 	// 从新集合中找出新增/修改的对象
+	var ups map[int]struct{}
 	for x := range newArray {
 		newObject := newArray[x]
 		var isNew = true
 		for y := range oldArray {
+			_, ok := ups[y]
+			if ok {
+				continue
+			}
 			oldObject := oldArray[y]
 			if compare(&newObject, &oldObject) {
+				ups[y] = struct{}{}
 				isNew = false
 				break
 			}
@@ -34,6 +40,10 @@ func LoadChangeByArrays[T any](newArray, oldArray []T, compare func(newObject, o
 	}
 	// 从旧集合中找出删除的对象
 	for y := range oldArray {
+		_, ok := ups[y]
+		if ok {
+			continue
+		}
 		oldObject := oldArray[y]
 		var isDel = true
 		for x := range newArray {
